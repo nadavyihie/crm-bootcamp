@@ -1,8 +1,8 @@
+require('dotenv').config();
 const e = require('cors');
 const cors = require('cors');
 const express = require('express');
 const mysqlserver=require
-var Mailgun = require('mailgun-js');
 const md5=require('md5');
 const mysql = require('mysql');
 const app = express();
@@ -13,8 +13,7 @@ app.use(bodyParser.json());
 const jwt = require('jsonwebtoken');
 const JwtMiddleware=require('./checkJWTmiddleware');
 const { response } = require('express');
-const dotenv=require('dotenv');
-dotenv.config();
+
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -32,8 +31,8 @@ app.use(function (req, res, next) {
     }
     else{
     try {
-      // const verified = jwt.verify(req.headers.token, toksec);
-      // req.fullName=verified.fullName;
+      const verified = jwt.verify(req.headers.token, process.env.JWT_KEY);
+      req.fullName=verified.fullName;
       // console.log(res.userEmail);
       next();
     }
@@ -94,8 +93,8 @@ app.post('/signin',(req,res)=>{
   if(result!=0){
     const fullName=result[0].fullName;
     loginCorrect=true;
-
-    const accessToken = jwt.sign({fullName:fullName ,email: email, }, toksec);
+    console.log(process.env);
+    const accessToken = jwt.sign({fullName:fullName ,email: email, }, process.env.JWT_KEY);
     token=accessToken;
     // console.log(token);
   }

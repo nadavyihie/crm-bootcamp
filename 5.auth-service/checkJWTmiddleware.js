@@ -6,7 +6,7 @@ const JwtMiddleware = (req,res,next) =>{
     console.log(req.originalUrl);
 
     try {
-      const verified = jwt.verify(req.headers.token, toksec);
+      const verified = jwt.verify(req.headers.token, process.env.JWT_KEY);
       tokenValidate=true;
       const data={tokenValidate};
       console.log("bla");
