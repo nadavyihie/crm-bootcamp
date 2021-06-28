@@ -13,8 +13,8 @@ app.use(bodyParser.json());
 const jwt = require('jsonwebtoken');
 const JwtMiddleware=require('./checkJWTmiddleware');
 const { response } = require('express');
-
-const toksec="afj3487avn754ljh9udsg";
+const dotenv=require('dotenv');
+dotenv.config();
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -32,8 +32,8 @@ app.use(function (req, res, next) {
     }
     else{
     try {
-      const verified = jwt.verify(req.headers.token, toksec);
-      req.fullName=verified.fullName;
+      // const verified = jwt.verify(req.headers.token, toksec);
+      // req.fullName=verified.fullName;
       // console.log(res.userEmail);
       next();
     }
