@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="css/style-bottomBar.css">
         <link rel="stylesheet" href="css/style-main.css">
         <link rel="stylesheet" href="css/style-topBar.css">
+        <link rel="stylesheet" href="css/style-body.css">
 
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200&family=Stint+Ultra+Condensed&display=swap" rel="stylesheet">
@@ -12,20 +13,22 @@
 
     <body>
 
-       <div id=backgroundImg></div>
+       <div  id=backgroundImg style="background-image: url({{img}});"></div>
 
         <nav id=topNavbar>
-
-            <div class=topNavItem>About</div>
+            {{#topNavs}}
+            <div class= topNavItem>{{navItem}}</div>
+            {{/topNavs}}
+            <!-- <div class=topNavItem>About</div>
             <div class=topNavItem>Store</div>
             <div class=topNavItem>Customer service</div>
-            <div class=topNavItem>Contact us</div>
+            <div class=topNavItem>Contact us</div> -->
             
         </nav>
     
             <div id=msgContainer>
-
-                <section id=titleMsg><b>Hi, What's up gamer?<br> welcome to the game station!</b> <br></section>
+            
+                <section id=titleMsg><b>Good {{time}}, What's up gamer?<br> welcome to the game station!</b> <br></section>
                 <section id=MsgContent>If you have a lot of games that you are <br>stuck with, you have come to the right place.<br>
                 Here you can exchange your games with other people games.  </section>
             </div>
@@ -36,18 +39,17 @@
 
             <div id=customDetailMsg>Fill in your details<br> and join the gaming family!</div>
 
-            <form id=customDetailsForm onsubmit="validateForm(); return false;">
+           
 
-                <div id=customDetailsInputs>
-                
-                    <input name=fullName type="text"  class=formItem placeholder="Full name">
-                
-                    <input name= email type="text"  class=formItem placeholder="Email">
-                
-                    <input name= phoneNumber type="text"  class=formItem placeholder="Phone number">
-            </div>
+            <form id=customDetailsForm>
+                    <div id=customDetailsInputs>
+                        {{#inputs}}
+                            <input name={{name}} class=formItem placeholder={{name}} type="text">
+                            {{/inputs}}
 
-                <button id=submitButton>Submit</button>
+                     </div>
+
+                    <button id=submitButton type="button" onclick="validateForm();">Submit</button>
 
             </form>
 
@@ -56,6 +58,13 @@
         </div>
 
     </body>
-    <script src="scripts/test.js"></script>
+    <script src="validateInput.js"></script>
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js></script>
+
+    <script>
+   
+    </script>
+
      
      </html>

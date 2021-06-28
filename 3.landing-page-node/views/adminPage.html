@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/style-adminPage.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200&family=Stint+Ultra+Condensed&display=swap" rel="stylesheet">
+</head>
+<body>
+   
+    <div  id=backgroundImg></div>
+
+    <table >
+        <tr >
+            <th>Full name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            {{#leadsArr}}
+        </tr>
+
+        <tr id=lead>
+    
+            <td>{{fullName}}</td>
+            <td>{{email}}</td>
+            <td>{{phoneNumber}}</td>
+        </tr>
+
+        {{/leadsArr}}
+
+    </table>
+    <button id=sort>sort</button>
+</body>
+<script src="sortLeadsTable.js"></script>
+</html>

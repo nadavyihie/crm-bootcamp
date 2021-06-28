@@ -1,0 +1,58 @@
+
+#backgroundImg
+{
+    
+    background: url('background.jpg') center ; 
+    width: 100%;
+    height: 75%;
+    background-size: cover;
+    position: absolute;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+
+body {    
+
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+#msgContainer{
+
+    font-family: 'Roboto Mono', monospace;
+    margin-left: 1em;
+    margin-top: 2.5em;
+    color:white;
+    max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5em;
+}
+#titleMsg{
+
+   display: flex;
+    font-size: 2.8em;
+
+
+}
+
+#MsgContent{
+
+    font-size: 1.2em;
+    margin-top: 1.5em;
+
+}
+
+
+@media (max-width: 800px){
+    
+    #msgContainer{
+
+        font-size: 80%; 
+    }
+
+}

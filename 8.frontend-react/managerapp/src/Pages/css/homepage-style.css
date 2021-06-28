@@ -1,0 +1,12 @@
+.homepage{
+
+    display: flex;
+    flex-direction: column;
+}
+
+.topNav{
+
+    width: 100vw;
+    background-color: #343A40;
+    height: 13vh;
+}
