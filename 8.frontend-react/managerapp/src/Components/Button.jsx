@@ -2,7 +2,7 @@ import React from 'react';
 
 function Button(props) {
     return (
-        <button type={props.buttonType}>{props.buttonText}</button>
+        <button type={props.buttonType} >{props.buttonText} </button>
     );
 }
 

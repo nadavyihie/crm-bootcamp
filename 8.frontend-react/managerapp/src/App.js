@@ -4,6 +4,8 @@ import axios from 'axios';
 import Signup from './Pages/Signup';
 import Login from './Pages/Login';
 import NotFound from './Pages/NotFound/NotFound.component';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 import { useEffect, useState } from 'react';
 
 import {
@@ -34,7 +36,7 @@ import {
       .then(function (response) {
           
           // console.log(response.status);
-          console.log(response.data.fullName)
+       
           setUserName(response.data.fullName);
           setValidToken(true);
           
@@ -52,10 +54,13 @@ import {
     if (loading) {
       return <div className="App">Loading...</div>;
     }
+  
 
   return(
 
-
+<Router>
+      <Switch>
+        <Route exact path='/'>
     <div className="App">
       { validToken?
         <div>
@@ -66,10 +71,17 @@ import {
       <div>
         <Signup/>    
       </div>}
+      </div>
+      </Route>
+        <Route exact path='/forgotpassword'><ForgotPassword/></Route>
+        <Route exact path='/resetpassword/:token/:userName'><ResetPassword/>
+         
+        </Route>
+      </Switch>
+    </Router>
+  
+
     
-    </div>
-
-
   );
 }
 
