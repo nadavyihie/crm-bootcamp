@@ -6,6 +6,7 @@ import Button from '../Components/Button';
 import ChoiceContainer from '../Components/ChoiceContainer';
 import Message from '../Components/message';
 import AuthForm from '../Components/AuthForm';
+
 function Signup(props) {
 
     const [isLogin, setIsLogin] = useState(true);
