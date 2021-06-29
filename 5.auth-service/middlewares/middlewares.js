@@ -4,6 +4,16 @@
   const app = express();
   var cors = require('cors')
 
+
+const jwtVerify=(token,tokenSec)=>{
+  try{
+    const verified = jwt.verify(token, tokenSec); 
+    return verified;
+  }
+  catch(err){
+    return 401;
+  }
+}
   const loadAllMiddlewares = (app) => {
       
         app.use(express.json());
@@ -14,25 +24,18 @@
         
       //**check token is valid */
       app.use(function (req, res, next) {
-        let tokenValidate=false;
-          // console.log(req.originalUrl);
-          if((req.originalUrl==="/signup" || req.originalUrl==="/signin") || req.originalUrl==="/forgotpassword" || req.originalUrl==="/validateLink")
+
+          if(req.originalUrl==="users/registered")
           {
-            next();
-          }
-          else{
-          try {
-            const verified = jwt.verify(req.headers.token, process.env.JWT_KEY);
-            req.fullName=verified.fullName;
-            // console.log(res.userEmail);
-            next();
-          }
-          catch(err) {
-           res.status(401).json({"message" : "not authenticated!!!"});
-         
-          }
+            console.log("bla");
+            const verified=jwtVerify(req.headers.token, process.env.JWT_KEY);
+
+            if(verified===401){
+              res.status(401).json({"message" : "not authenticated!!!"});
+            }
+           console.log("bla");            
         }
-        
+        next();
       });
       /****************** */
   

@@ -7,10 +7,10 @@ function AuthForm(props) {
     const authToDatabase=(e)=>{
         e.preventDefault();
 
-        const email=e.target.elements.email.value.trim();
+        const userName=e.target.elements.userName.value.trim();
         const password=e.target.elements.password.value.trim();
        
-        axios.post('http://localhost:8005/signin',{email,password})
+        axios.post('http://localhost:8005/users/signin',{userName,password})
         .then(function (response) {
             
            const {loginCorrect,token}=response.data;
@@ -36,13 +36,14 @@ function AuthForm(props) {
 
     const saveDetailsOnDatabase=(e)=>{
         e.preventDefault();
+        const userName=e.target.elements.userName.value.trim();
         const fullName=e.target.elements.fullName.value.trim();
         const companyName=e.target.elements.companyName.value.trim();
         const phoneNumber=e.target.elements.phoneNumber.value.trim();
         const email=e.target.elements.email.value.trim();
         const password=e.target.elements.password.value.trim();
         let emailExists=false;
-        axios.post('http://localhost:8005/signup',{fullName,companyName,phoneNumber,email,password})
+        axios.post('http://localhost:8005/users/signup',{userName,fullName,companyName,phoneNumber,email,password})
         .then(function (response) {
            emailExists=response.data.emailExists;
            console.log(emailExists);
@@ -70,6 +71,7 @@ function AuthForm(props) {
         if(props.formAction=='register')
         {
             inputs=[
+              {inputType:'text',inputName:'userName', inputString:'User name'},
                 {inputType:'text',inputName:'fullName', inputString:'Full name'},
                 {inputType:'text',inputName:'companyName', inputString:'Company name'},
                 {inputType:'text',inputName:'phoneNumber', inputString:'Phone number'},
@@ -82,7 +84,7 @@ function AuthForm(props) {
         if(props.formAction=='login')
         {
             inputs=[
-                {inputType:'email',inputName:'email',inputString:'Email'},
+                {inputType:'text',inputName:'userName',inputString:'User name'},
                 {inputType:'password',inputName:'password', inputString:'Password'}
                  ];
         }
@@ -94,7 +96,7 @@ function AuthForm(props) {
         <form className="login-register" onSubmit={(props.formAction=='login')?authToDatabase:saveDetailsOnDatabase}>
             {inputsList}
             <Button buttonText="Sign up" />
-            {props.formAction=='login'?<a href='/forgotpassword'>Forgot your password?</a>:""}
+            {props.formAction=='login'?<a href='users/forgotpassword'>Forgot your password?</a>:""}
         </form>
     );
 }

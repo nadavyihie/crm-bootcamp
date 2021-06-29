@@ -28,7 +28,7 @@ import {
       
       const token=localStorage.getItem("token");
       if(token){
-      axios.get('http://localhost:8005/registered', {
+      axios.get('http://localhost:8005/users/registered', {
         headers: {
           'token': token
         }
@@ -73,8 +73,8 @@ import {
       </div>}
       </div>
       </Route>
-        <Route exact path='/forgotpassword'><ForgotPassword/></Route>
-        <Route exact path='/resetpassword/:token/:userName'><ResetPassword/>
+        <Route exact path='/users/forgotpassword'><ForgotPassword/></Route>
+        <Route exact path='/users/resetpassword/:token/:userName'><ResetPassword/>
          
         </Route>
       </Switch>

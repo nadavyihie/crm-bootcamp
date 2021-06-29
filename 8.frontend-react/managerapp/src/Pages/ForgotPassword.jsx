@@ -8,7 +8,7 @@ function ForgotPassword(props) {
     {
         e.preventDefault();
         const email=e.target.elements.email.value.trim();
-        axios.post('http://localhost:8005/forgotpassword',{email})
+        axios.post('http://localhost:8005/users/forgotpassword',{email})
         .then(function (response) {
            let emailExists=response.data.emailExists;
            console.log(emailExists);

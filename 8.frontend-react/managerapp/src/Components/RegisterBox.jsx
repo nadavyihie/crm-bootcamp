@@ -17,7 +17,7 @@ function RegisterBox(props) {
         const email=e.target.elements.email.value.trim();
         const password=e.target.elements.password.value.trim();
         let emailExists=false;
-        axios.post('http://localhost:8005/register',{fullName,companyName,phoneNumber,email,password})
+        axios.post('http://localhost:8005/users/register',{fullName,companyName,phoneNumber,email,password})
         .then(function (response) {
            emailExists=response.data.emailExists;
            console.log(emailExists);
