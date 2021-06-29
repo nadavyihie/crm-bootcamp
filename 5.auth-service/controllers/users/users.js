@@ -16,7 +16,7 @@ var con = mysql.createConnection({
 router.post('/resetpassword',function(req,res){
   console.log(req.body.password)
   const newEncPassword=(md5(req.body.password));
-  var sql=`UPDATE accounts SET userPassword='${newEncPassword}' where userName='${req.body.userName}'`;
+  var sql=`UPDATE accounts SET resetPassToken=NULL,userPassword='${newEncPassword}' where userName='${req.body.userName}'`;
   con.query(sql, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){

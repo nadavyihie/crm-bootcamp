@@ -93,9 +93,9 @@ function AuthForm(props) {
     <Input  key={index} inputType={value.inputType} inputName={value.inputName} inputString={value.inputString}/>);
 
     return (
-        <form className="login-register" onSubmit={(props.formAction=='login')?authToDatabase:saveDetailsOnDatabase}>
+        <form className={props.formAction=='login'?"login":"register"} onSubmit={(props.formAction=='login')?authToDatabase:saveDetailsOnDatabase}>
             {inputsList}
-            <Button buttonText="Sign up" />
+            {<Button buttonText={props.formAction=='login'?"Login":"Register"} />}
             {props.formAction=='login'?<a href='users/forgotpassword'>Forgot your password?</a>:""}
         </form>
     );

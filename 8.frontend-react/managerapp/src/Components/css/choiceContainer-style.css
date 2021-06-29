@@ -2,9 +2,15 @@
     width: 100%;
     display: flex;
     justify-content: space-evenly   ;
-    margin-bottom: 3vh;
-    
+    margin-bottom: 8vh;
+    font-size: 1.5em;
 }
 .container-item{
     cursor: pointer;
+}
+.container-item-chosen{
+    cursor: pointer;
+padding-bottom: 1vh;
+border-bottom: rgb(214, 214, 214);
+border-bottom: solid;
 }
