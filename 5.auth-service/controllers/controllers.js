@@ -6,6 +6,8 @@ const loadAllControllers = (app) => {
         console.log(`Registering users Controller`);
         app.use(`/users`, usersController);
 
+    /** FUTURE -> load job controller */
+
 }
 
 module.exports = loadAllControllers;
