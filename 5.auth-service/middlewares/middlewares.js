@@ -24,17 +24,20 @@ const jwtVerify=(token,tokenSec)=>{
         
       //**check token is valid */
       app.use(function (req, res, next) {
-
-          if(req.originalUrl==="users/registered")
+       
+          if(req.originalUrl==="/users/registered")
           {
-            console.log("bla");
+            
             const verified=jwtVerify(req.headers.token, process.env.JWT_KEY);
-
+         
             if(verified===401){
+              console.log("401");
               res.status(401).json({"message" : "not authenticated!!!"});
             }
-           console.log("bla");            
+           
+            req.userName=verified.userName;
         }
+        
         next();
       });
       /****************** */

@@ -4,30 +4,26 @@ import Input from '../Components/Input';
 import axios from 'axios';
 function ResetPassword(props) {
   
-    const {token,userName}=useParams();
-    // console.log(userName);
+    const {token}=useParams();
+    const [userName,setUserName]=useState("");
     const [validToken,setValidToken]=useState(false);
     const [loading,setLoading]=useState(true);
     const saveNewPassword=(e)=>
     {
         e.preventDefault();
-        axios.get('http://localhost:8005/users/resetpasswotd', {
-          headers: {
-            'token': token,
-            
-          }
-        })
+        const password=e.target.elements.password.value.trim();
+        console.log(password);
+        console.log(userName);
+        axios.post('http://localhost:8005/users/resetpassword',{userName,password})
         .then(function (response) {
             
-            // console.log(response.status);
+           alert(response.data.message);
          
-            console.log("blaaaa");
-            setValidToken(true);
+
             
         })
         .catch(function (error) {
-          setValidToken(false);
-          
+          alert(error.response.data.message);          
         });
 
     }
@@ -35,15 +31,15 @@ function ResetPassword(props) {
         console.log(token);
         axios.get('http://localhost:8005/users/validateLink', {
           headers: {
-            'token': token,
-            'userName': userName
+            'token': token
+    
           }
         })
         .then(function (response) {
             
-            // console.log(response.status);
+          
          
-            console.log("blaaaa");
+            setUserName(response.data.userName);
             setValidToken(true);
             
         })

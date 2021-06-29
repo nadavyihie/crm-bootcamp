@@ -9,20 +9,19 @@ function ForgotPassword(props) {
         e.preventDefault();
         const email=e.target.elements.email.value.trim();
         axios.post('http://localhost:8005/users/forgotpassword',{email})
-        .then(function (response) {
-           let emailExists=response.data.emailExists;
-           console.log(emailExists);
-           if(emailExists){
-             
-             alert("We sent you an mail");
-             
-            }
-            else{
-                
-               alert("The email address is not exists");
-           
-             }
+             .then(function (response) {
+            
+           alert(response.data.message);
+         
+
+            
         })
+        .catch(function (error) {
+          alert(error.response.data.message);          
+        });
+        
+        
+     
     }
 
     return (

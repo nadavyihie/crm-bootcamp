@@ -13,25 +13,41 @@ var con = mysql.createConnection({
   database: "gameStation"
 });
 
-
-router.get('/validateLink',function(req,res){
-
-    try {
-      const verified = jwt.verify(req.headers.token, process.env.MAIL_URL_KEY);
-    
-      return res.status(200).json({"message": "I'm Alive!"
-      ,"fullName":verified.fullName});
-     
+router.post('/resetpassword',function(req,res){
+  console.log(req.body.password)
+  const newEncPassword=(md5(req.body.password));
+  var sql=`UPDATE accounts SET userPassword='${newEncPassword}' where userName='${req.body.userName}'`;
+  con.query(sql, function (err, result, fields) {
+    if (err) throw err;
+    if(result!=0){
+      
+      res.status(200).json({"message":"Your password has been successfully reset"});
     }
-    catch(err) {
+    else{
+      res.status(401).json({"message" : "Can not reset password right now, try again later."});
+    }
+  });
+  });
+  
+router.get('/validateLink',function(req,res){
+  console.log(req.headers.token);
+  con.query(`SELECT * FROM accounts WHERE resetPassToken='${req.headers.token}'`, function (err, result, fields) {
+    if (err) throw err;
+    if(result!=0){
+      
+      return res.status(200).json({"message": "I'm Alive!"
+      ,"userName":result[0].userName});
+    }
+    else{
       res.status(401).json({"message" : "not authenticated!!!"});
     }
   });
+  });
   
   router.get('/registered',function(req,res){
-    // console.log(req.fullName);
+    
     return res.status(200).json({"message": "I'm Alive!"
-                                ,"fullName":req.userName});
+                                ,"userName":req.userName});
   })
   
 
@@ -42,17 +58,17 @@ router.get('/validateLink',function(req,res){
 
   router.post('/signup',(req,res)=>{
   
-      const {fullName,companyName,phoneNumber,email,password}=req.body;
+      const {userName,fullName,companyName,phoneNumber,email,password}=req.body;
       const encPassword=(md5(password));
-      let emailExists=false;
-      con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
+      let userNameExists=false;
+      con.query(`SELECT * FROM accounts WHERE userName='${userName}'`, function (err, result, fields) {
       if (err) throw err;
       if(result!=0){
-        emailExists=true;
+        userNameExists=true;
       }
       else{
         
-        var sql = `INSERT INTO accounts (fullName, companyName,phoneNumber,email,userPassword) VALUES ('${fullName}', '${companyName}','${phoneNumber}','${email}','${encPassword}')`;
+        var sql = `INSERT INTO accounts (userName,fullName, companyName,phoneNumber,email,userPassword) VALUES ('${userName}','${fullName}', '${companyName}','${phoneNumber}','${email}','${encPassword}')`;
         con.query(sql, function (err, result) {
           if (err) throw err;
           console.log("1 record inserted");
@@ -61,7 +77,7 @@ router.get('/validateLink',function(req,res){
       
       
       }
-      const data={emailExists}; 
+      const data={userNameExists}; 
        res.send(data);
     }
   )});
@@ -77,10 +93,10 @@ router.get('/validateLink',function(req,res){
     con.query(`SELECT * FROM accounts WHERE userName='${userName}' AND userPassword='${encPassword}'`, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){
-      const fullName=result[0].fullName;
+      const fullName=result[0].userName;
       loginCorrect=true;
      
-      const accessToken = jwt.sign({userName:userName ,email: email, }, process.env.JWT_KEY);
+      const accessToken = jwt.sign({userName:userName ,userName: userName, }, process.env.JWT_KEY);
       token=accessToken;
       // console.log(token);
     }
@@ -96,17 +112,26 @@ router.get('/validateLink',function(req,res){
   router.post('/forgotpassword',(req,res)=>{
   
     const email=req.body.email;
-    console.log(email);
+   
     let emailExists=false;
     con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
     if (err) throw err;
+    console.log(result);
     if(result!=0){
-      const fullName=result[0].email;
+      const userName=result[0].userName;
       emailExists=true;
-      let linkToken = jwt.sign({fullName:fullName}, process.env.MAIL_URL_KEY);
-      var sql=`UPDATE accounts SET resetPassToken = '${linkToken}' WHERE email = '${email}'`;
-      linkToken+=`/${fullName}`;
+      let linkToken = jwt.sign({userName:userName}, process.env.MAIL_URL_KEY);
+      var sql=`UPDATE accounts SET resetPassToken='${linkToken}' where email='${email}'`;
+      con.query(sql, function (err, result, fields) {
+        if (err) throw err;
+        if(result==0){
+          res.status(401).json({"message" : "not authenticated!!!"});
+        }
+      });
       console.log(linkToken);
+      console.log(email);
+      
+      
           //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
           var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: "mail.workiz.dev"});
           var msgdata = {
@@ -116,25 +141,29 @@ router.get('/validateLink',function(req,res){
             to: 'nadav.yihie@workiz.com',
           //Subject and text data  
             subject: 'Hello from Game station',
-            html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://localhost:3000/users/resetpassword/'+linkToken+'">Click here to add your email address to a mailing list</a>'
+            html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://localhost:3000/resetpassword/'+linkToken+'">Click here to add your email address to a mailing list</a>'
           }
           //Invokes the method to send emails given the above data with the helper library
           mailgun.messages().send(msgdata, function (err, body) {
               //If there is an error, render the error page
               if (err) {
-                const data={emailExists}; 
-                  res.send(data);
-                  console.log("got an error: ", err);
+                ; 
+                res.status(401).json({"message":"We could not send you an email at this time, please try again later"});
+                  
               }
               //Else we can greet    and leave
               else {
                   //Here "submitted.jade" is the view file for this landing page 
                   //We pass the variable "email" from the url parameter in an object rendered by Jade
                   const data={emailExists}; 
-                  res.send(data);
+                  res.status(200).json({"message":"We sent you an email!"});
               }
           });
       
+    }
+    else{
+
+      res.status(401).json({"message":"The email address is not exists"});
     }
   
     // const data={emailExists}; 
