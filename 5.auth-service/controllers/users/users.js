@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const router = express.Router();
-
-
+const md5=require('md5');
+const jwt = require('jsonwebtoken');
 var Mailgun = require('mailgun-js');
 
 var con = mysql.createConnection({
@@ -29,9 +29,9 @@ router.get('/validateLink',function(req,res){
   });
   
   router.get('/registered',function(req,res){
-    console.log(req.fullName);
+    // console.log(req.fullName);
     return res.status(200).json({"message": "I'm Alive!"
-                                ,"fullName":req.fullName});
+                                ,"fullName":req.userName});
   })
   
 
@@ -69,18 +69,18 @@ router.get('/validateLink',function(req,res){
   router.post('/signin',(req,res)=>{
   
     // console.log(req.body)
-    const {email,password}=req.body;
+    const {userName,password}=req.body;
     const encPassword=(md5(password));
     
     let token=null;
     let loginCorrect=false;
-    con.query(`SELECT * FROM accounts WHERE email='${email}' AND userPassword='${encPassword}'`, function (err, result, fields) {
+    con.query(`SELECT * FROM accounts WHERE userName='${userName}' AND userPassword='${encPassword}'`, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){
       const fullName=result[0].fullName;
       loginCorrect=true;
-      console.log(process.env);
-      const accessToken = jwt.sign({fullName:fullName ,email: email, }, process.env.JWT_KEY);
+     
+      const accessToken = jwt.sign({userName:userName ,email: email, }, process.env.JWT_KEY);
       token=accessToken;
       // console.log(token);
     }
@@ -104,7 +104,7 @@ router.get('/validateLink',function(req,res){
       const fullName=result[0].email;
       emailExists=true;
       let linkToken = jwt.sign({fullName:fullName}, process.env.MAIL_URL_KEY);
-      
+      var sql=`UPDATE accounts SET resetPassToken = '${linkToken}' WHERE email = '${email}'`;
       linkToken+=`/${fullName}`;
       console.log(linkToken);
           //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
@@ -116,7 +116,7 @@ router.get('/validateLink',function(req,res){
             to: 'nadav.yihie@workiz.com',
           //Subject and text data  
             subject: 'Hello from Game station',
-            html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://localhost:3000/resetpassword/'+linkToken+'">Click here to add your email address to a mailing list</a>'
+            html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://localhost:3000/users/resetpassword/'+linkToken+'">Click here to add your email address to a mailing list</a>'
           }
           //Invokes the method to send emails given the above data with the helper library
           mailgun.messages().send(msgdata, function (err, body) {

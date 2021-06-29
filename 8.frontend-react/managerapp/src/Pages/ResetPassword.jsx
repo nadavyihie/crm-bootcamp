@@ -11,14 +11,32 @@ function ResetPassword(props) {
     const saveNewPassword=(e)=>
     {
         e.preventDefault();
+        axios.get('http://localhost:8005/users/resetpasswotd', {
+          headers: {
+            'token': token,
+            
+          }
+        })
+        .then(function (response) {
+            
+            // console.log(response.status);
+         
+            console.log("blaaaa");
+            setValidToken(true);
+            
+        })
+        .catch(function (error) {
+          setValidToken(false);
+          
+        });
 
     }
     useEffect(()=>{
         console.log(token);
-        axios.get('http://localhost:8005/validateLink', {
+        axios.get('http://localhost:8005/users/validateLink', {
           headers: {
             'token': token,
-            'userName':userName
+            'userName': userName
           }
         })
         .then(function (response) {
