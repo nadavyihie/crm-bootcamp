@@ -1,7 +1,8 @@
-function User(first_name,last_name){
-    this.first_name = first_name;
-    this.last_name = last_name;
-
+function User(userName,fullName,phoneNumber,email){
+    this.userName = userName;
+    this.fullName=fullName;
+    this.phoneNumber=phoneNumber;
+    this.email=email;
 
 
     return this;
