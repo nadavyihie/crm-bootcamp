@@ -1,6 +1,6 @@
 const User=require('../models/User');
 const mysql = require('mysql');
-
+const md5 =require('md5');
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -26,11 +26,23 @@ var con = mysql.createConnection({
  * 
  * return id of the inserted row
  */
-const create=({userName,fullName,phoneNumber,password,emil})=>{
+const create=({userName,fullName,phoneNumber,password,email,managerID})=>{
+  console.log(userName);
+  const encPassword=(md5(password));
+  console.log('aaaaa')
+  var sql = `INSERT INTO users (userName,fullName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}','${phoneNumber}','${email}','${encPassword}','${managerID}')`;
+  
+ con.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted");
+    if(result!=0){
     
+      return result.insertId
+    }
+    return -1;
+  })
+  
 }
-
-
 /**
  * @param  {} id
  * @param  {} newField={fieldName,fieldValue}

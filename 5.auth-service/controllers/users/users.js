@@ -6,6 +6,8 @@ const md5=require('md5');
 const jwt = require('jsonwebtoken');
 var Mailgun = require('mailgun-js');
 const e = require('express');
+// const User = require('../../models/User');
+const UserServices=require("../../services/userServices");
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -69,7 +71,16 @@ router.get('/validateLink',function(req,res){
   router.get('/', function(req, res) {
     res.send('hello ');
   });
-  
+
+  router.post('/test',(req,res)=>{
+    console.log(req.body.password);
+      const id=UserServices.create(req.body);
+      if(id==-1){
+          res.status(401);
+      }
+      res.status(200);
+    
+    })
 
   router.post('/signup',(req,res)=>{
   
