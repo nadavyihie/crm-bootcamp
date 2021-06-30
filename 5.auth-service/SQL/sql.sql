@@ -1,3 +1,5 @@
+use game_station;
+
 CREATE TABLE accounts
  (
  `id` int NOT NULL AUTO_INCREMENT,
