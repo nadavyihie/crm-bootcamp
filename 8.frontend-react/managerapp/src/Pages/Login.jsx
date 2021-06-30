@@ -3,6 +3,7 @@ import Input from '../Components/Input';
 import Button from '../Components/Button';
 import NavBar from '../Components/NavBar';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import './css/homepage-style.css'
 function Login(props) {
     const [option,setOption]=useState("");
@@ -39,12 +40,16 @@ function Login(props) {
     }
     return (
         <div className='homepage'>
-        
-            <div className='topNav'>    
-                {props.userName}
-                <button onClick={logOut}>Log out</button>
-                <div onClick={createUser}>create user</div>
-             </div>
+     
+     <div className='topNav'>  
+                     <Link to='createuser' className="topNavItem" onClick={createUser}>create user</Link>
+                     <div className="topNavItem" >option</div>
+                     <div className="topNavItem" >option </div>
+                     <div className="topNavItem" >option </div>
+                </div>
+            <div className="logout" onClick={logOut}>Sign out</div>  
+                <div className='username'>Hi, {props.userName}</div>
+               
             {option=='createUser'?<div>
             <form onSubmit={sendInvitation}>
               <Input  inputType="text" inputName="email" inputString="Email"/>
