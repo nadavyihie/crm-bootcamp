@@ -6,7 +6,6 @@ const md5=require('md5');
 const jwt = require('jsonwebtoken');
 var Mailgun = require('mailgun-js');
 const e = require('express');
-
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -19,6 +18,7 @@ con.connect(function(err) {
   console.log("Connected!");
 
 });
+
 const jwtVerify=(token,tokenSec)=>{
   try{
     const verified = jwt.verify(token, tokenSec); 

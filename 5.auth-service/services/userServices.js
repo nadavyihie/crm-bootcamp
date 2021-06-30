@@ -26,7 +26,7 @@ var con = mysql.createConnection({
  * 
  * return id of the inserted row
  */
-const create=({first_name,last_name})=>{
+const create=({userName,fullName,phoneNumber,password,emil})=>{
     
 }
 
