@@ -3,7 +3,67 @@ import Input from './Input';
 import Button from './Button';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 function AuthForm(props) {
+    const {token}=useParams();
+    if(props.userType=='regular'){
+      
+      const saveRegularuser=(e)=>
+      {
+        e.preventDefault();
+        const userName=e.target.elements.userName.value.trim();
+        const fullName=e.target.elements.fullName.value.trim();
+        const phoneNumber=e.target.elements.phoneNumber.value.trim();
+        const password=e.target.elements.password.value.trim();
+        let emailExists=false;
+        axios.post('http://localhost:8005/users/signupRegularUser',{userName,fullName,phoneNumber,password,token})
+        .then(function (response) {
+           emailExists=response.data.emailExists;
+           console.log(emailExists);
+           if(!emailExists){
+             
+             props.regMsg("Registration successful");
+             props.msgColor('#D4EDDA');
+            }
+            else{
+                
+               props.regMsg("the username already exists!");
+               props.msgColor('#F8D7DA');
+             }
+        })
+
+        .catch(function (error) {
+          console.log(error);
+        });
+    
+      }
+
+      let inputs=[];
+      inputs=[
+        {inputType:'text',inputName:'userName', inputString:'User name'},
+          {inputType:'text',inputName:'fullName', inputString:'Full name'},
+          {inputType:'text',inputName:'phoneNumber', inputString:'Phone number'},
+         
+          {inputType:'password',inputName:'password', inputString:'Password'},
+          {inputType:'password',inputName:'confirmPassword',inputString:'Confirm password'}
+              
+           ];
+           const inputsList=inputs.map((value,index)=>
+           <Input  key={index} inputType={value.inputType} inputName={value.inputName} inputString={value.inputString}/>);
+      return(
+        <div>
+              
+              <form className="register" onSubmit={saveRegularuser}>
+            {inputsList}
+            <Button buttonText="Register"/>
+           
+        </form>
+        </div>
+      );
+    }
+
+
+
     const authToDatabase=(e)=>{
         e.preventDefault();
 

@@ -11,10 +11,11 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "gameStation"
+  database: "game_station"
 });
 
 con.connect(function(err) {
+  console.log(con);
   if (err) throw err;
   console.log("Connected!");
 

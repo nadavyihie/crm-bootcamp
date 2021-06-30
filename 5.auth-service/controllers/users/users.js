@@ -5,14 +5,29 @@ const router = express.Router();
 const md5=require('md5');
 const jwt = require('jsonwebtoken');
 var Mailgun = require('mailgun-js');
+const e = require('express');
 
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "gameStation"
+  database: "game_station"
 });
 
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+
+});
+const jwtVerify=(token,tokenSec)=>{
+  try{
+    const verified = jwt.verify(token, tokenSec); 
+    return verified;
+  }
+  catch(err){
+    return 401;
+  }
+}
 router.post('/resetpassword',function(req,res){
   console.log(req.body.password)
   const newEncPassword=(md5(req.body.password));
@@ -81,6 +96,35 @@ router.get('/validateLink',function(req,res){
        res.send(data);
     }
   )});
+
+  router.post('/signupRegularUser',(req,res)=>{
+    const {userName,fullName,phoneNumber,password,token}=req.body;
+    // console.log(token);
+    const verified=jwtVerify(req.body.token, process.env.MAIL_URL_KEY);
+    const email=verified.email;
+    const managerName=verified.managerName;
+    // console.log(verified);
+  
+    const encPassword=(md5(password));
+    let userNameExists=false;
+    con.query(`SELECT * FROM accounts WHERE userName='${managerName}'`, function (err, result, fields) {
+    if (err) throw err;
+      const managerID=result[0].id;
+      console.log(managerID);
+
+      var sql = `INSERT INTO users (userName,fullName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}','${phoneNumber}','${email}','${encPassword}','${managerID}')`;
+      con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("1 record inserted");
+  
+      });
+    
+    
+    
+    const data={userNameExists}; 
+     res.send(data);
+  }
+)});
   
   router.post('/signin',(req,res)=>{
   
@@ -108,7 +152,39 @@ router.get('/validateLink',function(req,res){
      res.send(data);
   }
   )});
-  
+
+
+  router.post('/inviteuser',(req,res)=>{
+
+    let linkToken = jwt.sign({managerName:req.body.managerName,email:req.body.email}, process.env.MAIL_URL_KEY);
+    var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: "mail.workiz.dev"});
+    var msgdata = {
+    //Specify email data
+      from: 'gamestation@gmail.com',
+    //The email to contact
+      to: req.body.email,
+    //Subject and text data  
+      subject: 'Hello from Game station',
+      html: `Hello, ${req.body.managerName} sent you invention to join his system<a href="http://localhost:3000/${linkToken}">Click here to register</a>`
+    }
+    //Invokes the method to send emails given the above data with the helper library
+    mailgun.messages().send(msgdata, function (err, body) {
+        //If there is an error, render the error page
+        if (err) {
+          ; 
+          res.status(401).json({"message":"We could not send the email at this time, please try again later"});
+            
+        }
+        //Else we can greet    and leave
+        else {
+            //Here "submitted.jade" is the view file for this landing page 
+            //We pass the variable "email" from the url parameter in an object rendered by Jade
+           
+            res.status(200).json({"message":"We sent the email!"});
+        }
+
+  });
+  });
   router.post('/forgotpassword',(req,res)=>{
   
     const email=req.body.email;

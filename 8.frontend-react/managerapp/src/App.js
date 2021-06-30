@@ -65,6 +65,9 @@ import {
 
     <Router>
           <Switch>
+          <Route exact path="/:token">
+              <Signup userType="regular"/>
+            </Route>
             <Route exact path='/'>
         <div className="App">
           { validToken?
@@ -84,6 +87,7 @@ import {
             <Route exact path='/resetpassword/:token'>
               <ResetPassword/> 
             </Route>
+
     
           </Switch>
         </Router>
