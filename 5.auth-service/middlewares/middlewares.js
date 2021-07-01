@@ -35,7 +35,7 @@ const jwtVerify=(token,tokenSec)=>{
               res.status(401).json({"message" : "not authenticated!!!"});
             }
            
-            req.userDetails=verified.userName;
+            req.userName=verified.userName;
         }
         
         next();

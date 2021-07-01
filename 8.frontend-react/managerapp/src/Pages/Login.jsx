@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import Table from "./Table";
 import Input from "../Components/Input";
 import Button from "../Components/Button";
 import NavBar from "../Components/NavBar";
 import axios from "axios";
+import UsersTable from "../Components/UsersTable";
 import { Link } from "react-router-dom";
 import "./css/homepage-style.css";
+
 function Login(props) {
+  
   const [option, setOption] = useState("");
   const sendInvitation = (e) => {
     const managerName = props.userDetails.userName;
@@ -26,16 +30,21 @@ function Login(props) {
     localStorage.removeItem("token");
     window.location.reload();
   };
-  const createUser = () => {
+  const  createUser = async() => {
     setOption("createUser");
+
   };
+  const fetchUsersTable=async ()=>{
+    
+    setOption("fetchUsers");
+  }
   return (
     <div className="homepage">
       <div className="topNav">
         <div className="topNavItem" onClick={createUser}>
           create user
         </div>
-        <div className="topNavItem">users</div>
+        <div className="topNavItem" onClick={fetchUsersTable}>users</div>
         <div className="topNavItem">option </div>
         <div className="topNavItem">option </div>
       </div>
@@ -52,6 +61,9 @@ function Login(props) {
           </form>
         </div>
       ) : null}
+
+      {option=="fetchUsers"?<UsersTable userDetails={props.userDetails}/>:null}
+
     </div>
   );
 }

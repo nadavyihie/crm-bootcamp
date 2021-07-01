@@ -33,7 +33,7 @@ function App() {
         })
         .then(function (response) {
           // console.log(response.status);
-
+          console.log(response.data);
           setUserDetails(response.data.userDetails);
 
           setValidToken(true);

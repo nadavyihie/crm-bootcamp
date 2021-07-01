@@ -101,6 +101,7 @@ const read=(id)=>{
     });
     return userDetails;
 }
+
 const readByName= async(userName)=>{
   try{
     let userDetails=null;
@@ -116,30 +117,36 @@ const readByName= async(userName)=>{
     console.error(err.message);
   }
 }
+const nameToId= async(userName)=>{
+  try{
+    let userDetails=null;
+    var sql=`select * from accounts WHERE userName='${userName}'`;
+    details = await SubmitQuery(sql,con);
+    if(details!=0){
+      userId= details[0].id;
+    
+    }
+      return userId;
+  }
+  catch(err){
+    console.error(err.message);
+  }
+}
 /**
  * return Array<User>
  */
 
 // user models\User.js as model
-const readAll =async () =>{
+const readAll =async (name) =>{
   try{
     let allUsersArr
     let userDetails=null;
-    var sql=`select * from accounts`;
+     const id=await nameToId(name);
+     console.log(id);
+    var sql=`select * from accounts where managerID='${id}'`;
     details = await SubmitQuery(sql,con);
-    if(details!=0){
-      // userDetails= User(details[0].userName,details[0].fullName,details[0].companyName,details[0].phoneNumber,details[0].email,details[0].managerID);
-      allUsersArr = details.map((singleUser) => (
-       { userName:singleUser.userName,
-          fullName:singleUser.fullName,
-          phoneNumber:singleUser.phoneNumber,
-          email:singleUser.email}
-      ));
-       
-      // console.log(details);
-    }
-    console.log(allUsersArr);
-      return allUsersArr;
+   
+      return details;
   }
   catch(err){
     console.error(err.message);

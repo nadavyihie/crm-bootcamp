@@ -62,8 +62,9 @@ router.get('/validateLink',function(req,res){
   });
   
   router.get('/registered',async function(req,res){
+  
     userDetails=  await UserServices.readByName(req.userName);
-    console.log(userDetails);
+    console.log(userDetails)
     return res.status(200).json({"message": "I'm Alive!"
                                 ,"userDetails":userDetails});
   })
@@ -73,13 +74,19 @@ router.get('/validateLink',function(req,res){
     res.send('hello ');
   });
 
-  router.post('/test', (req,res)=>{
-    // console.log(req.body.newField);
+  router.get('/fetchallusers',async function(req,res){
+    
+    allUsers=await UserServices.readAll(req.headers.name);
+    console.log(allUsers);
+    return res.status(200).json({"message": "I'm Alive!"
+                                ,"allUsers":allUsers})
 
-  //  const  {newFieldName,newFieldValue}=req.body.newField;
-  //   console.log(newFieldName,newFieldValue);
-UserServices.readAll(req.body.userName);
-  
+  });
+
+  router.get('/test', async (req,res)=>{
+    // console.log(req.headers.name)
+    allUsers=await UserServices.readAll(req.headers.name)
+    console.log(allUsers);
       // if(userDetails==null){
       //     res.status(401);
       // }
