@@ -1,11 +1,8 @@
-function User(userName,fullName,phoneNumber,email){
-    this.userName = userName;
-    this.fullName=fullName;
-    this.phoneNumber=phoneNumber;
-    this.email=email;
+function User(userName,fullName,companyName,phoneNumber,email,managerId){
+    const userDetails={userName:userName,fullName:fullName,companyName:companyName,phoneNumber:phoneNumber,email:email,managerId:managerId};
+    
 
-
-    return this;
+    return userDetails;
 }
 
 

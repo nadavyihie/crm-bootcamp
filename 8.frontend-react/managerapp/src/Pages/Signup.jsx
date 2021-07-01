@@ -12,7 +12,7 @@ function Signup(props) {
     const [isLogin, setIsLogin] = useState(true);
     const [registerMsg,setRegisterMsg]=useState('');
     const [messageColor,setMsgColor]=useState('');
-    const isRegularUser = props?.userType == 'regular';
+    const isRegularUser = props.userType == 'user';
 
     const showLoginBox=()=>{
         setIsLogin(true);

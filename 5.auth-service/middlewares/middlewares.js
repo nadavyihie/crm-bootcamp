@@ -3,7 +3,7 @@
   const express = require('express');
   const app = express();
   var cors = require('cors')
-
+  const User=require('../services/userServices');
 
 const jwtVerify=(token,tokenSec)=>{
   try{
@@ -35,7 +35,7 @@ const jwtVerify=(token,tokenSec)=>{
               res.status(401).json({"message" : "not authenticated!!!"});
             }
            
-            req.userName=verified.userName;
+            req.userDetails=verified.userName;
         }
         
         next();

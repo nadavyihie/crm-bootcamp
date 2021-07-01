@@ -61,10 +61,11 @@ router.get('/validateLink',function(req,res){
   });
   });
   
-  router.get('/registered',function(req,res){
-    
+  router.get('/registered',async function(req,res){
+    userDetails=  await UserServices.readByName(req.userName);
+    console.log(userDetails);
     return res.status(200).json({"message": "I'm Alive!"
-                                ,"userName":req.userName});
+                                ,"userDetails":userDetails});
   })
   
 
@@ -72,19 +73,24 @@ router.get('/validateLink',function(req,res){
     res.send('hello ');
   });
 
-  router.post('/test',(req,res)=>{
-    console.log(req.body.password);
-      const id=UserServices.create(req.body);
-      if(id==-1){
-          res.status(401);
-      }
-      res.status(200);
+  router.post('/test', (req,res)=>{
+    // console.log(req.body.newField);
+
+  //  const  {newFieldName,newFieldValue}=req.body.newField;
+  //   console.log(newFieldName,newFieldValue);
+UserServices.readAll(req.body.userName);
+  
+      // if(userDetails==null){
+      //     res.status(401);
+      // }
+   
+      // res.status(200);
     
     })
 
   router.post('/signup',(req,res)=>{
   
-      const {userName,fullName,companyName,phoneNumber,email,password}=req.body;
+      const {userName,fullName,companyName,phoneNumber,email,password,managerID}=req.body;
       const encPassword=(md5(password));
       let userNameExists=false;
       con.query(`SELECT * FROM accounts WHERE userName='${userName}'`, function (err, result, fields) {
@@ -94,7 +100,7 @@ router.get('/validateLink',function(req,res){
       }
       else{
         
-        var sql = `INSERT INTO accounts (userName,fullName, companyName,phoneNumber,email,userPassword) VALUES ('${userName}','${fullName}', '${companyName}','${phoneNumber}','${email}','${encPassword}')`;
+        var sql = `INSERT INTO accounts (userName,fullName, companyName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}', '${companyName}','${phoneNumber}','${email}','${encPassword}')`;
         con.query(sql, function (err, result) {
           if (err) throw err;
           console.log("1 record inserted");
@@ -114,6 +120,7 @@ router.get('/validateLink',function(req,res){
     const verified=jwtVerify(req.body.token, process.env.MAIL_URL_KEY);
     const email=verified.email;
     const managerName=verified.managerName;
+    const companyName=verified.companyName;
     // console.log(verified);
   
     const encPassword=(md5(password));
@@ -123,7 +130,7 @@ router.get('/validateLink',function(req,res){
       const managerID=result[0].id;
       console.log(managerID);
 
-      var sql = `INSERT INTO users (userName,fullName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}','${phoneNumber}','${email}','${encPassword}','${managerID}')`;
+      var sql = `INSERT INTO accounts (userName,fullName,companyName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}','${companyName}','${phoneNumber}','${email}','${encPassword}','${managerID}')`;
       con.query(sql, function (err, result) {
         if (err) throw err;
         console.log("1 record inserted");
@@ -167,7 +174,7 @@ router.get('/validateLink',function(req,res){
 
   router.post('/inviteuser',(req,res)=>{
 
-    let linkToken = jwt.sign({managerName:req.body.managerName,email:req.body.email}, process.env.MAIL_URL_KEY);
+    let linkToken = jwt.sign({managerName:req.body.managerName,companyName:req.body.companyName,email:req.body.email}, process.env.MAIL_URL_KEY);
     var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: "mail.workiz.dev"});
     var msgdata = {
     //Specify email data

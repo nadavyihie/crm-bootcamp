@@ -8,11 +8,12 @@ import "./css/homepage-style.css";
 function Login(props) {
   const [option, setOption] = useState("");
   const sendInvitation = (e) => {
-    const managerName = props.userName;
+    const managerName = props.userDetails.userName;
+    const companyName=props.userDetails.companyName;
     e.preventDefault();
     const email = e.target.elements.email.value.trim();
     axios
-      .post("http://localhost:8005/users/inviteuser", { managerName, email })
+      .post("http://localhost:8005/users/inviteuser", { managerName,companyName, email })
       .then(function (response) {
         alert(response.data.message);
       })
@@ -34,14 +35,14 @@ function Login(props) {
         <div className="topNavItem" onClick={createUser}>
           create user
         </div>
-        <div className="topNavItem">option</div>
+        <div className="topNavItem">users</div>
         <div className="topNavItem">option </div>
         <div className="topNavItem">option </div>
       </div>
       <div className="logout" onClick={logOut}>
         Sign out
       </div>
-      <div className="username">Hi, {props.userName}</div>
+      <div className="username">Hi, {props.userDetails.userName}</div>
 
       {option == "createUser" ? (
         <div>

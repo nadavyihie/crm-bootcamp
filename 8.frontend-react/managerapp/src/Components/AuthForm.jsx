@@ -3,8 +3,10 @@ import Input from "./Input";
 import Button from "./Button";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 function AuthForm(props) {
+  const[registered,setregistered]=useState(false);
   const { token } = useParams();
   const [errMsg, setErrMsg] = useState("");
   const validateInputs = (inputs) => {
@@ -45,6 +47,10 @@ function AuthForm(props) {
           result=emailRegex.test(input.inputValue);
         if (!result)errStr+="- email is invalid\n";
           break;
+          case "password":
+            result=passwordRegex.test(input.inputValue);
+          if (!result)errStr+="- password is invalid\n";
+            break;
       }
     }
     if(errStr!="")
@@ -57,7 +63,7 @@ function AuthForm(props) {
     return true;
   };
 
-  if (props.userType == "regular") {
+  if (props.userType == "user") {
     const saveRegularuser = (e) => {
       e.preventDefault();
       const userName = e.target.elements.userName.value.trim();
@@ -67,15 +73,14 @@ function AuthForm(props) {
       const inputs = [
         { inputValue: userName, inputType: "username" },
         { inputValue: fullName, inputType: "fullname" },
-        { inputType: phoneNumber, inputType: "phonenumber" },
-        { password: password, inputType: "password" },
+        { inputValue: phoneNumber, inputType: "phonenumber" },
+        { inputValue: password, inputType: "password" },
       ];
       if(!validateInputs(inputs))
       {
         
         return 0;
       }
-alert("bla")
       let emailExists = false;
       axios
         .post("http://localhost:8005/users/signupRegularUser", {
@@ -91,6 +96,7 @@ alert("bla")
           if (!emailExists) {
             props.regMsg("Registration successful");
             props.msgColor("#D4EDDA");
+            setregistered(true);
           } else {
             props.regMsg("the username already exists!");
             props.msgColor("#F8D7DA");
@@ -128,12 +134,16 @@ alert("bla")
       />
     ));
     return (
-      <div>
+      <div> 
+        {!registered? <div>
         <form className="register" onSubmit={saveRegularuser}>
           {inputsList}
           <Button buttonText="Register" />
         </form>
         <div>{errMsg}</div>
+
+      </div>:<Link to="/">go to sign in page</Link>}
+     
       </div>
     );
   }

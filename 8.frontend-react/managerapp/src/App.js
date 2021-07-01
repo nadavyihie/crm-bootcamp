@@ -17,7 +17,7 @@ import {
 } from "react-router-dom";
 
 function App() {
-  const [userName, setUserName] = useState("");
+  const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [validToken, setValidToken] = useState(false);
   const token = localStorage.getItem("token");
@@ -34,7 +34,7 @@ function App() {
         .then(function (response) {
           // console.log(response.status);
 
-          setUserName(response.data.userName);
+          setUserDetails(response.data.userDetails);
 
           setValidToken(true);
           setLoading(false);
@@ -57,17 +57,17 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/:token">
-          <Signup userType="regular" />
+          <Signup userType="user" />
         </Route>
         <Route exact path="/">
           <div className="App">
             {validToken ? (
               <div>
-                <Login userName={userName} />
+                <Login userDetails={userDetails} />
               </div>
             ) : (
               <div>
-                <Signup />
+                <Signup userType="admin"/>
               </div>
             )}
           </div>
