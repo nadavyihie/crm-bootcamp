@@ -19,7 +19,7 @@ import {
 } from "react-router-dom";
 import HomePage from "./Pages/HomePage/HomePage";
 import SignIn from "./Pages/SignIn/SignIn";
-
+import SignUp from "./Pages/Signup/SignUp";
 function App() {
   const [tokenExists, setTokenExists] = useState(false);
 
@@ -37,7 +37,10 @@ function App() {
             <Dashboard />
           </Route>
           <Route exact path="/login">
-           {tokenExists?<Redirect to='/'/>:<SignIn/>}
+           {tokenExists?<Redirect to='/'/>:<SignIn signAction="signin"/>}
+          </Route>
+          <Route exact path="/signup">
+           <SignIn signAction="signup" />
           </Route>
         </Switch>
       </div>
