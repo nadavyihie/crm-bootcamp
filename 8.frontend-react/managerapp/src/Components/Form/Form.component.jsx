@@ -3,7 +3,6 @@ import Button from "../Button/Button.component";
 import "./css/loginForm-style.css"
 import validateInput from "./scripts/validateInput";
 function Form(props) {
-  const [errArr,setErrArr]=useState({email:"",password:"",companyName:"",fullName:""});
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
   const [companyName,setCompanyName]=useState("");
@@ -28,7 +27,21 @@ function Form(props) {
     }
   };
 
-  const handleSubmit=()=>{}
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+   
+    const EmptyInputs=e.target.elements.email.value.trim();
+    if(EmptyInputs==""){
+      return 0;
+    }
+
+
+    const validForm= email==""&&fullName==""&&companyName==""&&password=="";
+    if(validForm){
+
+      props.submitAction(e);
+    }
+  }
 
 const errCheck=(inputName)=>{
   switch(inputName){
@@ -42,20 +55,6 @@ const errCheck=(inputName)=>{
             return fullName;
   }
 }
-
-  const inputsList = props.inputs.map((value, index) => (
-    <div className="inputs">
-      <input
-        key={index}
-        inputType={value.inputType}
-        name={value.inputName}
-        placeholder={value.inputString}
-        autocomplete="off"
-        onChange={handleChange}
-      />
-      <span>{value.inputName}</span>
-    </div>
-  ));
   
   return (
     <form className={props.formStyle} onSubmit={handleSubmit}>
@@ -64,7 +63,7 @@ const errCheck=(inputName)=>{
     <div className="inputs">
       <input
         key={index}
-        inputType={value.inputType}
+        type={value.inputType}
         name={value.inputName}
         placeholder={value.inputString}
         autocomplete="off"

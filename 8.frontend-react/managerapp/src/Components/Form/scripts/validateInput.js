@@ -7,12 +7,12 @@ const validateInput = (inputType, inputValue) => {
   let errStr = "";
 
   switch (inputType) {
-    case "fullname":
+    case "fullName":
       result = fullNameRegex.test(inputValue);
       if (!result) return "Full name is not valid(must be at least 2 letters)";
       return "";
 
-    case "companyname":
+    case "companyName":
       result = companyRegex.test(inputValue);
       if (!result) return "Company name is not valid(must be at least 2 letters)";
       return "";

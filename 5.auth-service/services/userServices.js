@@ -26,10 +26,10 @@ var con = mysql.createConnection({
  * 
  * return id of the inserted row
  */
-const create=({userName,fullName,companyName,phoneNumber,password,email,managerID})=>{
+const create=({email,password,fullName,companyName,managerID})=>{
   const encPassword=(md5(password));
 let idResult=-1;
-  var sql = `INSERT INTO accounts (userName,fullName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}','${companyName}','${phoneNumber}','${email}','${encPassword}','${managerID}')`;
+  var sql = `INSERT INTO accounts (email,password,fullName,companyName,managerID) VALUES ('${email}','${encPassword}','${fullName}','${companyName}','${managerID}')`;
   
  con.query(sql, function (err, result) {
     if (err) throw err;

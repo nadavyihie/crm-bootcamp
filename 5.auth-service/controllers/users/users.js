@@ -97,27 +97,27 @@ router.get('/validateLink',function(req,res){
 
   router.post('/signup',(req,res)=>{
   
-      const {userName,fullName,companyName,phoneNumber,email,password,managerID}=req.body;
+      const {email,password,fullName,companyName,managerID}=req.body;
       const encPassword=(md5(password));
-      let userNameExists=false;
-      con.query(`SELECT * FROM accounts WHERE userName='${userName}'`, function (err, result, fields) {
+      let emailExists=false;
+      con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
       if (err) throw err;
       if(result!=0){
-        userNameExists=true;
-      }
+        console.log(result[0]);
+        res.status(400).json();
+        }
       else{
         
-        var sql = `INSERT INTO accounts (userName,fullName, companyName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}', '${companyName}','${phoneNumber}','${email}','${encPassword}')`;
+        var sql = `INSERT INTO accounts (email,userPassword,fullName,companyName,managerID) VALUES ('${email}','${encPassword}', '${fullName}','${companyName}','${managerID}')`;
         con.query(sql, function (err, result) {
           if (err) throw err;
           console.log("1 record inserted");
-    
+          res.status(200).json();
         });
       
       
       }
-      const data={userNameExists}; 
-       res.send(data);
+      
     }
   )});
 

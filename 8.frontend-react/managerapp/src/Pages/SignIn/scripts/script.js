@@ -33,4 +33,22 @@ const createInput = (inputType) => {
   return inputs;
 };
 
-export default createInput;
+const createArrFromInputs=(e,signAction)=>{
+  let inputs=null;
+  switch(signAction){
+    case("signin"):
+    inputs={email:e.target.elements.email.value.trim(),
+      password:e.target.elements.password.value.trim()}
+    break;
+    case("signup"):
+    inputs={email:e.target.elements.email.value.trim(),
+             password:e.target.elements.password.value.trim(),
+             fullName:e.target.elements.fullName.value.trim(),
+             companyName:e.target.elements.companyName.value.trim(),
+             managerID:-1
+
+    }
+  }
+  return inputs;
+}
+export  {createInput,createArrFromInputs};
