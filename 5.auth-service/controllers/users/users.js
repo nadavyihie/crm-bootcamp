@@ -98,6 +98,7 @@ router.get('/validateLink',function(req,res){
   router.post('/signup',(req,res)=>{
   
       const {email,password,fullName,companyName,managerID}=req.body;
+      console.log(companyName);
       const encPassword=(md5(password));
       let emailExists=false;
       con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
@@ -154,27 +155,27 @@ router.get('/validateLink',function(req,res){
   router.post('/signin',(req,res)=>{
   
     // console.log(req.body)
-    const {userName,password}=req.body;
+    const {email,password}=req.body;
     const encPassword=(md5(password));
     
     let token=null;
     let loginCorrect=false;
-    con.query(`SELECT * FROM accounts WHERE userName='${userName}' AND userPassword='${encPassword}'`, function (err, result, fields) {
+    con.query(`SELECT * FROM accounts WHERE email='${email}' AND userPassword='${encPassword}'`, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){
-      const fullName=result[0].userName;
-      loginCorrect=true;
+      const email=result[0].email
      
-      const accessToken = jwt.sign({userName:userName ,userName: userName, }, process.env.JWT_KEY);
+      const accessToken = jwt.sign({email:email}, process.env.JWT_KEY);
       token=accessToken;
+      res.status(200).json(token);
       // console.log(token);
     }
     else{
       console.log("login faild");
+      res.status(400).send();
     }
-  
-    const data={loginCorrect,token}; 
-     res.send(data);
+    
+
   }
   )});
 

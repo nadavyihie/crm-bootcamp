@@ -48,6 +48,7 @@ const createArrFromInputs=(e,signAction)=>{
              managerID:-1
 
     }
+    console.log(e.target.elements.companyName.value.trim());
   }
   return inputs;
 }

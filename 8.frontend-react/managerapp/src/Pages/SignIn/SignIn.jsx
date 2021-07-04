@@ -18,6 +18,7 @@ function SignIn(props) {
   const submitAction = (e) => {
    
     const inputs=createArrFromInputs(e,props.signAction);
+   if(props.signAction=='signup'){
     axios.post("http://localhost:8005/users/signup", inputs)
     .then(function (response) {
       if(response.status==200){
@@ -30,7 +31,23 @@ function SignIn(props) {
         setSubmitMsg(["This Email is already exists","#F8D7DA"]);
       }
     });
-    
+  }
+  if(props.signAction=='signin'){
+    axios.post("http://localhost:8005/users/signin", inputs)
+    .then(function (response) {
+      if(response.status==200){
+        setSubmitMsg(["login succeess","#D4EDDA"]);
+        localStorage.setItem("token", response.data);
+      }
+    })
+    .catch(function (error) {
+       
+      if(error.response.status==400){
+        setSubmitMsg(["Email or password is incorrect","#F8D7DA"]);
+      }
+    });
+  }
+  
   }
     
   const inputs = createInput(props.signAction);
