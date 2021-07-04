@@ -32,8 +32,9 @@ const jwtVerify=(token,tokenSec)=>{
 }
 router.post('/resetpassword',function(req,res){
   console.log(req.body.password)
+  console.log(req.body.email)
   const newEncPassword=(md5(req.body.password));
-  var sql=`UPDATE accounts SET resetPassToken=NULL,userPassword='${newEncPassword}' where userName='${req.body.userName}'`;
+  var sql=`UPDATE accounts SET resetPassToken=NULL,userPassword='${newEncPassword}' where email='${req.body.email}'`;
   con.query(sql, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){
@@ -51,9 +52,9 @@ router.get('/validateLink',function(req,res){
   con.query(`SELECT * FROM accounts WHERE resetPassToken='${req.headers.token}'`, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){
-      
+      console.log(result[0].email);
       return res.status(200).json({"message": "I'm Alive!"
-      ,"userName":result[0].userName});
+      ,"email":result[0].email});
     }
     else{
       res.status(401).json({"message" : "not authenticated!!!"});
@@ -62,11 +63,12 @@ router.get('/validateLink',function(req,res){
   });
   
   router.get('/registered',async function(req,res){
-  
-    userDetails=  await UserServices.readByName(req.userName);
-    console.log(userDetails)
-    return res.status(200).json({"message": "I'm Alive!"
-                                ,"userDetails":userDetails});
+    console.log(req.email);
+    userDetails=  await UserServices.readAccountByEmail(req.email);
+    if(userDetails!=null)
+     res.status(200).json(userDetails);
+    else
+    res.status(401).json();
   })
   
 
@@ -75,18 +77,22 @@ router.get('/validateLink',function(req,res){
   });
 
   router.get('/fetchallusers',async function(req,res){
+    console.log(req.headers.managerid);
+    allUsers=await UserServices.readAll(req.headers.managerid);
+   
+    if(allUsers!=0){
+      console.log(allUsers);
+      res.status(200).json(allUsers)
     
-    allUsers=await UserServices.readAll(req.headers.name);
-    console.log(allUsers);
-    return res.status(200).json({"message": "I'm Alive!"
-                                ,"allUsers":allUsers})
-
+    }
+      else
+    return res.status(401).json();
   });
 
   router.get('/test', async (req,res)=>{
     // console.log(req.headers.name)
     allUsers=await UserServices.readAll(req.headers.name)
-    console.log(allUsers);
+    // console.log(allUsers);
       // if(userDetails==null){
       //     res.status(401);
       // }
@@ -172,7 +178,7 @@ router.get('/validateLink',function(req,res){
     }
     else{
       console.log("login faild");
-      res.status(400).send();
+      res.status(400).json();
     }
     
 
@@ -219,15 +225,16 @@ router.get('/validateLink',function(req,res){
     con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
     if (err) throw err;
     console.log(result);
+    
     if(result!=0){
-      const userName=result[0].userName;
+      const email=result[0].email;
       emailExists=true;
-      let linkToken = jwt.sign({userName:userName}, process.env.MAIL_URL_KEY);
+      let linkToken = jwt.sign({email:email}, process.env.MAIL_URL_KEY);
       var sql=`UPDATE accounts SET resetPassToken='${linkToken}' where email='${email}'`;
       con.query(sql, function (err, result, fields) {
         if (err) throw err;
         if(result==0){
-          res.status(401).json({"message" : "not authenticated!!!"});
+          res.status(400).json();
         }
       });
       console.log(linkToken);
@@ -240,10 +247,10 @@ router.get('/validateLink',function(req,res){
           //Specify email data
             from: 'gamestation@gmail.com',
           //The email to contact
-            to: 'nadav.yihie@workiz.com',
+            to: `${email}`,
           //Subject and text data  
             subject: 'Hello from Game station',
-            html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://localhost:3000/resetpassword/'+linkToken+'">Click here to add your email address to a mailing list</a>'
+            html: '<a href="http://localhost:3000/resetpassword/'+linkToken+'">Click here to reset your password</a>'
           }
           //Invokes the method to send emails given the above data with the helper library
           mailgun.messages().send(msgdata, function (err, body) {

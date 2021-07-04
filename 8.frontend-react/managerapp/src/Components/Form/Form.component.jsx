@@ -30,7 +30,7 @@ function Form(props) {
   const handleSubmit=(e)=>{
     e.preventDefault();
    
-    const EmptyInputs=e.target.elements.email.value.trim();
+    const EmptyInputs=e.target.elements.password.value.trim();
     if(EmptyInputs==""){
       return 0;
     }

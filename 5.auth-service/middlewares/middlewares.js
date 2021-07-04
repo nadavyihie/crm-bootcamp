@@ -8,9 +8,11 @@
 const jwtVerify=(token,tokenSec)=>{
   try{
     const verified = jwt.verify(token, tokenSec); 
+    console.log("tokennnnnnnnn")
     return verified;
   }
   catch(err){
+    
     return 401;
   }
 }
@@ -35,7 +37,7 @@ const jwtVerify=(token,tokenSec)=>{
               res.status(401).json({"message" : "not authenticated!!!"});
             }
            
-            req.userName=verified.userName;
+            req.email=verified.email;
         }
         
         next();

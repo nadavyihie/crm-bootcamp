@@ -101,11 +101,31 @@ const read=(id)=>{
     });
     return userDetails;
 }
-
-const readByName= async(userName)=>{
+const readAccountByEmail=async(email)=>{
+  let userDetails=null;
+  try{
+    
+    var sql=`select * from accounts WHERE email='${email}'`;
+    details = await SubmitQuery(sql,con);
+    if(details!=0){
+      
+      // userDetails= User(details[0].id,details[0].email,details[0].password,details[0].fullName,details[0].companyName,details[0].managerID);
+      userDetails= details;
+    }
+      // return userDetails;
+  }
+  catch(err){
+    
+    return null;
+    console.error(err.message);
+  }
+  
+  return(userDetails);
+}
+const readByName= async(email)=>{
   try{
     let userDetails=null;
-    var sql=`select * from accounts WHERE userName='${userName}'`;
+    var sql=`select * from accounts WHERE email='${email}'`;
     details = await SubmitQuery(sql,con);
     if(details!=0){
       userDetails= User(details[0].userName,details[0].fullName,details[0].companyName,details[0].phoneNumber,details[0].email,details[0].managerID);
@@ -137,20 +157,16 @@ const nameToId= async(userName)=>{
  */
 
 // user models\User.js as model
-const readAll =async (name) =>{
+const readAll =async (managerid) =>{
   try{
-    let allUsersArr
-    let userDetails=null;
-     const id=await nameToId(name);
-     console.log(id);
-    var sql=`select * from accounts where managerID='${id}'`;
+    
+    var sql=`select * from accounts where managerID='${managerid}'`;
     details = await SubmitQuery(sql,con);
-   
+    if(details!=0)
       return details;
   }
   catch(err){
-    console.error(err.message);
-  }
+  return null;  }
 }
 
 
@@ -170,4 +186,4 @@ function SubmitQuery(query_str,connection)
 
 
 
-module.exports = {create,update,remove,read,readAll,readByName};
+module.exports = {readAccountByEmail,create,update,remove,read,readAll,readByName};

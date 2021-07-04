@@ -38,13 +38,14 @@ function SignIn(props) {
       if(response.status==200){
         setSubmitMsg(["login succeess","#D4EDDA"]);
         localStorage.setItem("token", response.data);
+        window.location.href="/";
       }
     })
     .catch(function (error) {
-       
-      if(error.response.status==400){
+       console.log(error)
+      if(error.response.status==400)
         setSubmitMsg(["Email or password is incorrect","#F8D7DA"]);
-      }
+      
     });
   }
   
@@ -64,7 +65,7 @@ function SignIn(props) {
           buttonText={props.signAction=='signin'?"Sign In":"Sign Up"}
         />
         {props.signAction=='signin'?
-        <Link className="forgotPass" to="bla">
+        <Link className="forgotPass" to="/forgotpassword">
           Forgot your password?
         </Link>
         :<br></br>}

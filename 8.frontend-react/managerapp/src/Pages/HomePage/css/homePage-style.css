@@ -1,0 +1,61 @@
+.homepage{
+
+    display: flex;
+    flex-direction: column;
+}
+
+.topNav{
+
+    width: 100vw;
+    background-color: #242A2D;
+    height: 13vh;
+   
+    font-weight: bold;
+    font-size:1.2em;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.topNavItem{
+    text-decoration: none;
+    color: #C5C3C0;
+}
+.topNavItem:hover{
+  
+    cursor: pointer;
+    color: white;
+}
+.topNavItem:visited
+     {
+         text-decoration: none;
+ }
+
+.logout{
+    color: #C5C3C0;
+    font-weight: bold;
+    width:fit-content;
+    cursor: pointer;
+    
+    position: absolute;
+    right: 0px;
+    margin: 1vh;
+}
+.logout:hover{
+    color: white;
+}
+.username{
+    color: #C5C3C0;
+    font-weight: bold;
+    width:fit-content;
+    cursor: pointer;
+    margin: 1vh;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.sendButton{
+    position:fixed;
+    margin:auto;
+}

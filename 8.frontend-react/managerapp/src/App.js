@@ -10,6 +10,7 @@
 // import UsersTable from "./Components/UsersTable";
 
 import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,20 +19,69 @@ import {
   Link,
 } from "react-router-dom";
 import HomePage from "./Pages/HomePage/HomePage";
+import Users from "./Components/Users/Users.component";
 import SignIn from "./Pages/SignIn/SignIn";
 import SignUp from "./Pages/Signup/SignUp";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 function App() {
+
   const [tokenExists, setTokenExists] = useState(false);
+  const [loading,setLoading]=useState(true);
+  const [userDetails,setUserDetails]=useState(null);
+   useEffect(()=>{
+      
+      const token=localStorage.getItem("token");
+      console.log(token);
+      if(token){
+      axios.get('http://localhost:8005/users/registered', {
+        headers: {
+          'token': token
+        }
+      })
+      .then(function (response) {
+          
+          // console.log(response.status);
+       
+          setUserDetails(response.data);
+        
+          setTokenExists(true);
+          setLoading(false);
+      })
+      .catch(function (error) {
+        setTokenExists(false);
+        setLoading(false);
+        
+      });
+      // setLoading(false);
+    }
+    else{
+      setLoading(false);
+    }
+  
+    
+    },[])
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+    //TODO:Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.http://localhost:3000/users
+
 
   return (
+    
     <Router>
       <div>
-        <Route  path='/'>
-        {tokenExists ? <HomePage /> : <Redirect to="/login" />}
+      <Route exact path='/resetpassword/:token'>
+              <ResetPassword/> 
+            </Route>
+
+        <Route   path='/'>
+        {tokenExists ? <HomePage userDetails={userDetails}/> : <Redirect to="/login" />}
         </Route>
         <Switch>
-          <Route exact path="/about">
-            <About />
+          <Route exact path="/users">
+            <Users userDetails={userDetails}/>
           </Route>
           <Route exact path="/dashboard">
             <Dashboard />
@@ -42,6 +92,10 @@ function App() {
           <Route exact path="/signup">
            <SignIn signAction="signup" />
           </Route>
+          <Route exact path="/forgotpassword">
+           <ForgotPassword />
+          </Route>
+         
         </Switch>
       </div>
     </Router>
@@ -77,7 +131,7 @@ function Dashboard() {
 
 // const [userDetails, setUserDetails] = useState(null);
 // const [loading, setLoading] = useState(true);
-// const [validToken, setValidToken] = useState(false);
+// const [tokenEists, settokenEists] = useState(false);
 // const token = localStorage.getItem("token");
 
 // useEffect(() => {
@@ -94,11 +148,11 @@ function Dashboard() {
 //         console.log(response.data);
 //         setUserDetails(response.data.userDetails);
 
-//         setValidToken(true);
+//         settokenEists(true);
 //         setLoading(false);
 //       })
 //       .catch(function (error) {
-//         setValidToken(false);
+//         settokenEists(false);
 //         setLoading(false);
 //       });
 //     // setLoading(false);
@@ -119,7 +173,7 @@ function Dashboard() {
 //       </Route>
 //       <Route exact path="/">
 //         <div className="App">
-//           {validToken ? (
+//           {tokenEists ? (
 //             <div>
 //               <Login userDetails={userDetails} />
 //             </div>
