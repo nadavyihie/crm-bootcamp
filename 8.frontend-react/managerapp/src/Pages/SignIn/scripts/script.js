@@ -28,6 +28,19 @@ const createInput = (inputType) => {
         },
       ];
       break;
+
+      case "invited":
+        inputs = [
+        
+          { inputType: "text", inputName: "fullName", inputString: "Full name" },
+          {
+            inputType: "password",
+            inputName: "password",
+            inputString: "Password",
+          },
+        ];
+        break;
+      
   }
 
   return inputs;
@@ -48,7 +61,12 @@ const createArrFromInputs=(e,signAction)=>{
              managerID:-1
 
     }
-    console.log(e.target.elements.companyName.value.trim());
+    case("invited"):
+    inputs={
+             password:e.target.elements.password.value.trim(),
+             fullName:e.target.elements.fullName.value.trim()
+    }
+
   }
   return inputs;
 }

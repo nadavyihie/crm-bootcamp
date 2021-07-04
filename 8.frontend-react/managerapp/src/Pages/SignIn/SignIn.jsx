@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "../../Components/Form/Form.component";
 import {createInput,createArrFromInputs} from "./scripts/script";
 import "./css/signin-style.css";
@@ -10,13 +10,18 @@ import {
   Redirect,
   Route,
   Link,
+  useParams,
 } from "react-router-dom";
 
 function SignIn(props) {
+  
+  const  {token}  = useParams();
+  console.log(token);
   const [submitMsg,setSubmitMsg]=useState(["",""]);
 
   const submitAction = (e) => {
-   
+
+
     const inputs=createArrFromInputs(e,props.signAction);
    if(props.signAction=='signup'){
     axios.post("http://localhost:8005/users/signup", inputs)
@@ -32,6 +37,23 @@ function SignIn(props) {
       }
     });
   }
+
+  if(props.signAction=='invited'){
+    console.log(token);
+    axios.post("http://localhost:8005/users/signup", {inputs,token})
+    .then(function (response) {
+      if(response.status==200){
+        setSubmitMsg(["Registration successful","#D4EDDA"]);
+      }
+    })
+    .catch(function (error) {
+       
+      if(error.response.status==400){
+        setSubmitMsg(["This Email is already exists","#F8D7DA"]);
+      }
+    });
+  }
+
   if(props.signAction=='signin'){
     axios.post("http://localhost:8005/users/signin", inputs)
     .then(function (response) {

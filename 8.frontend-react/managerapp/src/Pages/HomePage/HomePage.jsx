@@ -10,7 +10,7 @@ import {
 function HomePage(props) {
     const logOut = () => {
         localStorage.removeItem("token");
-        window.location.reload();
+        window.location.href='/na';
       };
 
     // console.log(props.userDetails);

@@ -72,13 +72,18 @@ function App() {
     
     <Router>
       <div>
+        <Switch>
       <Route exact path='/resetpassword/:token'>
               <ResetPassword/> 
             </Route>
+            <Route exact path="/signup/:token">
+           <SignIn signAction="invited" />
+          </Route>
 
         <Route   path='/'>
         {tokenExists ? <HomePage userDetails={userDetails}/> : <Redirect to="/login" />}
         </Route>
+        </Switch>
         <Switch>
           <Route exact path="/users">
             <Users userDetails={userDetails}/>
@@ -129,71 +134,5 @@ function Dashboard() {
   );
 }
 
-// const [userDetails, setUserDetails] = useState(null);
-// const [loading, setLoading] = useState(true);
-// const [tokenEists, settokenEists] = useState(false);
-// const token = localStorage.getItem("token");
-
-// useEffect(() => {
-//   const token = localStorage.getItem("token");
-//   if (token) {
-//     axios
-//       .get("http://localhost:8005/users/registered", {
-//         headers: {
-//           token: token,
-//         },
-//       })
-//       .then(function (response) {
-//         // console.log(response.status);
-//         console.log(response.data);
-//         setUserDetails(response.data.userDetails);
-
-//         settokenEists(true);
-//         setLoading(false);
-//       })
-//       .catch(function (error) {
-//         settokenEists(false);
-//         setLoading(false);
-//       });
-//     // setLoading(false);
-//   } else {
-//     setLoading(false);
-//   }
-// }, []);
-
-// if (loading) {
-//   return <div>Loading...</div>;
-// }
-
-// return (
-//   <Router>
-//     <Switch>
-//       <Route exact path="/:token">
-//         <Signup userType="user" />
-//       </Route>
-//       <Route exact path="/">
-//         <div className="App">
-//           {tokenEists ? (
-//             <div>
-//               <Login userDetails={userDetails} />
-//             </div>
-//           ) : (
-//             <div>
-//               <Signup userType="admin"/>
-//             </div>
-//           )}
-//         </div>
-//       </Route>
-
-//       <Route exact path="/forgotpassword">
-//         <ForgotPassword />
-//       </Route>
-
-//       <Route exact path="/resetpassword/:token">
-//         <ResetPassword />
-//       </Route>
-//     </Switch>
-//   </Router>
-// );
 
 export default App;

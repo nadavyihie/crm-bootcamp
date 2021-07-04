@@ -63,6 +63,9 @@ function Users(props) {
           bottom: 'auto',
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
+          display:'flex',
+          "flex-direction":'column',
+          "align-items":"center"
         },
       };
     
@@ -73,6 +76,25 @@ function Users(props) {
       const handleClose = () => {
         setOpen(false);
       };
+
+      const sendInvitation = (e) => {
+        const companyName=props.userDetails[0].companyName;
+        const managerid=props.userDetails[0].id;
+        const managerName=props.userDetails[0].fullName;
+        console.log("manager name",managerName);
+        e.preventDefault();
+        const email = e.target.elements.email.value.trim();
+        axios
+          .post("http://localhost:8005/users/inviteuser", { managerName,managerid,companyName, email })
+          .then(function (response) {
+            alert("The email has been sent!");
+          })
+          .catch(function (error) {
+            alert(error.response.data.message);
+          });
+      };
+      const inputs = 
+      [ { inputType: "text", inputName: "email", inputString: "Email" }]
 
     return (
     <div>
@@ -87,12 +109,15 @@ function Users(props) {
        
         <span>Enter emai address:</span>
         
-        <form>
-          <input />
-          
-          <button>send </button>
+        <Form
+          formStyle="loginForm"
+          inputs={ inputs}
+          submitAction={sendInvitation}
+          buttonText="Invite"
+        />
           <button onClick={handleClose}>close</button>
-        </form>
+       
+       
       </Modal>
            
             <Table columns={columns} data={usersdata} />
@@ -106,5 +131,3 @@ export default Users;
 
 
 
-// function Users(props) {return (<div>bla</div>)}
-// export default Users;

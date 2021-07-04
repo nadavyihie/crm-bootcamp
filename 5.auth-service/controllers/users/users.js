@@ -102,31 +102,33 @@ router.get('/validateLink',function(req,res){
     })
 
   router.post('/signup',(req,res)=>{
-  
-      const {email,password,fullName,companyName,managerID}=req.body;
-      console.log(companyName);
-      const encPassword=(md5(password));
-      let emailExists=false;
-      con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
-      if (err) throw err;
-      if(result!=0){
-        console.log(result[0]);
-        res.status(400).json();
-        }
-      else{
+    console.log(req.body.token);
+      //TODO: remove comments from here
+    //   const {email,password,fullName,companyName,managerID}=req.body;
+    //   console.log(companyName);
+    //   const encPassword=(md5(password));
+    //   let emailExists=false;
+    //   con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
+    //   if (err) throw err;
+    //   if(result!=0){
+    //     console.log(result[0]);
+    //     res.status(400).json();
+    //     }
+    //   else{
         
-        var sql = `INSERT INTO accounts (email,userPassword,fullName,companyName,managerID) VALUES ('${email}','${encPassword}', '${fullName}','${companyName}','${managerID}')`;
-        con.query(sql, function (err, result) {
-          if (err) throw err;
-          console.log("1 record inserted");
-          res.status(200).json();
-        });
+    //     var sql = `INSERT INTO accounts (email,userPassword,fullName,companyName,managerID) VALUES ('${email}','${encPassword}', '${fullName}','${companyName}','${managerID}')`;
+    //     con.query(sql, function (err, result) {
+    //       if (err) throw err;
+    //       console.log("1 record inserted");
+    //       res.status(200).json();
+    //     });
       
       
-      }
+    //   }
       
-    }
-  )});
+    // }
+  // )
+});
 
   router.post('/signupRegularUser',(req,res)=>{
     const {userName,fullName,phoneNumber,password,token}=req.body;
@@ -188,7 +190,7 @@ router.get('/validateLink',function(req,res){
 
   router.post('/inviteuser',(req,res)=>{
 
-    let linkToken = jwt.sign({managerName:req.body.managerName,companyName:req.body.companyName,email:req.body.email}, process.env.MAIL_URL_KEY);
+    let linkToken = jwt.sign({managerid:req.body.managerid,companyName:req.body.companyName,email:req.body.email}, process.env.MAIL_URL_KEY);
     var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: "mail.workiz.dev"});
     var msgdata = {
     //Specify email data
@@ -197,13 +199,13 @@ router.get('/validateLink',function(req,res){
       to: req.body.email,
     //Subject and text data  
       subject: 'Hello from Game station',
-      html: `Hello, ${req.body.managerName} sent you invention to join his system<a href="http://localhost:3000/${linkToken}">Click here to register</a>`
+      html: `Hello, ${req.body.managerName} sent you invention to join his bussiness<a href="http://localhost:3000/signup/${linkToken}">Click here to join</a>`
     }
     //Invokes the method to send emails given the above data with the helper library
     mailgun.messages().send(msgdata, function (err, body) {
         //If there is an error, render the error page
         if (err) {
-          ; 
+          console.log(err); 
           res.status(401).json({"message":"We could not send the email at this time, please try again later"});
             
         }

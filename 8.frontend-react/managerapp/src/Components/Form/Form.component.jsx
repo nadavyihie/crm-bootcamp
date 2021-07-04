@@ -29,11 +29,15 @@ function Form(props) {
 
   const handleSubmit=(e)=>{
     e.preventDefault();
-   
-    const EmptyInputs=e.target.elements.password.value.trim();
-    if(EmptyInputs==""){
-      return 0;
-    }
+  //  console.dir(e.target.elements);
+   for(const element of e.target.elements)
+   {
+     if(element.nodeName=='INPUT')
+      if(element.value=="")
+        return 0;
+    
+   }
+
 
 
     const validForm= email==""&&fullName==""&&companyName==""&&password=="";
