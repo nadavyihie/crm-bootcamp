@@ -20,7 +20,7 @@ function HomePage(props) {
            
         <div className="topNav">
         {/* <Link to="/users" className="topNavItem" >users</Link> */}
-        <Link className="topNavItem" to="/users">users</Link>
+        {<Link disab className="topNavItem" to="/home/users">users</Link>}
 
         <div className="topNavItem">option </div>
         <div className="topNavItem">option </div>

@@ -72,35 +72,36 @@ function App() {
     
     <Router>
       <div>
-        <Switch>
+     
       <Route exact path='/resetpassword/:token'>
               <ResetPassword/> 
             </Route>
             <Route exact path="/signup/:token">
            <SignIn signAction="invited" />
           </Route>
-
-        <Route   path='/'>
-        {tokenExists ? <HomePage userDetails={userDetails}/> : <Redirect to="/login" />}
-        </Route>
-        </Switch>
-        <Switch>
-          <Route exact path="/users">
-            <Users userDetails={userDetails}/>
-          </Route>
-          <Route exact path="/dashboard">
-            <Dashboard />
-          </Route>
           <Route exact path="/login">
            {tokenExists?<Redirect to='/'/>:<SignIn signAction="signin"/>}
           </Route>
           <Route exact path="/signup">
-           <SignIn signAction="signup" />
+          {tokenExists?<Redirect to='/'/>:<SignIn signAction="signup" />}
           </Route>
+          
           <Route exact path="/forgotpassword">
-           <ForgotPassword />
+          {tokenExists?<Redirect to='/'/>: <ForgotPassword />}
+          
           </Route>
-         
+
+    
+        <Route   path='/'>
+        {tokenExists ? <HomePage userDetails={userDetails}/> : <Redirect to="/login" />}
+        </Route>
+        <Switch>
+          <Route exact path="/users">
+          {tokenExists ?<Users userDetails={userDetails}/>:<Redirect to='/login'/>}
+          </Route>
+          <Route exact path="/dashboard">
+            <Dashboard />
+          </Route>       
         </Switch>
       </div>
     </Router>
