@@ -23,6 +23,7 @@ function SignIn(props) {
 
 
     const inputs=createArrFromInputs(e,props.signAction);
+   
    if(props.signAction=='signup'){
     axios.post("http://localhost:8005/users/signup", inputs)
     .then(function (response) {

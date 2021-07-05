@@ -48,6 +48,7 @@ const createInput = (inputType) => {
 
 const createArrFromInputs=(e,signAction)=>{
   let inputs=null;
+  console.log(signAction)
   switch(signAction){
     case("signin"):
     inputs={email:e.target.elements.email.value.trim(),
@@ -58,9 +59,10 @@ const createArrFromInputs=(e,signAction)=>{
              password:e.target.elements.password.value.trim(),
              fullName:e.target.elements.fullName.value.trim(),
              companyName:e.target.elements.companyName.value.trim(),
-             managerID:-1
+             managerID:'-1'
 
     }
+    break;
     case("invited"):
     inputs={
              password:e.target.elements.password.value.trim(),
@@ -68,6 +70,7 @@ const createArrFromInputs=(e,signAction)=>{
     }
 
   }
+  console.log(inputs)
   return inputs;
 }
 export  {createInput,createArrFromInputs};

@@ -17,7 +17,7 @@ function ForgotPassword(props) {
             
         })
         .catch(function (error) {
-          alert(error.response.data.message);          
+          setSubmitMsg(["This Email is already exists","#F8D7DA"]);       
         });
         
         

@@ -102,32 +102,66 @@ router.get('/validateLink',function(req,res){
     })
 
   router.post('/signup',(req,res)=>{
-    console.log(req.body.token);
-      //TODO: remove comments from here
-    //   const {email,password,fullName,companyName,managerID}=req.body;
-    //   console.log(companyName);
-    //   const encPassword=(md5(password));
-    //   let emailExists=false;
-    //   con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
-    //   if (err) throw err;
-    //   if(result!=0){
-    //     console.log(result[0]);
-    //     res.status(400).json();
-    //     }
-    //   else{
+    let email="";
+    let password="";
+    let fullName="";
+    let companyName="";
+    let managerID="";
+   
+      if(req.body.token!=undefined){
+     
+        try{
+          const verified = jwt.verify(req.body.token, process.env.MAIL_URL_KEY); 
         
-    //     var sql = `INSERT INTO accounts (email,userPassword,fullName,companyName,managerID) VALUES ('${email}','${encPassword}', '${fullName}','${companyName}','${managerID}')`;
-    //     con.query(sql, function (err, result) {
-    //       if (err) throw err;
-    //       console.log("1 record inserted");
-    //       res.status(200).json();
-    //     });
+
+          
+          managerID=verified.managerid;
+          companyName=verified.companyName;
+          
+          email=verified.email;
+       
+          fullName=req.body.inputs.fullName;
+          password=req.body.inputs.password;
+          // console.log(email,fullName,password,companyName,managerID)
+        }
+        catch(err){
+          
+          res.status(401).json();
+        }
+
+      }
+      else{
+        console.log(req.body)
+      email=req.body.email;
+      password=req.body.password;
+      fullName=req.body.fullName;
+      companyName=req.body.companyName;
+      managerID=req.body.managerID;
+      }
+      // console.log(email,password,fullName,companyName,managerID)
+      
+      const encPassword=(md5(password));
+      let emailExists=false;
+      con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
+      if (err) throw err;
+      if(result!=0){
+        console.log(result[0]);
+        res.status(400).json();
+        }
+      else{
+        
+        var sql = `INSERT INTO accounts (email,userPassword,fullName,companyName,managerID) VALUES ('${email}','${encPassword}', '${fullName}','${companyName}','${managerID}')`;
+        con.query(sql, function (err, result) {
+          if (err) throw err;
+          console.log("1 record inserted");
+          res.status(200).json();
+        });
       
       
-    //   }
+      }
       
-    // }
-  // )
+    }
+  )
 });
 
   router.post('/signupRegularUser',(req,res)=>{

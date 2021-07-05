@@ -51,7 +51,7 @@ function Login(props) {
       <div className="logout" onClick={logOut}>
         Sign out
       </div>
-      <div className="username">Hi, {props.userDetails.userName}</div>
+      <div className="username">Hi, {props.userDetails[0].fullName}</div>
 
       {option == "createUser" ? (
         <div>
