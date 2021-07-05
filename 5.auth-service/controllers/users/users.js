@@ -9,10 +9,10 @@ const e = require('express');
 // const User = require('../../models/User');
 const UserServices=require("../../services/userServices");
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "game_station"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
 
 con.connect(function(err) {
