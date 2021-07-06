@@ -1,13 +1,3 @@
-// import logo from "./logo.svg";
-// import "./App.css";
-// import axios from "axios";
-// import Signup from "./Pages/Signup";
-// import Login from "./Pages/Login";
-// import NotFound from "./Pages/NotFound/NotFound.component";
-// import ForgotPassword from "./Pages/ForgotPassword";
-// import ResetPassword from "./Pages/ResetPassword";
-
-// import UsersTable from "./Components/UsersTable";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -20,6 +10,7 @@ import {
 } from "react-router-dom";
 import HomePage from "./Pages/HomePage/HomePage";
 import Users from "./Components/Users/Users.component";
+import Clients from "./Components/Clients/Clients.component";
 import SignIn from "./Pages/SignIn/SignIn";
 import SignUp from "./Pages/Signup/SignUp";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
@@ -98,8 +89,8 @@ function App() {
           <Route exact path="/users">
           {tokenExists ?<Users userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>
-          <Route exact path="/dashboard">
-            <Dashboard />
+          <Route exact path="/clients">
+          {tokenExists ?<Clients userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>       
         </Switch>
       </div>
@@ -109,30 +100,6 @@ function App() {
 
 // You can think of these components as "pages"
 // in your app.
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
-
-function About() {
-  return (
-    <div>
-      <h2>About</h2>
-    </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
-    </div>
-  );
-}
 
 
 export default App;

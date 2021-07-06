@@ -39,7 +39,7 @@ function ForgotPassword(props) {
           formStyle="loginForm"
           inputs={ inputs}
           submitAction={submitAction}
-          buttonText="Send email"
+          buttonText="Send"
         />
        
         </div>

@@ -10,6 +10,7 @@ function Users(props) {
     const [open, setOpen] = React.useState(false);
     const [usersdata,setUsersData]=useState([]);
     useEffect(() => {
+      
         console.log(props.userDetails[0].id);
         // alert(props.userDetails.id);
         // console.log(props.userDetails);
