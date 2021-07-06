@@ -199,7 +199,7 @@ router.get('/validateLink',function(req,res){
     // console.log(req.body)
     const {email,password}=req.body;
     const encPassword=(md5(password));
-    
+    console.log(password,encPassword);
     let token=null;
     let loginCorrect=false;
     con.query(`SELECT * FROM accounts WHERE email='${email}' AND userPassword='${encPassword}'`, function (err, result, fields) {
