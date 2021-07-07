@@ -1,5 +1,4 @@
-<!-- <?php
-
+<?php
 require_once("Model.php");
 
 class Model_clients extends Model
@@ -37,7 +36,6 @@ class Model_clients extends Model
         $client = $this->getDB()
             ->query("SELECT * FROM  clients WHERE id=$id")
             ->fetch_all(MYSQLI_ASSOC);
-    
         if($client==[]){
             return 401;
         }
@@ -77,7 +75,4 @@ class Model_clients extends Model
        
     }
 }
-
-
-
-?> -->
+?>

@@ -1,6 +1,6 @@
 
 
-//TODO:Does each store has its own games quantity?
+//TODO:Capital letter
 CREATE TABLE games (
    `id` int NOT NULL AUTO_INCREMENT,
     `name` varchar(30) NOT NULL UNIQUE,
@@ -10,7 +10,7 @@ CREATE TABLE games (
  `quantity` int not null ,
    CONSTRAINT id_pk PRIMARY KEY (id)
 );
-//TODO:Is the  accountID necessary?
+//TODO:Remove  accountID 
 CREATE TABLE rentals (
    `id` int NOT NULL AUTO_INCREMENT,
       `accountID` int NOT NULL ,

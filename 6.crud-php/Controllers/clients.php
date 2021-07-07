@@ -16,19 +16,20 @@ class Clients extends controller
     public function readAll()
     {
         $clients = $this->model->getAllClients();
+        if($clients==401)
+            return 401;
         $this->response["clients"] = $clients;
         return $this->response;
     }
 
     public function readAccountClients(){
-        if ($_SERVER["REQUEST_METHOD"] != "GET")
-            {
-                return "Must be GET mothod!";
-            }
-        $headers=getallheaders();
-        $id=$headers['id'];
-       
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
         $clients = $this->model->getAccountClients($id);
+        if($clients==401)
+        return 401;
         $this->response["clients"] = $clients;
         return $this->response;
     }
@@ -39,14 +40,13 @@ class Clients extends controller
         $headers=getallheaders();
         $id=$headers['id'];
         $client = $this->model->getClient($id);
+        if($client==401)
+            return 401;
         $this->response["client"] = $client;
         return $this->response;
     }
      public function create(){
-             if ($_SERVER["REQUEST_METHOD"] != "POST")
-            {
-                return "Must be POST mothod!";
-            }
+
             $inputJSON = file_get_contents('php://input');
             $input = json_decode($inputJSON, TRUE);
             $accountID=$input['accountID'];

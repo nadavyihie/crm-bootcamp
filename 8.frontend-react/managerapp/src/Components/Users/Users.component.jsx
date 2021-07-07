@@ -99,7 +99,7 @@ function Users(props) {
 
     return (
     <div>
-      <button onClick={handleOpen}>Invite user</button>
+      <button className="usersButton" onClick={handleOpen}>Invite user</button>
       <Modal
         isOpen={open}
     
@@ -116,7 +116,7 @@ function Users(props) {
           submitAction={sendInvitation}
           buttonText="Invite"
         />
-          <button onClick={handleClose}>close</button>
+          <button className="usersButton" onClick={handleClose}>close</button>
        
        
       </Modal>
