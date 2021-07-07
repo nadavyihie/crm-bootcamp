@@ -2,7 +2,7 @@
 
 
 
-class controller
+abstract class  controller
 {
     public $response;
     public $errors = "";
@@ -15,4 +15,16 @@ class controller
         require_once("./Models/$model_class_name.php");
         $this->model = new $model_class_name();
     }
+
+    abstract public function readAll();
+    
+    abstract public function create();
+    
+    abstract public function remove();
+
+    abstract public function update();
+    
+    abstract public function read();
+
+    
 }

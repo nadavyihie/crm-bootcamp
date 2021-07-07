@@ -9,7 +9,7 @@ function Clients(props) {
         // alert(props.userDetails.id);
         // console.log(props.userDetails);
         axios
-          .get("http://localhost:8005/users/fetchallusers", {
+          .get("http://localhost:991/users/getUsers", {
             headers: {
               "managerID": props.userDetails[0].id,
             },

@@ -12,7 +12,7 @@ import HomePage from "./Pages/HomePage/HomePage";
 import Users from "./Components/Users/Users.component";
 import Clients from "./Components/Clients/Clients.component";
 import SignIn from "./Pages/SignIn/SignIn";
-import SignUp from "./Pages/Signup/SignUp";
+
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 function App() {
