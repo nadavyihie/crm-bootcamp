@@ -91,7 +91,7 @@ function Clients(props) {
   const confirmRemove = () => {
     removeClient(row.original.id)
       .then((res) => {
-        updateClientsTable();
+        updateClientsTable(handleClose);
       })
       .catch((err) => {
         console.log(err);
