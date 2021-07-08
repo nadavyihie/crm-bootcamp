@@ -56,10 +56,7 @@ class Model_clients extends Model
     public function updateClient($id,$fullName,$email,$phoneNumber,$address){
         $userInsert = $this->getDB()
         ->query("UPDATE clients SET fullName = '$fullName', email = '$email' , phoneNumber=$phoneNumber, address='$address' WHERE id='$id'");
-        if($userInsert==false)
-        {
-            return 401;
-        }
+        
         return true;
        
     }

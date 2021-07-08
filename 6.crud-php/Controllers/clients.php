@@ -59,23 +59,25 @@ class Clients extends controller
      }
     
      public function remove(){
-        $headers=getallheaders();
-        $id=$headers['id'];
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
         $clientRemoved=$this->model->removeClient($id);
         return $clientRemoved;
      }
 
      public function update(){
-        $inputJSON = file_get_contents('php://input');
-        $input = json_decode($inputJSON, TRUE);
-        $id=$input['id'];
-        $fullName=$input['fullName'];
-        $email=$input['email'];
-        $phoneNumber=$input['phoneNumber'];
-        $address=$input['address'];
-        $clientUpdate=$this->model->updateClient($id,$fullName,$email,$phoneNumber,$address);
-        return $clientUpdate;
+            $inputJSON = file_get_contents('php://input');
+            $input = json_decode($inputJSON, TRUE);
 
+
+            $id=$input['id'];
+            $fullName=$input['fullName'];
+            $email=$input['email'];
+            $phoneNumber=$input['phoneNumber'];
+            $address=$input['address'];
+            $clientUpdate=$this->model->updateClient($id,$fullName,$email,$phoneNumber,$address);
+            return $clientUpdate;
      }
 }
 ?>

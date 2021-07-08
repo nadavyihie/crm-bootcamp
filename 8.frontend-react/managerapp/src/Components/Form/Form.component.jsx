@@ -7,9 +7,25 @@ function Form(props) {
   const [password,setPassword]=useState("");
   const [companyName,setCompanyName]=useState("");
   const [fullName,setFullName]=useState("");
- 
+  const [phoneNumber,setPhoneNumber]=useState("");
+  const [address,setAddress]=useState("");
+
+  const handleFocus=(event)=>{
+    if(props.defaultInputs){
+      if(    event.target.value=="")
+      {
+        event.target.value=event.target.placeholder;
+        handleChange(event);
+      }
+    
+    }
+  }
+
   const handleChange = (event) => {
+    
     const { name, value } = event.target;
+    // console.log(name,value);
+ 
     const errMsg=validateInput(name,value);
     switch(name){
       case 'email':
@@ -24,25 +40,33 @@ function Form(props) {
             case 'password':
               setPassword(errMsg);
               break;
+              case 'address':
+                setAddress(errMsg);
+                break;
+                case 'phoneNumber':
+                  setPhoneNumber(errMsg);
+                  break;
     }
   };
 
   const handleSubmit=(e)=>{
+
     e.preventDefault();
   //  console.dir(e.target.elements);
+  
    for(const element of e.target.elements)
    {
      if(element.nodeName=='INPUT')
+
       if(element.value=="")
         return 0;
-    
+      
    }
 
 
 
-    const validForm= email==""&&fullName==""&&companyName==""&&password=="";
+    const validForm= email==""&&fullName==""&&companyName==""&&password==""&&address==""&&phoneNumber=="";
     if(validForm){
-
       props.submitAction(e);
     }
   }
@@ -57,23 +81,29 @@ const errCheck=(inputName)=>{
           return companyName;
           case 'fullName':
             return fullName;
+            case 'phoneNumber':
+              return phoneNumber;
+              case 'address':
+                return address;
   }
 }
   
   return (
     <form className={props.formStyle} onSubmit={handleSubmit}>
       
-      {props.inputs.map((value, index) => (
+      {props.inputs.map((element, index) => (
     <div className="inputs">
       <input
         key={index}
-        type={value.inputType}
-        name={value.inputName}
-        placeholder={value.inputString}
+        type={element.inputType}
+        name={element.inputName}
+        placeholder={element.inputString}
         autocomplete="off"
         onChange={handleChange}
+        onfocusout={handleFocus}
+        onFocus={handleFocus}
       />
-      <span className="errMsg">{errCheck(value.inputName)}</span>
+      <span className="errMsg">{errCheck(element.inputName)}</span>
     </div>
   ))}
       <button>{props.buttonText}</button>

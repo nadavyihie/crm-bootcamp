@@ -23,10 +23,11 @@ try
             require_once(__DIR__."/Controllers/$cls.php");
             $instance = new $cls();
             $response = $instance->$method($key);
-            if($response==401){
-                header("HTTP/1.1 401 Unauthorized");
-                exit();
-            }
+
+            // if($response==401){
+            //     header("HTTP/1.1 401 Unauthorized");
+            //     exit();
+            // }
             exit(json_encode($response));
             
         }
@@ -38,6 +39,7 @@ try
 } 
 catch(Exception $e) 
 {
+    header($_SERVER['SERVER_PROTOCOL'].$e->getMessage(), true, 500);
     exit(json_encode([
         "error"=>"something went wrong"
     ]));

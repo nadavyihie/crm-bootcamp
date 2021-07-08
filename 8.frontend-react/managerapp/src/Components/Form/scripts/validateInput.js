@@ -3,9 +3,11 @@ const validateInput = (inputType, inputValue) => {
   var fullNameRegex = /^([a-z]{2,}\s{0,1}){1,}$/i;
   var companyRegex = /^([a-z]{2,}\s{0,1}){1,}$/i;
   var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+  var phoneNumberRegex=/^05\d([-]{0,1})\d{7}$/;
+  var addressRegex=/(\d{1,}) [a-zA-Z\s]{1,}(,)[a-zA-Z\s]{1,}$/;
   let result = true;
   let errStr = "";
-
+console.log()
   switch (inputType) {
     case "fullName":
       result = fullNameRegex.test(inputValue);
@@ -25,6 +27,14 @@ const validateInput = (inputType, inputValue) => {
     case "password":
       result = passwordRegex.test(inputValue);
       if (!result) return "At least 8 characters with capital letters and digits";
+      return "";
+      case "phoneNumber":
+      result = phoneNumberRegex.test(inputValue);
+      if (!result) return "Phone number is not valid";
+      return "";
+      case "address":
+      result = addressRegex.test(inputValue);
+      if (!result) return "Ex:12 Herzel, Rehovot";
       return "";
   }
 };
