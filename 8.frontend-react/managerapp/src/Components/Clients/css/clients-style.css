@@ -11,10 +11,10 @@
       cursor: pointer;
     }
     .clientsButton{
-    
+      
       background-color: #FFC30F;
       border:none;
-      width: 6.5vw;
+      width: fit-content;
       height: 4.5vh;
       font-size: 1em;
       margin:2vh;
@@ -34,3 +34,4 @@
         flex-direction: column;
         align-items: center;
       }
+      
