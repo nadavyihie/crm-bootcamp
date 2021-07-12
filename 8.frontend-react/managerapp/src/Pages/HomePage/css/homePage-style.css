@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Qahiri&family=Quantico:wght@700&display=swap');
+
 .homepage{
 
     display: flex;
@@ -5,35 +8,84 @@
 }
 
 .topNav{
-
+    font-family: 'Open Sans', sans-serif;
     width: 100vw;
-    background-color: #242A2D;
+    background-color: black;
     height: 13vh;
    
     font-weight: bold;
     font-size:1.2em;
-    margin: 0 auto;
+  
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
 .topNavItem{
+   
     text-decoration: none;
     color: #C5C3C0;
+    width: fit-content;
+    height: fit-content;
+    transition: 0.2s;
+
 }
 .topNavItem:hover{
-  
+
+    
+ 
     cursor: pointer;
     color: white;
 }
+.topNavItemChosen{
+    border-radius: 2vw;
+    background-color: rgb(184, 68, 14);
+    padding: 1vw;
+    text-decoration: none;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+
+}
+
+
 .topNavItem:visited
      {
          text-decoration: none;
  }
 
-.logout{
+.titleDiv{
+    font-family: 'Open Sans', sans-serif;
+    width: 100%;
+    height: 6vh;
+    background-color: black;
+    display: flex;
+    
+    justify-content: center;
+}
+
+.userIcon{
+
+width: 3vw;
+height: 3vh;
+
+}
+.userName{
+
+    font-family: 'Open Sans', sans-serif;
     color: #C5C3C0;
-    font-weight: bold;
+
+    width:fit-content;
+  
+    
+    position: absolute;
+    left: 0px;
+    margin: 1vh;
+}
+
+.logout{
+    font-family: 'Open Sans', sans-serif;
+    color: #C5C3C0;
+
     width:fit-content;
     cursor: pointer;
     
@@ -44,15 +96,13 @@
 .logout:hover{
     color: white;
 }
-.username{
+.companyTitle{
+    
     color: #C5C3C0;
-    font-weight: bold;
-    width:fit-content;
-    cursor: pointer;
-    margin: 1vh;
-    position: absolute;
-    left: 0px;
-    top: 0px;
+    font-size: 2em;
+   
+
+  
 }
 
 .sendButton{

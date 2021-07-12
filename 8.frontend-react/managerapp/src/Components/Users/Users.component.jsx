@@ -1,12 +1,13 @@
 import React, { useEffect, useState,useMemo } from "react";
 import Form from "../Form/Form.component";
+import Loading from "../Loading/Loading";
 import Modal from 'react-modal';
 import axios from "axios";
 import Table from "../../Pages/Table";
-
 import "./css/users-style.css";
 import { useRadioGroup } from "@material-ui/core";
 function Users(props) {
+    const[loading,setLoading]=useState(true);
     const [open, setOpen] = React.useState(false);
     const [usersdata,setUsersData]=useState([]);
     useEffect(() => {
@@ -31,6 +32,7 @@ function Users(props) {
           .catch(function (error) {
             // console.log(error);
           });
+          setLoading(false);
       },[]);
       const columns = React.useMemo(
         () => [
@@ -97,6 +99,11 @@ function Users(props) {
       const inputs = 
       [ { inputType: "text", inputName: "email", inputString: "Email" }]
 
+      if(loading){
+        return(
+          <Loading />
+             );
+      }
     return (
     <div>
       <button className="usersButton" onClick={handleOpen}>Invite user</button>

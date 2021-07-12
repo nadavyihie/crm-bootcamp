@@ -7,7 +7,7 @@ const  fetchClients =  async(id) => {
     //   console.log(res)
         return res;
      } catch (err) {
-       return null;
+        throw err;
      }
 }
 
@@ -17,11 +17,12 @@ const removeClient=async (id)=>{
         return res
     }
     catch(err){
-        return null;
+        throw err;
     }
     
 }
 const updateClient=async (id,email,fullName,phoneNumber,address)=>{
+    
     const arr={id:id,email:email,fullName:fullName,phoneNumber:phoneNumber,address:address};
     try{
         const res=await axios.post("http://localhost:991/clients/update/",arr);
@@ -29,10 +30,20 @@ const updateClient=async (id,email,fullName,phoneNumber,address)=>{
     }
     catch(err){
   
-        return null;
+        throw err;
     }
     
 }
 
+const addClient=async(accountID,email,fullName,phoneNumber,address)=>{
+    const arr={accountID:accountID,email:email,fullName:fullName,phoneNumber:phoneNumber,address:address};
 
-export { updateClient,fetchClients ,removeClient};
+        const res=await axios.post("http://localhost:991/clients/create/",arr);
+        console.log(res.headers);
+        return res
+
+    
+
+}
+
+export { updateClient,fetchClients ,removeClient,addClient};

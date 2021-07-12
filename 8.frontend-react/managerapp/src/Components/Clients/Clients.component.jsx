@@ -6,9 +6,11 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
 import Form from "../Form/Form.component";
 import Modal from "react-modal";
-import { updateClient,fetchClients, removeClient } from "./scripts/serverRequests";
+import { addClient,updateClient,fetchClients, removeClient } from "./scripts/serverRequests";
 import "../Form/css/loginForm-style.css";
+import Loading from "../Loading/Loading";
 function Clients(props) {
+  const [loading,setLoading]=useState(true);
   const [open, setOpen] = useState(false);
   const [actionType, setActionType] = useState("");
   const [usersdata, setUsersData] = useState([]);
@@ -63,8 +65,32 @@ function Clients(props) {
     setOpen(true);
   };
 
+  const handleAddClient=()=>{
+    setActionType("add");
+    setOpen(true);
+  }
+
+  const confirmAddClient=(e)=>{
+    setLoading(true);
+    const accountID=props.userDetails[0].managerID!=-1?props.userDetails[0].managerID:props.userDetails[0].id;
+    const email = e.target.elements.email.value.trim();
+    const fullName = e.target.elements.fullName.value.trim();
+    const phoneNumber = e.target.elements.phoneNumber.value.trim();
+    const address = e.target.elements.address.value.trim();
+    addClient(accountID,email,fullName,phoneNumber,address)
+    .then( (res) => {
+       updateClientsTable(handleClose);
+
+
+    })
+    .catch((err) => {
+      // console.log(err);
+    });
+    setLoading(false);
+  }
+
   const confirmUpdate=(e)=>{
-   
+    setLoading(true);
     const email = e.target.elements.email.value.trim();
     const fullName = e.target.elements.fullName.value.trim();
     const phoneNumber = e.target.elements.phoneNumber.value.trim();
@@ -79,6 +105,7 @@ function Clients(props) {
     .catch((err) => {
       console.log(err);
     });
+    setLoading(false);
 
   }
 
@@ -89,6 +116,7 @@ function Clients(props) {
 
   };
   const confirmRemove = () => {
+    setLoading(true);
     removeClient(row.original.id)
       .then((res) => {
         updateClientsTable(handleClose);
@@ -96,18 +124,21 @@ function Clients(props) {
       .catch((err) => {
         console.log(err);
       });
+      setLoading(false);
   };
 
-  const updateClientsTable = (callback) => {
+  const updateClientsTable = (func) => {
+    setLoading(true);
     let users = "";
     fetchClients(props.userDetails[0].id)
       .then((users) => {
         setUsersData(users.data.clients);
-        callback();
+        func();
       })
       .catch((err) => {
         console.log(err);
       });
+      setLoading(false);
   };
 
   const handleOpen = () => {
@@ -120,6 +151,7 @@ function Clients(props) {
 
   useEffect(() => {
     updateClientsTable();
+    setLoading(false);
   }, []);
 
   const customStyles = {
@@ -138,8 +170,13 @@ function Clients(props) {
   const modifyInput = [
     { inputType: "text", inputName: "email", inputString: "Email" },
   ];
+
+  if(loading){
+    return(<Loading/>);
+  }
   return (
     <div>
+            <button className="clientsButton" onClick={handleAddClient}>+Add a client</button>
       <Modal
         isOpen={open}
         onRequestClose={handleClose}
@@ -173,7 +210,24 @@ function Clients(props) {
               Cancel
             </button>
           </div>
-        ) : null}
+        ) : <div className="modifyModal">
+              <Form
+              formStyle="loginForm"
+              inputs={ [{inputType: "text", inputName: "fullName", inputString: "Full name"},
+                {inputType: "text", inputName: "email", inputString: "Email"},
+                {inputType: "text", inputName: "phoneNumber", inputString: "Phone number"},
+                {inputType: "text", inputName: "address", inputString: "Address"}] }
+              submitAction={confirmAddClient}
+              buttonText="Ok"
+              
+              
+            />
+            <button className="usersButton" onClick={handleClose}>
+              Cancel
+            </button>
+          
+          </div>}
+          
       </Modal>
       <div className="clientsTable">
         <Table columns={columns} data={usersdata} />

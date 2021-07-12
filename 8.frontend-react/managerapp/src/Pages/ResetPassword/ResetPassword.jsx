@@ -3,9 +3,11 @@ import './css/resetPassword-style.css'
 import axios from 'axios';
 import Form from '../../Components/Form/Form.component';
 import { useParams } from 'react-router-dom';
+import Loading from '../../Components/Loading/Loading';
 function ResetPassword(props) {
-
+    
     const {token}=useParams();
+  
     const [email,setEmail]=useState("");
     const [validToken,setValidToken]=useState(false);
     const [loading,setLoading]=useState(true);
@@ -38,7 +40,7 @@ function ResetPassword(props) {
       },[])
 
     const submitAction=(e)=>{
-
+      setLoading(true);
 
             e.preventDefault();
      
@@ -55,13 +57,14 @@ function ResetPassword(props) {
                 
                 setSubmitMsg(["Can not reset password,please try again later","#F8D7DA"]);
             });
+            setLoading(false);
             
             
          
         
     }
     if (loading) {
-        return <div >Loading...</div>;
+        return <Loading/>;
       }
       if(!validToken){
           window.location.href="/";

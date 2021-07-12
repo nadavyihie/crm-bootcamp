@@ -16,6 +16,7 @@ abstract class  controller
         $this->model = new $model_class_name();
     }
 
+
     abstract public function readAll();
     
     abstract public function create();

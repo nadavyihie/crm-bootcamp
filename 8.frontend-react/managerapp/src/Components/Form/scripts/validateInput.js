@@ -5,9 +5,14 @@ const validateInput = (inputType, inputValue) => {
   var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
   var phoneNumberRegex=/^05\d([-]{0,1})\d{7}$/;
   var addressRegex=/(\d{1,}) [a-zA-Z\s]{1,}(,)[a-zA-Z\s]{1,}$/;
+  var priceRegex=/^[1-9]{1}[0-9]{0,}$/;
+  var gameNameRegex=/^([a-z0-9]{2,}\s{0,1}){1,}$/i;
+  var ratingRegex=/^[0-9](.[1-9])?$|^10$/;
+  var genreRegex=/^([a-z]{2,}\s{0,1}){1,}$/i;
+  var imgURLRegex=/^(\S){1,}[.]jpg$/i;
   let result = true;
   let errStr = "";
-console.log()
+
   switch (inputType) {
     case "fullName":
       result = fullNameRegex.test(inputValue);
@@ -36,6 +41,26 @@ console.log()
       result = addressRegex.test(inputValue);
       if (!result) return "Ex:12 Herzel, Rehovot";
       return "";
+      case "gameName":
+        result = gameNameRegex.test(inputValue);
+        if (!result) return "Invalid game name";
+        return "";
+        case "genre":
+          result = genreRegex.test(inputValue);
+          if (!result) return "Invalid genre";
+          return "";
+          case "rating":
+            result = ratingRegex.test(inputValue);
+            if (!result) return "Invalid rating";
+            return "";
+            case "price":
+              result = priceRegex.test(inputValue);
+              if (!result) return "Invalid price";
+              return "";
+              case "imgURL":
+                result = imgURLRegex.test(inputValue);
+                if (!result) return "Must be .jpg file";
+                return "";
   }
 };
 

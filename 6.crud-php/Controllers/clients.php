@@ -16,8 +16,6 @@ class Clients extends controller
     public function readAll()
     {
         $clients = $this->model->getAllClients();
-        if($clients==401)
-            return 401;
         $this->response["clients"] = $clients;
         return $this->response;
     }
@@ -37,11 +35,10 @@ class Clients extends controller
     public function read()
     {
 
-        $headers=getallheaders();
-        $id=$headers['id'];
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
         $client = $this->model->getClient($id);
-        if($client==401)
-            return 401;
         $this->response["client"] = $client;
         return $this->response;
     }

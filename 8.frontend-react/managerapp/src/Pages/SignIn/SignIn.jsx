@@ -12,17 +12,19 @@ import {
   Link,
   useParams,
 } from "react-router-dom";
+import Loading from "../../Components/Loading/Loading";
 
 function SignIn(props) {
-  
+  const[loading,setLoading]=useState(false);
   const  {token}  = useParams();
   console.log(token);
   const [submitMsg,setSubmitMsg]=useState(["",""]);
 
   const submitAction = (e) => {
 
-
-    const inputs=createArrFromInputs(e,props.signAction);
+    setLoading(true);
+     
+  const inputs=createArrFromInputs(e,props.signAction);
    
    if(props.signAction=='signup'){
     axios.post("http://localhost:8005/users/signup", inputs)
@@ -37,6 +39,7 @@ function SignIn(props) {
         setSubmitMsg(["This Email is already exists","#F8D7DA"]);
       }
     });
+   
   }
 
   if(props.signAction=='invited'){
@@ -71,10 +74,14 @@ function SignIn(props) {
       
     });
   }
-  
+  setLoading(false);
   }
     
   const inputs = createInput(props.signAction);
+
+  if(loading){
+    return(<Loading/>);
+  }
 
   return (
     <div className="authPage">

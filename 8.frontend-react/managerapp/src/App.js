@@ -1,4 +1,4 @@
-
+import Loading from "./Components/Loading/Loading";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -15,6 +15,7 @@ import SignIn from "./Pages/SignIn/SignIn";
 
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
+import Games from "./Components/Games/Games.component";
 function App() {
 
   const [tokenExists, setTokenExists] = useState(false);
@@ -54,7 +55,7 @@ function App() {
     },[])
 
     if (loading) {
-      return <div>Loading...</div>;
+      <Loading />
     }
 
 
@@ -91,7 +92,10 @@ function App() {
           </Route>
           <Route exact path="/clients">
           {tokenExists ?<Clients userDetails={userDetails}/>:<Redirect to='/login'/>}
-          </Route>       
+          </Route>    
+          <Route exact path="/games">
+          {tokenExists ?<Games userDetails={userDetails}/>:<Redirect to='/login'/>}
+          </Route>          
         </Switch>
       </div>
     </Router>

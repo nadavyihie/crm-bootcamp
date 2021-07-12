@@ -1,26 +1,26 @@
 
 
-//TODO:Capital letter
+
 CREATE TABLE games (
    `id` int NOT NULL AUTO_INCREMENT,
     `name` varchar(30) NOT NULL UNIQUE,
-	`Genre` varchar(50) NOT NULL,
- `Rating` float(3) NOT NULL,
+	`genre` varchar(50) NOT NULL,
+ `rating` float(3) NOT NULL,
  `price` int not null ,
- `quantity` int not null ,
+ `imgURL` varchar(50) not null ,
    CONSTRAINT id_pk PRIMARY KEY (id)
 );
-//TODO:Remove  accountID 
-CREATE TABLE rentals (
+
+
+CREATE TABLE rentals_games (
    `id` int NOT NULL AUTO_INCREMENT,
-      `accountID` int NOT NULL ,
-    `clientID` int NOT NULL,
-    `gameID` int NOT NULL ,	
+    `gameID` int NOT NULL,
+      `creation_time`     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `modification_time` DATETIME ON UPDATE CURRENT_TIMESTAMP,
+    'price' DECIMAL(5,2),
    CONSTRAINT id_pk PRIMARY KEY (id),
-    FOREIGN KEY (accountID) REFERENCES accounts(id),
-    FOREIGN KEY (clientID) REFERENCES clients(id),
-	FOREIGN KEY (gameID) REFERENCES games(id)
 );
+
 
 CREATE TABLE clients (
    `id` int NOT NULL AUTO_INCREMENT,
@@ -30,5 +30,4 @@ CREATE TABLE clients (
 	`phoneNumber` int(10) NOT NULL,
  `address` varchar(50) NOT NULL,
    CONSTRAINT id_pk PRIMARY KEY (id),
-    FOREIGN KEY (accountID) REFERENCES accounts(id)
 );

@@ -1,0 +1,24 @@
+.gameImg{
+width: 7vw;
+background-size:cover;
+height: 18vh;
+}
+
+Button{
+      
+    background-color: #FFC30F;
+    border:none;
+    width: fit-content;
+    height: 4.5vh;
+    font-size: 1em;
+    margin:2vh;
+    /* margin-top: 1vh; */
+    border-radius: 0.5vh;
+    cursor: pointer;
+    transition: 0.3s
+    }
+    
+    Button:hover{
+    background-color: rgb(214, 147, 39);
+   
+    }
