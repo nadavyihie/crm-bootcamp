@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './css/homePage-style.css';
 import './css/dropDownMenu-style.css';
-
+import DelayLink from 'react-delay-link';
 import { MdAccountCircle } from "react-icons/md";
 import {
     BrowserRouter as Router,
@@ -22,7 +22,6 @@ function HomePage(props) {
         setChosenOption(option);
       }
 
-    // console.log(props.userDetails);
     return (
         <div className="homepage">
             <div className="titleDiv">

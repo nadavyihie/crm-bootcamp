@@ -50,6 +50,22 @@
     transition: 0.3s
        
     }
+
+
+    .copiedButton{
+        background-color: #eeebeb;
+    border:none;
+    width: fit-content;
+    height: 4.5vh;
+    font-size: 1em;
+    margin:2vh;
+   
+    border-radius: 0.5vh;
+    cursor: pointer;
+    
+       
+    }
+
     .copyButton:hover{
       
         background-color: rgb(214, 147, 39);
@@ -62,4 +78,19 @@
         font-size: 1em;
         width:40vw;
         height: 4.5vh;
+    }
+
+    .copiedMassage{
+        animation-name: moveMsg;
+        animation-duration: 4s;
+        margin-top: 50vh;
+        padding: 1.5vh;
+        border-radius: 0.3vh;
+       box-shadow: 2px 2px 2px #aaaaaa;
+    }
+    @keyframes moveMsg{
+        0%  { margin-top: 50vh;}
+        25%{margin-top: 35vh;}
+        75%{margin-top: 35vh;}
+        100%   { margin-top: 50vh;}
     }
