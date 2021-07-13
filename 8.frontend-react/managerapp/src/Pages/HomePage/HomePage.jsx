@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
-import './css/homePage-style.css'
+import './css/homePage-style.css';
+import './css/dropDownMenu-style.css';
+
 import { MdAccountCircle } from "react-icons/md";
 import {
     BrowserRouter as Router,
@@ -9,6 +11,7 @@ import {
     Route,
     Link,
   } from "react-router-dom";
+
 function HomePage(props) {
   const [chosenOption,setChosenOption]=useState("home");
     const logOut = () => {
@@ -29,7 +32,17 @@ function HomePage(props) {
         <div className="topNav">
         {<Link className={chosenOption=='home'?"topNavItemChosen":"topNavItem"} to="/" onClick={()=>{highlightOption("home")}}>Home</Link>}
         {<Link className={chosenOption=='users'?"topNavItemChosen":"topNavItem"} to="/users" onClick={()=>{highlightOption("users")}}>Users</Link>}
-        {<Link className={chosenOption=='clients'?"topNavItemChosen":"topNavItem"} to="/clients" onClick={()=>{highlightOption("clients")}}>Clients</Link>}
+        {<div class="dropdown">
+         
+  <div className={chosenOption=='clients'?"topNavItemChosen":"topNavItem"}>Clients</div>
+  <div className="dropdown-content">
+    <Link to="/manageclients" onClick={()=>{highlightOption("clients")}}>Manage clients</Link>
+    <Link to="/clientrentals" onClick={()=>{highlightOption("clients")}}> Client rentals</Link>
+    <Link to="/generatelink" onClick={()=>{highlightOption("clients")}}>Generate link</Link>
+  </div>
+
+          
+          </div>}
         {<Link className={chosenOption=='Rentals'?"topNavItemChosen":"topNavItem"} to="/rentals" onClick={()=>{highlightOption("Rentals")}}>Rentals</Link>}
         {<Link className={chosenOption=='Games'?"topNavItemChosen":"topNavItem"} to="/games" onClick={()=>{highlightOption("Games")}}>Games</Link>}
         </div>
@@ -41,6 +54,7 @@ function HomePage(props) {
       <div className="userName"><MdAccountCircle className="userIcon"/>
          {props.userDetails[0].fullName}
       </div>
+  
         </div>
     );
 }

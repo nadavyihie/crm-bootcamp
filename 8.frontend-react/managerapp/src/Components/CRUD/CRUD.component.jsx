@@ -44,6 +44,7 @@ function Crud(props) {
 
   const handleModify = (row) => {
     setInputValueStr(row.original);
+    console.log(inputValueStr)
     setActionType("modify");
     setRow(row);
     setOpen(true);
@@ -150,7 +151,7 @@ const remove=()=>{
   }
   return (
     <div>
-            <button className="clientsButton" onClick={handleAdd}>+Add a {props.crudType}</button>
+            <button className="crudButton" onClick={handleAdd}>+Add a {props.crudType}</button>
       <Modal
         isOpen={open}
         onRequestClose={handleClose}
@@ -160,10 +161,10 @@ const remove=()=>{
         {actionType == "remove" ? (
           <div className="removeModal">
             <span>Are you sure you want to remove this {props.crudType}? </span>
-            <button className="clientsButton" onClick={remove}>
+            <button className="crudButton" onClick={remove}>
               Ok
             </button>
-            <button className="clientsButton" onClick={handleClose}>
+            <button className="crudButton" onClick={handleClose}>
               Cancel
             </button>
           </div>

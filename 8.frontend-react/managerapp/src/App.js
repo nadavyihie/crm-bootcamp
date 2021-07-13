@@ -16,6 +16,7 @@ import SignIn from "./Pages/SignIn/SignIn";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Games from "./Components/Games/Games.component";
+import GenerateLink from "./Components/GenerateLink/GenerateLink";
 function App() {
 
   const [tokenExists, setTokenExists] = useState(false);
@@ -90,9 +91,12 @@ function App() {
           <Route exact path="/users">
           {tokenExists ?<Users userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>
-          <Route exact path="/clients">
+          <Route exact path="/manageclients">
           {tokenExists ?<Clients userDetails={userDetails}/>:<Redirect to='/login'/>}
-          </Route>    
+          </Route>   
+          <Route exact path="/generatelink">
+          {tokenExists ?<GenerateLink userDetails={userDetails}/>:<Redirect to='/login'/>}
+          </Route>
           <Route exact path="/games">
           {tokenExists ?<Games userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>          

@@ -1,237 +1,97 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Table from "../../Pages/Table";
-import "./css/clients-style.css";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-import { MdModeEdit } from "react-icons/md";
-import Form from "../Form/Form.component";
-import Modal from "react-modal";
-import { addClient,updateClient,fetchClients, removeClient } from "./scripts/serverRequests";
-import "../Form/css/loginForm-style.css";
-import Loading from "../Loading/Loading";
+import React from "react";
+import Crud from "../CRUD/CRUD.component";
+import './css/clients-style.css'
 function Clients(props) {
-  const [loading,setLoading]=useState(true);
-  const [open, setOpen] = useState(false);
-  const [actionType, setActionType] = useState("");
-  const [usersdata, setUsersData] = useState([]);
-  const [row, setRow] = useState("");
+  
+const  fetchClients =  async() => {
+ 
+  try {
+      const res=  await axios.post("http://localhost:991/clients/readAccountClients/",{id:props.userDetails[0].id});
+  //   console.log(res)
+      return res;
+   } catch (err) {
+      throw err;
+   }
+}
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "ID",
-        accessor: "id", // accessor is the "key" in the data
-      },
-      {
-        Header: "Full name",
-        accessor: "fullName",
-      },
-      {
-        Header: "Email",
-        accessor: "email", // accessor is the "key" in the data
-      },
-      {
-        Header: "Phone number",
-        accessor: "phoneNumber", // accessor is the "key" in the data
-      },
-      {
-        Header: "Address",
-        accessor: "address", // accessor is the "key" in the data
-      },
-
-      {
-        Header: "",
-        accessor: "accountID",
-        Cell: ({ row }) => (
-          <div className="actionsContainer">
-            <RiDeleteBin5Fill
-              className="actionButton"
-              onClick={() => handleRemoveOption(row)}
-            />
-            <MdModeEdit
-              className="actionButton"
-              onClick={() => handleModify(row)}
-            />
-          </div>
-        ), // accessor is the "key" in the data
-      },
-    ],
-    []
-  );
-
-  const handleModify = (row) => {
-    setActionType("modify");
-    setRow(row);
-    setOpen(true);
-  };
-
-  const handleAddClient=()=>{
-    setActionType("add");
-    setOpen(true);
+const removeClient=async (id)=>{
+  try{
+      const res=await axios.post("http://localhost:991/clients/remove/",{id:id});
+      return res
   }
+  catch(err){
+      throw err;
+  }
+  
+}
+const updateClient=async (e,id)=>{
+      const email = e.target.elements.email.value.trim();
+    const fullName = e.target.elements.fullName.value.trim();
+    const phoneNumber = e.target.elements.phoneNumber.value.trim();
+    const address = e.target.elements.address.value.trim();
+  const arr={id:id,email:email,fullName:fullName,phoneNumber:phoneNumber,address:address};
+  try{
+      const res=await axios.post("http://localhost:991/clients/update/",arr);
+      return res
+  }
+  catch(err){
 
-  const confirmAddClient=(e)=>{
-    setLoading(true);
-    const accountID=props.userDetails[0].managerID!=-1?props.userDetails[0].managerID:props.userDetails[0].id;
+      throw err;
+  }
+  
+}
+
+const addClient=async(e)=>{
+  const accountID=props.userDetails[0].managerID!=-1?props.userDetails[0].managerID:props.userDetails[0].id;
     const email = e.target.elements.email.value.trim();
     const fullName = e.target.elements.fullName.value.trim();
     const phoneNumber = e.target.elements.phoneNumber.value.trim();
     const address = e.target.elements.address.value.trim();
-    addClient(accountID,email,fullName,phoneNumber,address)
-    .then( (res) => {
-       updateClientsTable(handleClose);
-
-
-    })
-    .catch((err) => {
-      // console.log(err);
-    });
-    setLoading(false);
+  const arr={accountID:accountID,email:email,fullName:fullName,phoneNumber:phoneNumber,address:address};
+  try{
+      const res=await axios.post("http://localhost:991/clients/create/",arr);
+     
+      return res
   }
+  catch(err){
+    throw err;
+  }
+  
 
-  const confirmUpdate=(e)=>{
-    setLoading(true);
-    const email = e.target.elements.email.value.trim();
-    const fullName = e.target.elements.fullName.value.trim();
-    const phoneNumber = e.target.elements.phoneNumber.value.trim();
-    const address = e.target.elements.address.value.trim();
+}
+
+
+  const columnArr = [
+          {
+            Header: "Full name",
+            accessor: "fullName",
+          },
+          {
+            Header: "Email",
+            accessor: "email", // accessor is the "key" in the data
+          },
+          {
+            Header: "Phone number",
+            accessor: "phoneNumber", // accessor is the "key" in the data
+          },
+          {
+            Header: "Address",
+            accessor: "address", // accessor is the "key" in the data
+          },
     
-    updateClient(row.original.id,email,fullName,phoneNumber,address)
-    .then( (res) => {
-       updateClientsTable(handleClose);
-
-
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-    setLoading(false);
-
-  }
-
-  const handleRemoveOption = (row) => {
-    setActionType("remove");
-    setRow(row);
-    setOpen(true);
-
-  };
-  const confirmRemove = () => {
-    setLoading(true);
-    removeClient(row.original.id)
-      .then((res) => {
-        updateClientsTable(handleClose);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      setLoading(false);
-  };
-
-  const updateClientsTable = (func) => {
-    setLoading(true);
-    let users = "";
-    fetchClients(props.userDetails[0].id)
-      .then((users) => {
-        setUsersData(users.data.clients);
-        func();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      setLoading(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    updateClientsTable();
-    setLoading(false);
-  }, []);
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      display: "flex",
-      "flex-direction": "column",
-      "align-items": "center",
-    },
-  };
-  const modifyInput = [
-    { inputType: "text", inputName: "email", inputString: "Email" },
   ];
 
-  if(loading){
-    return(<Loading/>);
-  }
+
+  const addFormInput=[{inputType: "text", inputName: "fullName", inputString: "Full name"},
+                  {inputType: "text", inputName: "email", inputString: "Email"},
+                  {inputType: "text", inputName: "phoneNumber", inputString: "Phone number"},
+                  {inputType: "text", inputName: "address", inputString: "Address"}];
+
   return (
     <div>
-            <button className="clientsButton" onClick={handleAddClient}>+Add a client</button>
-      <Modal
-        isOpen={open}
-        onRequestClose={handleClose}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        {actionType == "remove" ? (
-          <div className="removeModal">
-            <span>Are you sure you want to remove this client? </span>
-            <button className="clientsButton" onClick={confirmRemove}>
-              Ok
-            </button>
-            <button className="clientsButton" onClick={handleClose}>
-              Cancel
-            </button>
-          </div>
-        ) : actionType == "modify" ? (
-          <div className="modifyModal">
-            <Form
-              formStyle="loginForm"
-              inputs={ [{inputType: "text", inputName: "fullName", inputString: row.original.fullName},
-                {inputType: "text", inputName: "email", inputString: row.original.email},
-                {inputType: "text", inputName: "phoneNumber", inputString: row.original.phoneNumber},
-                {inputType: "text", inputName: "address", inputString: row.original.address}] }
-              submitAction={confirmUpdate}
-              buttonText="Ok"
-              defaultInputs={true}
-              
-            />
-            <button className="usersButton" onClick={handleClose}>
-              Cancel
-            </button>
-          </div>
-        ) : <div className="modifyModal">
-              <Form
-              formStyle="loginForm"
-              inputs={ [{inputType: "text", inputName: "fullName", inputString: "Full name"},
-                {inputType: "text", inputName: "email", inputString: "Email"},
-                {inputType: "text", inputName: "phoneNumber", inputString: "Phone number"},
-                {inputType: "text", inputName: "address", inputString: "Address"}] }
-              submitAction={confirmAddClient}
-              buttonText="Ok"
-              
-              
-            />
-            <button className="usersButton" onClick={handleClose}>
-              Cancel
-            </button>
-          
-          </div>}
-          
-      </Modal>
-      <div className="clientsTable">
-        <Table columns={columns} data={usersdata} />
-      </div>
+   
+      <Crud addFormInput={addFormInput}  confirmAdd={addClient} confirmUpdate={updateClient} crudType='client' columnArr={columnArr} fetchData={fetchClients} confirmRemove={removeClient}/>
     </div>
   );
 }

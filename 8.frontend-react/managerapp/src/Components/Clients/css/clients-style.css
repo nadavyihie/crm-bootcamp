@@ -11,13 +11,15 @@
       cursor: pointer;
     }
     .clientsButton{
-      
+
+      float:right;
       background-color: #FFC30F;
       border:none;
       width: fit-content;
       height: 4.5vh;
       font-size: 1em;
       margin:2vh;
+      
       /* margin-top: 1vh; */
       border-radius: 0.5vh;
       cursor: pointer;
