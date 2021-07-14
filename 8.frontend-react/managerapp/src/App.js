@@ -1,12 +1,14 @@
 import Loading from "./Components/Loading/Loading";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ClientPortal from "./Pages/clientPortal/ClientPortal";
 import {
   BrowserRouter as Router,
   Switch,
   Redirect,
   Route,
   Link,
+  useLocation,
 } from "react-router-dom";
 import HomePage from "./Pages/HomePage/HomePage";
 import Users from "./Components/Users/Users.component";
@@ -17,7 +19,11 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Games from "./Components/Games/Games.component";
 import GenerateLink from "./Components/GenerateLink/GenerateLink";
+
+
+
 function App() {
+
 
   const [tokenExists, setTokenExists] = useState(false);
   const [loading,setLoading]=useState(true);
@@ -63,12 +69,16 @@ function App() {
   return (
     
     <Router>
-      <div>
-     
+
+
+      
+    <Switch>
+  
       <Route exact path='/resetpassword/:token'>
               <ResetPassword/> 
             </Route>
             <Route exact path="/signup/:token">
+              
            <SignIn signAction="invited" />
           </Route>
           <Route exact path="/login">
@@ -80,14 +90,19 @@ function App() {
           
           <Route exact path="/forgotpassword">
           {tokenExists?<Redirect to='/'/>: <ForgotPassword />}
-          
+    
           </Route>
 
-    
-        <Route   path='/'>
+          <Route exact path='/clientportal/:companyName/:accountID'>
+    <ClientPortal/>
+     </Route>
+     <Route   path='/'>
         {tokenExists ? <HomePage userDetails={userDetails}/> : <Redirect to="/login" />}
         </Route>
-        <Switch>
+
+    </Switch>
+     
+        <Switch >
           <Route exact path="/users">
           {tokenExists ?<Users userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>
@@ -95,13 +110,15 @@ function App() {
           {tokenExists ?<Clients userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>   
           <Route exact path="/generatelink">
+
+            
           {tokenExists ?<GenerateLink userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>
           <Route exact path="/games">
           {tokenExists ?<Games userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>          
         </Switch>
-      </div>
+  
     </Router>
   );
 }

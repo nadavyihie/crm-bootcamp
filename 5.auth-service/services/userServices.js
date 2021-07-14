@@ -86,20 +86,28 @@ const remove = (id) =>{
  */
 
 // user models\User.js as model
-const read=(id)=>{
+const read=async (id)=>{
+ 
   let userDetails=null;
-  console.log(id);
-    var sql=`select * from accounts WHERE id=${id}`;
-    con.query(sql, function (err, result, fields) {
-      if (err) throw err;
-      if(result!=0){
-        
-      // const userDetails= User(result[0].userName,result[0].fullName,result[0].companyName,result[0].phoneNumber,result[0].email,result[0].managerID);
-     
-    userDetails=result[0];      }
+  try{
     
-    });
-    return userDetails;
+    var sql=`select * from accounts WHERE id='${id}'`;
+    details = await SubmitQuery(sql,con);
+    if(details!=0){
+      
+      // userDetails= User(details[0].id,details[0].email,details[0].password,details[0].fullName,details[0].companyName,details[0].managerID);
+      userDetails= details;
+    }
+      // return userDetails;
+  }
+  catch(err){
+    
+    return null;
+   
+  }
+  
+  return(userDetails);
+   
 }
 const readAccountByEmail=async(email)=>{
   let userDetails=null;

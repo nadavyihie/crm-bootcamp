@@ -79,7 +79,9 @@ function Crud(props) {
         console.log(err);
     })
 
+    setTimeout(() => {
       setLoading(false);
+  }, 1000);
   };
 
   const handleOpen = () => {
@@ -91,7 +93,7 @@ function Crud(props) {
   };
 
 const remove=()=>{
-    
+    setLoading(true);
     props.confirmRemove(row.original.id).then(()=>{
         updateTable();
         handleClose();
@@ -100,7 +102,7 @@ const remove=()=>{
     })
 }
   const add= (e)=>{
-      
+      setLoading(true);
     props.confirmAdd(e).then(()=>{
         updateTable();
         handleClose();
@@ -121,15 +123,14 @@ const remove=()=>{
       .catch(err=>{
           console.log(err);
       });
-      setLoading(false);
-  }
+     ;  }
 
   useEffect(() => {
-    setLoading(true);
-    updateTable();
   
-   
-    setLoading(false);
+    updateTable();
+  //   setTimeout(() => {
+  //     setLoading(false);
+  // }, 1500);
   }, []);
 
   const customStyles = {
@@ -147,7 +148,10 @@ const remove=()=>{
   };
 
   if(loading){
-    return(<Loading/>);
+    return(
+    
+    <Loading/>
+    );
   }
   return (
     <div>

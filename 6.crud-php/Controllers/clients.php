@@ -32,6 +32,16 @@ class Clients extends controller
         return $this->response;
     }
 
+    public function readClientDetails(){
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $phone=$input['phone'];
+        $client = $this->model->getClientDetails($id,$phone);
+        $this->response["client"] = $client;
+        return $this->response;
+    }
+
     public function read()
     {
 

@@ -10,7 +10,7 @@ function GenerateLink(props) {
     const [copiedLink,setCopiedLink]=useState(false);
     const generateLink=()=>{
         setShowLink(true);
-        let link=`http://localhost:3000/${props.userDetails[0].companyName.replace(/ /g, "")}/${props.userDetails[0].managerID==-1?props.userDetails[0].id:props.userDetails[0].managerID}`;
+        let link=`http://localhost:3000/clientportal/${props.userDetails[0].companyName.replace(/ /g, "")}/${props.userDetails[0].managerID==-1?props.userDetails[0].id:props.userDetails[0].managerID}`;
         setGeneratedLink(link);
 
     }

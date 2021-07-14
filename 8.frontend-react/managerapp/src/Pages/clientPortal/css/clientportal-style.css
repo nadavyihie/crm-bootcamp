@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300&display=swap');
+
+
+body{
+    background-color: black;
+}
+
+.preload{
+
+  
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;}
+
+    .joystick{
+        background: url('JOYSTICK.jpg') center ; 
+        background-size: cover;
+        width: 15vh;
+        height: 15vh;
+        
+     
+        animation: joystick 2s linear infinite;
+      
+    }
+    @keyframes joystick {
+
+        100% {transform: rotate(360deg);}
+    }
+
+ 
+
+.clientPortal{
+    
+    background: url('background.jpg') center ; 
+    background-size: cover;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+ 
+   
+    z-index: -1;
+    animation-name: portalBackground;
+    animation-duration: 2s;
+}
+@keyframes portalBackground{
+    0%  { margin-top: 100vh;}
+    100%  { margin-top: 0;}
+}
+
+.submitContainer{
+    display: flex;
+    border-radius: 0.7VW;
+    background: rgba(0, 0, 0, 0.7);
+    height: 25vh;
+    animation-name: submitContainer;
+    animation-duration: 6s;
+}
+
+@keyframes submitContainer{
+    0%  { opacity: 0 ;}
+    66% { opacity: 0;}
+    100%  { opacity: 1 ;}
+}
+
+.clientTitle{
+
+
+    position: fixed;
+    
+    font-family: 'Bebas Neue', cursive;
+font-family: 'Lato', sans-serif;
+    color: #163844;
+    
+        font-size: 3em;
+        /* margin-top: 5vh; */
+        text-transform: uppercase;
+    top:5vh;
+        animation-name: clientTitle;
+        animation-duration: 4s;
+        
+}
+
+
+@keyframes clientTitle{
+    0%  {  top:-10vh;}
+    50%  {    top:-10vh;}
+    100% {  top :5vh;}
+}
+
+.submitTitle{
+    font-family: 'Bebas Neue', cursive;
+    font-family: 'Lato', sans-serif;
+        color:white;
+          text-shadow: 2px 2px 4px #000000;
+        font-size: 2em;
+      
+      
+    margin-bottom: 4vh;
+    animation-name: submitContainer;
+    animation-duration: 6s;
+}

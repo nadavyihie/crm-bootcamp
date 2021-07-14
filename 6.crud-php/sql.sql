@@ -37,3 +37,8 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
   );
+
+
+
+select creation_time,rental_months,DATE_ADD(date(creation_time), INTERVAL rental_months MONTH) as end_date
+from rentals_games;

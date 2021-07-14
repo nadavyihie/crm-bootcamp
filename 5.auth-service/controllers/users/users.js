@@ -71,6 +71,17 @@ router.get('/validateLink',function(req,res){
     res.status(401).json();
   })
   
+  router.get('/readaccount',async function(req,res){
+    console.log(req.headers.id);
+    userDetails=  await UserServices.read(req.headers.id);
+    if(userDetails!=null)
+    {
+      console.log(userDetails);
+     res.status(200).json(userDetails);
+    }
+     else
+    res.status(401).json();
+  })
 
   router.get('/', function(req, res) {
     res.send('hello ');
@@ -81,7 +92,6 @@ router.get('/validateLink',function(req,res){
     allUsers=await UserServices.readAll(req.headers.managerid);
    
     if(allUsers!=0){
-      console.log(allUsers);
       res.status(200).json(allUsers)
     
     }
