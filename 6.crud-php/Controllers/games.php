@@ -42,7 +42,32 @@ class Games extends controller
         $gameCreate=$this->model->insertGame($gameName,$genre,$rating,$price, $imgURL);
         return $gameCreate;
      }
-    
+     public function getimage(){
+        $file = 'images/25626.jpg';
+
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
+        }
+     }
+
+    public function saveimage(){
+        
+        $img=move_uploaded_file($_FILES["image"]["tmp_name"], "images/" .
+        $_FILES["image"]["name"]);
+        var_dump($img);
+
+        if($img==false)
+        throw new Exception("error with upload image");
+        return $img;
+    }
      public function remove(){
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);

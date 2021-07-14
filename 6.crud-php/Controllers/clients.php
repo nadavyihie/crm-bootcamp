@@ -37,7 +37,7 @@ class Clients extends controller
         $input = json_decode($inputJSON, TRUE);
         $id=$input['id'];
         $phone=$input['phone'];
-        $client = $this->model->getClientDetails($id,$phone);
+        $client = $this->model->getClientByPhone($id,$phone);
         $this->response["client"] = $client;
         return $this->response;
     }

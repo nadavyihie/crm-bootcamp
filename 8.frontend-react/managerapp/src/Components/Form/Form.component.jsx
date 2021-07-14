@@ -123,9 +123,9 @@ const errCheck=(inputName)=>{
     return(
 <form className={props.formStyle} onSubmit={handleSubmit}>
       
-      {props.inputs.map((element, index) => (
+      {props.inputs.map((element, index) => (element.inputType!='file'?
     <div className="inputs">
-      <input
+      <input class="formInputs"
         key={index}
         type={element.inputType}
         name={element.inputName}
@@ -137,6 +137,15 @@ const errCheck=(inputName)=>{
         // onFocus={handleFocus}
       />
       <span className="errMsg">{errCheck(element.inputName)}</span>
+    </div>:
+     <div className="inputs">
+    <input 
+      key={index}
+      accept='.jpg,.jpeg'
+      type={element.inputType}
+      name={element.inputName}
+    
+    />
     </div>
   ))}
       <button>{props.buttonText}</button>

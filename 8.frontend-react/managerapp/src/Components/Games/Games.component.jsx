@@ -12,12 +12,23 @@ function Games(props) {
     const genre = e.target.elements.genre.value.trim();
     const rating = e.target.elements.rating.value.trim();
     const price = e.target.elements.price.value.trim();
-    const imgURL = e.target.elements.imgURL.value.trim();
+    // const imgURL = e.target.elements.imgURL.value.trim();
+    const imgURL=e.target.elements.imgURL.files[0];
+    const formData = new FormData(); 
+     
+  
+    formData.append( 
+      "image", 
+     imgURL, 
+     imgURL.name
+    ); 
+   
     const arr={gameName:gameName,genre:genre,
-      rating:rating,price:price,imgURL:imgURL};
+      rating:rating,price:price,imgURL:imgURL.name};
       try{
-    const res=await axios.post("http://localhost:991/games/create/",arr);
-    return res
+    await axios.post("http://localhost:991/games/create/",arr);
+    await axios.post("http://localhost:991/games/saveimage/",formData);
+    
       }
       catch(err){
         throw err;
@@ -58,6 +69,9 @@ const removeGame=async(id)=>{
 const readGames= async ()=> {
   let games = "";
     games=await fetchGames();
+    for(var element of games.data.games)
+    element.price+="$"
+    console.log(games.data.games)
     return games;
           
 }
@@ -72,7 +86,7 @@ const readGames= async ()=> {
          
           <div
             className="gameImg"
-            style={{ backgroundImage: `url("${row.original.imgURL}")` }}
+            style={{ backgroundImage: `url("http://localhost:991/images/${row.original.imgURL}")` }}
           ></div>
         
       ), // accessor is the "key" in the data
@@ -101,7 +115,7 @@ const readGames= async ()=> {
   {inputType: "text", inputName: "genre", inputString: "Genre"},
   {inputType: "text", inputName: "rating", inputString: "Rating"},
   {inputType: "text", inputName: "price", inputString: "Price"},
-  {inputType: "text", inputName: "imgURL", inputString: "Image url"}];
+  {inputType: "file", inputName: "imgURL", inputString: "Image url"}];
 
   return (
     <div>

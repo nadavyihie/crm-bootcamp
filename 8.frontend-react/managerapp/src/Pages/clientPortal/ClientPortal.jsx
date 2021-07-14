@@ -45,6 +45,7 @@ const fetchClientRentals=()=>{
   
       if(loading){
           return(
+          
             <div class="preload">
                  <div className="joystick"></div>
 
@@ -54,7 +55,7 @@ const fetchClientRentals=()=>{
       }
 
     return (
-        
+      <div class="preload">
         <div className="clientPortal">
         <div className="clientTitle">{`${accountDetails[0].companyName} client portal`}</div>
         <div className="submitTitle">Please, enter your phone number:</div>
@@ -68,6 +69,7 @@ const fetchClientRentals=()=>{
             />
             </div>
            
+        </div>
         </div>
     );
 }

@@ -9,7 +9,7 @@
   /* justify-content: space-evenly; */
 }
 
-.loginForm input {
+.formInputs {
   font-size: 1em;
   height: 4vh;
   width: 18vw;
@@ -18,7 +18,7 @@
     border-radius:0.6vw;
 }
 
-.loginForm input:focus {
+.formInputs:focus {
   outline:none;
   border-color:#9ecaed;
   box-shadow:0 0 1vw #9ecaed;
@@ -46,6 +46,8 @@ background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  
   margin-bottom: 3vh;
 }
 .errMsg{

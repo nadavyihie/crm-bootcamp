@@ -2,10 +2,12 @@
 
     table {
         margin: 2vh 0 0 2vh;
-  
+      width: 60vw;
       }
   
-  
+      th,td {
+        text-align: center;
+      }
       .actionButton{
         margin-right: 1vw;
         cursor: pointer;

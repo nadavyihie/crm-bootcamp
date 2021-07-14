@@ -1,19 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300&display=swap');
 
 
-body{
+/* body{
     background-color: black;
-}
+} */
 
 .preload{
 
-  
+    background-color: black;
     min-width: 100vw;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;}
+    align-items: center;
+    z-index:-1;
+}
+   
 
     .joystick{
         background: url('JOYSTICK.jpg') center ; 
@@ -44,7 +47,7 @@ body{
     justify-content: center;
  
    
-    z-index: -1;
+    z-index: 0;
     animation-name: portalBackground;
     animation-duration: 2s;
 }
