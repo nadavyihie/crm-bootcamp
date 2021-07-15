@@ -1,21 +1,35 @@
 <?php
 
+use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 
 require_once('controller.php');
 
 
-class Games extends controller
+class Rentals extends controller
 {
 
-    public $model_cls = "games";
+    public $model_cls = "rentals";
     public function __construct()
     {
         parent::__construct();
     }
+
+    
+    public function readClientRentals()
+    {
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $rentals = $this->model->getAllClientRentals($id);
+        $this->response["rentals"] = $rentals;
+        return $this->response;
+    }
+
+
     public function readAll()
     {
         $games = $this->model->getAllGames();
-        $this->response["games"] = $games;
+        $this->response["rentals"] = $games;
         return $this->response;
     }
 
@@ -26,7 +40,7 @@ class Games extends controller
         $input = json_decode($inputJSON, TRUE);
         $id=$input['id'];
         $game = $this->model->getGame($id);
-        $this->response["game"] = $game;
+        $this->response["rentals"] = $game;
         return $this->response;
     }
      public function create(){

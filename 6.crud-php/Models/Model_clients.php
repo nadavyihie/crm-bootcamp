@@ -35,15 +35,15 @@ class Model_clients extends Model
         return $clients;
     }
 
-    public function getClientByPhone($id,$phone){
+    public function getClientByPhone($accountID,$phone){
 
         $client = $this->getDB()
-        ->query("SELECT * FROM  clients WHERE accountID=$id")
+        ->query("SELECT * FROM  clients WHERE accountID=$accountID and phoneNumber=$phone")
         ->fetch_all(MYSQLI_ASSOC);
 
     if($client==[]){
     
-        throw new Exception($this->getDB()->error);
+        throw new Exception("Client not found");
     }
     return $client;
     }

@@ -35,9 +35,10 @@ class Clients extends controller
     public function readClientDetails(){
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
-        $id=$input['id'];
+        $accountID=$input['accountID'];
         $phone=$input['phone'];
-        $client = $this->model->getClientByPhone($id,$phone);
+      
+        $client = $this->model->getClientByPhone($accountID,$phone);
         $this->response["client"] = $client;
         return $this->response;
     }

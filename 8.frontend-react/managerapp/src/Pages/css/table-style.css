@@ -1,0 +1,20 @@
+.clientRentalsTable{
+}
+
+.clientRentalsTh,
+.clientRentalsTd {
+	padding: 15px;
+	background-color: rgba(0,0,0,0.3);
+	color:white;
+  text-align: center;
+}
+
+
+
+.clientRentalsTh {
+		
+		background-color: #55608f;
+        text-align: center;
+	}
+
+

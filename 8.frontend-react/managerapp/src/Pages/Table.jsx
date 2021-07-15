@@ -1,8 +1,8 @@
 
 import React from "react";
 import { useTable } from "react-table";
-
-export default function Table({ columns, data }) {
+import './css/table-style.css'
+export default function Table({styleName, columns, data }) {
   // Use the useTable Hook to send the columns and data to build the table
   const {
     getTableProps, // table props from react-table
@@ -20,12 +20,12 @@ export default function Table({ columns, data }) {
     - react-table doesn't have UI, it's headless. We just need to put the react-table props from the Hooks, and it will do its magic automatically
   */
   return (
-    <table {...getTableProps()}>
+    <table  className={styleName=="clientRentalTable"?"clientRentalsTable":null}{...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr className={styleName=="clientRentalTable"?"clientRentalsTr":null}{...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th className={styleName=="clientRentalTable"?"clientRentalsTh":null}{...column.getHeaderProps()}>{column.render("Header")}</th>
             ))}
           </tr>
         ))}
@@ -34,9 +34,9 @@ export default function Table({ columns, data }) {
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr className={styleName=="clientRentalTable"?"clientRentalsTr":null}{...row.getRowProps()}>
               {row.cells.map(cell => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                return <td className={styleName=="clientRentalTable"?"clientRentalsTd":null} {...cell.getCellProps()}>{cell.render("Cell")}</td>;
               })}
             </tr>
           );
