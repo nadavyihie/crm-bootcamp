@@ -15,16 +15,24 @@ class Rentals extends controller
     }
 
     
+    public function readClientRentalsForPortal()
+    {
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $rentals = $this->model->getAllClientRentalsForPortal($id);
+        $this->response["rentals"] = $rentals;
+        return $this->response;
+    }
     public function readClientRentals()
     {
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         $id=$input['id'];
-        $rentals = $this->model->getAllClientRentals($id);
+        $rentals = $this->model->getClientRentals($id);
         $this->response["rentals"] = $rentals;
         return $this->response;
     }
-
 
     public function readAll()
     {

@@ -36,13 +36,12 @@ function HomePage(props) {
   <div className={chosenOption=='clients'?"topNavItemChosen":"topNavItem"}>Clients</div>
   <div className="dropdown-content">
     <Link to="/manageclients" onClick={()=>{highlightOption("clients")}}>Manage clients</Link>
-    <Link to="/clientrentals" onClick={()=>{highlightOption("clients")}}> Client rentals</Link>
+    <Link to="/rentals" onClick={()=>{highlightOption("clients")}}> Client rentals</Link>
     <Link to="/generatelink" onClick={()=>{highlightOption("clients")}}>Generate link</Link>
   </div>
 
           
           </div>}
-        {<Link className={chosenOption=='Rentals'?"topNavItemChosen":"topNavItem"} to="/rentals" onClick={()=>{highlightOption("Rentals")}}>Rentals</Link>}
         {<Link className={chosenOption=='Games'?"topNavItemChosen":"topNavItem"} to="/games" onClick={()=>{highlightOption("Games")}}>Games</Link>}
         </div>
 

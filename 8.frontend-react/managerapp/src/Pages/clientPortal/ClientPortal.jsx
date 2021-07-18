@@ -36,7 +36,7 @@ function ClientPortal(props) {
 
   const fetchRentals = () => {
     axios
-      .post("http://localhost:991/rentals/readClientRentals/", {
+      .post("http://localhost:991/rentals/readClientRentalsForPortal/", {
         id: clientDetails[0].id,
       })
       .then(function (response) {

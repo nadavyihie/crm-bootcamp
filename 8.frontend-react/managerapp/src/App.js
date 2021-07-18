@@ -19,6 +19,7 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Games from "./Components/Games/Games.component";
 import GenerateLink from "./Components/GenerateLink/GenerateLink";
+import Rentals from "./Components/Rentals/Rentals";
 
 
 
@@ -108,6 +109,9 @@ function App() {
           </Route>
           <Route exact path="/manageclients">
           {tokenExists ?<Clients userDetails={userDetails}/>:<Redirect to='/login'/>}
+          </Route> 
+          <Route exact path="/rentals">
+          {tokenExists ?<Rentals userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>   
           <Route exact path="/generatelink">
 

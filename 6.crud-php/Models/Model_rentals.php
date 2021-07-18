@@ -20,8 +20,7 @@ class Model_rentals extends Model
             }
             return $rentals;
     }
-
-    public function getAllClientRentals($id)
+    public function getAllClientRentalsForPortal($id)
     {
         $rentals = $this->getDB()
             ->query("SELECT games.imgURL,games.gameName,DATE(rentals_games.creation_time) as start_rental_date,DATE_ADD(date(creation_time), INTERVAL rental_months MONTH) as end_date,rentals_games.price
@@ -30,6 +29,22 @@ class Model_rentals extends Model
             inner join clients on clients.id=rentals_games.clientID 
             WHERE clients.id=$id;")
             ->fetch_all(MYSQLI_ASSOC);
+            if($rentals==[]){
+                
+                throw new Exception($this->getDB()->error);
+            }
+            return $rentals;
+    }
+
+    public function getClientRentals($id)
+    {
+        $rentals = $this->getDB()
+        ->query("SELECT rentals_games.*,games.gameName,DATE(rentals_games.creation_time) as start_rental_date,DATE_ADD(date(creation_time), INTERVAL rental_months MONTH) as end_date
+        from games
+        inner join rentals_games on games.id=rentals_games.gameID 
+        inner join clients on clients.id=rentals_games.clientID 
+        WHERE clients.id=$id;")
+        ->fetch_all(MYSQLI_ASSOC);
             if($rentals==[]){
                 
                 throw new Exception($this->getDB()->error);

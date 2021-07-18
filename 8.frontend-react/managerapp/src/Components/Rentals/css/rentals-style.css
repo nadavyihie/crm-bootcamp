@@ -1,0 +1,39 @@
+.ChosenClient{
+    cursor: pointer;
+
+}
+
+.searchClient{
+    background-image: url('search.png');
+    background-position:right;
+   /* background-size: cover; */
+   background-size:3vh;
+    background-repeat: no-repeat;
+  font-size: 1em;
+  height: 4vh;
+  width: 18vw;
+margin-left: 1vw;
+  border:0.2vw solid #dadada;
+    border-radius:0.6vw;
+}
+
+.searchClient:focus {
+  outline:none;
+  border-color:#9ecaed;
+  box-shadow:0 0 1vw #9ecaed;
+}
+
+
+.applyButton{
+      
+    background-color: #FFC30F;
+    border:none;
+    width: fit-content;
+    height: 2.5vh;
+    font-size: 0.7em;
+    margin-left: 0.2vw;
+    /* margin-top: 1vh; */
+    border-radius: 0.5vh;
+    cursor: pointer;
+    transition: 0.3s
+    }

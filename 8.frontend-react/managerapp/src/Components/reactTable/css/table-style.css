@@ -1,0 +1,23 @@
+
+.clientRentals{
+	width: 100%;
+	height: 30vh;
+}
+
+
+.chooseClient{
+
+
+width: fit-content;
+}
+
+.chooseClient th{
+
+display: none;	}
+
+.chooseClient tr:hover{
+
+background-color: rgb(232, 232, 232);
+
+	  }	
+	
