@@ -3,6 +3,8 @@
 
 
 .generateContainer{
+position: absolute;
+    width: 100vw;
     margin-top: 4vh;
     display: flex;
     flex-direction: column;

@@ -97,12 +97,13 @@ function App() {
           <Route exact path='/clientportal/:companyName/:accountID'>
     <ClientPortal/>
      </Route>
-     <Route   path='/'>
+    
+     <Route    path='/'>
         {tokenExists ? <HomePage userDetails={userDetails}/> : <Redirect to="/login" />}
         </Route>
-
     </Switch>
-     
+    
+    
         <Switch >
           <Route exact path="/users">
           {tokenExists ?<Users userDetails={userDetails}/>:<Redirect to='/login'/>}
@@ -122,7 +123,7 @@ function App() {
           {tokenExists ?<Games userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>          
         </Switch>
-  
+        
     </Router>
   );
 }
