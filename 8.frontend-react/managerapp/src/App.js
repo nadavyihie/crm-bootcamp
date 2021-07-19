@@ -2,6 +2,7 @@ import Loading from "./Components/Loading/Loading";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ClientPortal from "./Pages/clientPortal/ClientPortal";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,6 +21,7 @@ import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Games from "./Components/Games/Games.component";
 import GenerateLink from "./Components/GenerateLink/GenerateLink";
 import Rentals from "./Components/Rentals/Rentals";
+import { DialogContent } from "@material-ui/core";
 
 
 
@@ -103,7 +105,7 @@ function App() {
         </Route>
     </Switch>
     
-    
+    <div style={{borderRadius:'5vw',marginTop:'2vh',marginLeft:'15vw',height:'95vh',width:'84vw',backgroundColor:'#EDEEF0',right:'0'}}>
         <Switch >
           <Route exact path="/users">
           {tokenExists ?<Users userDetails={userDetails}/>:<Redirect to='/login'/>}
@@ -123,7 +125,7 @@ function App() {
           {tokenExists ?<Games userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>          
         </Switch>
-        
+        </div>
     </Router>
   );
 }

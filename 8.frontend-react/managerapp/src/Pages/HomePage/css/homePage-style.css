@@ -21,11 +21,11 @@
 .topNavItem{
    
     text-decoration: none;
-    color: rgb(225, 225, 225);
+    color: rgb(228, 227, 227);
     width: fit-content;
     height: fit-content;
     
-    transition: 0.2s;
+   
 margin-bottom: 3vh;
 }
 .topNavItem:hover{
@@ -35,14 +35,19 @@ color: white;
     cursor: pointer;
 }
 .topNavItemChosen{
-    font-weight: bold;
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    color: white;
-    height: fit-content;
-    width: fit-content;
-    cursor: pointer;
-    font-size: 130%;
-margin-bottom: 3vh;
+    color: #464EDB;
+    border-radius: 3vh;
+    background-color: #EDEEF0;
+height: 6vh;    width: fit-content;
+width: 15vw;   
+margin-left: 7vw;
+padding-left: 3vw;
+cursor: pointer;
+    
+margin-bottom: 2vh;
 }
 
 
@@ -59,10 +64,14 @@ margin-bottom: 3vh;
 }
 
 .signout{
+    display: flex;
+    align-items: center;
+    color: white;
     position: fixed;
     left: 0;
     bottom: 0;
     margin:1vw;
+    cursor: pointer;
 }
 
 .companyTitle{
@@ -85,4 +94,8 @@ margin-bottom: 3vh;
     flex-direction: column;
     align-items: center;
     position: absolute;
+}
+
+.icon{
+    margin-right: 0.5vw;
 }

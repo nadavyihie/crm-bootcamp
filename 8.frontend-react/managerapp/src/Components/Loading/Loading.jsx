@@ -7,11 +7,11 @@ function Loading(props) {
     return (
 
 
-<div className={props.loadingStyle?props.loadingStyle:"loading"}>
+<div className="loading">
         
         <Loader
                   type={props.type?props.type:"ThreeDots"}
-                  color={props.color?props.color:"#BD5122"}
+                  color={props.color?props.color:"#5C6CCD"}
                   height={100 }
                   width={100}
                   

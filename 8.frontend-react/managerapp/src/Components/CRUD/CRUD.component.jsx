@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Table from "../../Pages/Table";
+import Table from "../reactTable/Table";
 import "./css/crud-style.css";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
@@ -154,7 +154,7 @@ const remove=()=>{
     );
   }
   return (
-    <div style={{marginLeft:'25vw'}}>
+    <div style={{marginLeft:'15vw'}}>
             <button className="crudButton" onClick={handleAdd}>+Add a {props.crudType}</button>
       <Modal
         isOpen={open}

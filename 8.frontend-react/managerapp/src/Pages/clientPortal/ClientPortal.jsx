@@ -5,7 +5,7 @@ import axios from "axios";
 import Loading from "../../Components/Loading/Loading";
 import Form from "../../Components/Form/Form.component";
 
-import Table from "../Table";
+import Table from "../../Components/reactTable/Table"
 function ClientPortal(props) {
   const [option, setOption] = useState("");
   const [rentalsData, setRentalsData] = useState([]);

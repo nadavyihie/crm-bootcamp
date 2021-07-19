@@ -3,7 +3,7 @@ import Form from "../Form/Form.component";
 import Loading from "../Loading/Loading";
 import Modal from 'react-modal';
 import axios from "axios";
-import Table from "../../Pages/Table";
+import Table from "../reactTable/Table.jsx"
 import "./css/users-style.css";
 import { useRadioGroup } from "@material-ui/core";
 function Users(props) {
@@ -105,7 +105,7 @@ function Users(props) {
              );
       }
     return (
-    <div style={{marginLeft:'25vw'}}>
+    <div style={{marginLeft:'15vw'}}>
       <button className="usersButton" onClick={handleOpen}>Invite user</button>
       <Modal
         isOpen={open}
@@ -128,7 +128,7 @@ function Users(props) {
        
       </Modal>
            
-            <Table columns={columns} data={usersdata} />
+            <Table styleName='table-fill' columns={columns} data={usersdata} />
       
     </div>
   );

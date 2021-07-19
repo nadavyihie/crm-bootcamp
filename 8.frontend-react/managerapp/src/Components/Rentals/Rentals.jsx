@@ -139,11 +139,11 @@ function Rentals(props) {
        <div tabindex="3" onClick={()=>{fetchRentals('history')}}>Rentals history</div>
        </div>
 
-       {rentalOption?
+       {rentalOption=='current'||'history'?
                       <Table styleName="clientRentals" columns={rentalColumns} data={rentals} />
 
        
-       :null}
+       :<div></div>}
 
      </div>
      
