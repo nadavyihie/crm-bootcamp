@@ -105,7 +105,7 @@ function Users(props) {
              );
       }
     return (
-    <div>
+    <div style={{marginLeft:'25vw'}}>
       <button className="usersButton" onClick={handleOpen}>Invite user</button>
       <Modal
         isOpen={open}

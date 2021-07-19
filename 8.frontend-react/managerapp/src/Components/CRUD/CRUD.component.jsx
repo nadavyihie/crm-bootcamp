@@ -154,7 +154,7 @@ const remove=()=>{
     );
   }
   return (
-    <div>
+    <div style={{marginLeft:'25vw'}}>
             <button className="crudButton" onClick={handleAdd}>+Add a {props.crudType}</button>
       <Modal
         isOpen={open}

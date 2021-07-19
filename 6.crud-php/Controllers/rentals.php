@@ -34,6 +34,16 @@ class Rentals extends controller
         return $this->response;
     }
 
+    public function readClientRentalsHistory()
+    {
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $rentals = $this->model->getClientRentalsHistory($id);
+        $this->response["rentals"] = $rentals;
+        return $this->response;
+    }
+
     public function readAll()
     {
         $games = $this->model->getAllGames();

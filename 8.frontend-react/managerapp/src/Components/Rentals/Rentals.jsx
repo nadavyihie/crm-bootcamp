@@ -10,9 +10,10 @@ function Rentals(props) {
     const [showRentals,setShowRentals]=useState(false);
     const [loading,setLoading]=useState(true);
     const [clients,setClients]=useState([]);
-    const[rentals,setRentals]=useState([]);
-
-    const [filteredClientsData,setFilteredClientsData]=useState([]);
+    const [clientID,setClientID]=useState('');
+      const[rentals,setRentals]=useState([]);
+  const [rentalOption,setRentalOption]=useState('');
+      const [filteredClientsData,setFilteredClientsData]=useState([]);
     useEffect(() => {
         const id=props.userDetails[0].managerID==-1?props.userDetails[0].id:props.userDetails[0].managerID;
         axios.post("http://localhost:991/clients/readAccountClients/",{id:id}).then(res=>{
@@ -27,23 +28,27 @@ function Rentals(props) {
       },[]);
      
      const  handleSelectedClient=(client)=>{
-        console.log(client.id);
-        axios
-        .post("http://localhost:991/rentals/readClientRentals/", {
-          id: client.id,
-        })
-        .then(function (response) {
-            // for(var element of response.data.rentals)
-            // element.price+="$";
-            console.log(response.data.rentals)
-            setRentals(response.data.rentals)
-            setShowRentals(true);
-        })
-        .catch(function (error) {}); 
-    
+        setClientID(client.id);
+        setShowRentals(true);
+
     }
 
-
+    const fetchRentals=(option)=>{
+      setRentalOption(option);
+      const link=option=='current'?'readClientRentals':option=='history'?'readClientRentalsHistory':null;
+      axios
+      .post(`http://localhost:991/rentals/${link}/`, {
+        id: clientID,
+      })
+      .then(function (response) {
+          // for(var element of response.data.rentals)
+          // element.price+="$";
+          console.log(response.data.rentals)
+          setRentals(response.data.rentals)
+          setShowRentals(true);
+      })
+      .catch(function (error) {}); 
+    }
      const handleFilterData=(e)=>{
        setFilteredClientsData(clients.filter(client => client.fullName.includes(e.target.value)));
         // alert(e.target.value);
@@ -120,15 +125,25 @@ function Rentals(props) {
       }
     return (
 
-        <div style={{display:'flex'}}>
+        <div style={{display:'flex',marginLeft:'17vw'}}>
             <div style={{height:"100vh",borderRight:'1px solid grey'}}>
-            <div style={{margin: '1vw'}}>Choose a client to manage his rentals:</div>
      <input onChange={handleFilterData} className="searchClient" type='text' placeholder='Search a client'/>
       <Table styleName="chooseClient" columns={clientsColumn} data={filteredClientsData} />
       </div>
-    {showRentals&&rentals?
+    {showRentals?
+    
      <div >
-               <Table styleName="clientRentals" columns={rentalColumns} data={rentals} />
+       <div className= 'rentalsMenu'>
+       <div tabindex="1" onClick={()=>{fetchRentals('create')}}>Create rental</div>
+       <div tabindex="2" onClick={()=>{fetchRentals('current')}}>Current rentals</div>
+       <div tabindex="3" onClick={()=>{fetchRentals('history')}}>Rentals history</div>
+       </div>
+
+       {rentalOption?
+                      <Table styleName="clientRentals" columns={rentalColumns} data={rentals} />
+
+       
+       :null}
 
      </div>
      

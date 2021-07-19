@@ -31,18 +31,18 @@ function HomePage(props) {
        <span className='username'>{props.userDetails[0].fullName}</span>
         {<Link className={chosenOption=='home'?"topNavItemChosen":"topNavItem"} to="/" onClick={()=>{highlightOption("home")}}>Home</Link>}
         {<Link className={chosenOption=='users'?"topNavItemChosen":"topNavItem"} to="/users" onClick={()=>{highlightOption("users")}}>Users</Link>}
-        {<div class="dropdown">
+        
          
   <div onClick={()=>{setShowClientMenu(showClientMenu?false:true)}} className={chosenOption=='clients'?"topNavItemChosen":"topNavItem"}>Clients</div>
   {showClientMenu?
-  <div >
-    <Link to="/manageclients" onClick={()=>{highlightOption("clients")}}>Manage clients</Link>
-    <Link to="/rentals" onClick={()=>{highlightOption("clients")}}> Client rentals</Link>
-    <Link to="/generatelink" onClick={()=>{highlightOption("clients")}}>Generate link</Link>
+  <div className='dropdown-content'>
+    <Link className="topNavItem" to="/manageclients" onClick={()=>{highlightOption("clients")}}>Manage clients</Link>
+    <Link className="topNavItem" to="/rentals" onClick={()=>{highlightOption("clients")}}> Client rentals</Link>
+    <Link className='topNavItem' to="/generatelink" onClick={()=>{highlightOption("clients")}}>Generate link</Link>
   </div>:null}
 
           
-          </div>}
+          
         {<Link className={chosenOption=='Games'?"topNavItemChosen":"topNavItem"} to="/games" onClick={()=>{highlightOption("Games")}}>Games</Link>}
         </div>
 
