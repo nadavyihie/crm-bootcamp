@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import './css/homePage-style.css';
 import './css/dropDownMenu-style.css';
-import DelayLink from 'react-delay-link';
 import { BiLogOut } from "react-icons/bi";
 import {IoHome} from 'react-icons/io5';
 import { MdAccountCircle } from "react-icons/md";

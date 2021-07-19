@@ -118,7 +118,7 @@ const readGames= async ()=> {
   {inputType: "file", inputName: "imgURL", inputString: "Image url"}];
 
   return (
-    <div>
+    <div style={{height:'85vh'}}>
       <Crud addFormInput={addFormInput}  confirmAdd={addGame} confirmUpdate={modifyGame} crudType='game' columnArr={columnArr} fetchData={readGames} confirmRemove={removeGame}/>
     </div>
   );

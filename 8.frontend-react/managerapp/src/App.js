@@ -105,7 +105,6 @@ function App() {
         </Route>
     </Switch>
     
-    <div style={{borderRadius:'5vw',marginTop:'2vh',marginLeft:'15vw',height:'95vh',width:'84vw',backgroundColor:'#EDEEF0',right:'0'}}>
         <Switch >
           <Route exact path="/users">
           {tokenExists ?<Users userDetails={userDetails}/>:<Redirect to='/login'/>}
@@ -125,7 +124,7 @@ function App() {
           {tokenExists ?<Games userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>          
         </Switch>
-        </div>
+    
     </Router>
   );
 }

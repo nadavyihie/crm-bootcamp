@@ -154,7 +154,7 @@ const remove=()=>{
     );
   }
   return (
-    <div style={{marginLeft:'15vw'}}>
+    <div style={{marginLeft:'25vw'}}>
             <button className="crudButton" onClick={handleAdd}>+Add a {props.crudType}</button>
       <Modal
         isOpen={open}
@@ -206,6 +206,7 @@ const remove=()=>{
       <div className="clientsTable">
         <Table columns={columns} data={userdata} />
       </div>
+      
     </div>
   );
 }

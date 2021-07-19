@@ -1,3 +1,6 @@
+
+
+
 table {
 	background: white;
 	border-radius:3px;
@@ -106,4 +109,9 @@ table {
   td.text-right {
 	text-align: right;
   }
-  
+  .chooseClient{
+	all:unset;
+  }
+.chooseClient th,.chooseClient tr,.chooseClient td{
+	all: unset;
+}

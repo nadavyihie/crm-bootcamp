@@ -27,8 +27,8 @@ function Rentals(props) {
         })
       },[]);
      
-     const  handleSelectedClient=(client)=>{
-        setClientID(client.id);
+     const  handleSelectedClient=(id)=>{
+        setClientID(id);
         setShowRentals(true);
 
     }
@@ -100,13 +100,13 @@ function Rentals(props) {
       ];
     
   const clientsColumn = [
-    {
-        Header: "",
-        accessor: "id",
-        Cell: ({ row }) => (
-           null
-          ),
-      },
+    // {
+    //     Header: "",
+    //     accessor: "id",
+    //     Cell: ({ row }) => (
+    //        null
+    //       ),
+    //   },
     {
       Header: "",
       accessor: "fullName",
@@ -126,9 +126,9 @@ function Rentals(props) {
     return (
 
         <div style={{display:'flex',marginLeft:'17vw'}}>
-            <div style={{height:"100vh",borderRight:'1px solid grey'}}>
+            <div style={{display:'flex',flexDirection:'column',height:"100vh",borderRight:'1px solid grey'}}>
      <input onChange={handleFilterData} className="searchClient" type='text' placeholder='Search a client'/>
-      <Table styleName="chooseClient" columns={clientsColumn} data={filteredClientsData} />
+      {filteredClientsData.map(client=>(<div onClick={()=>{handleSelectedClient(client.id)}} className="client">{client.fullName}</div>))}
       </div>
     {showRentals?
     
