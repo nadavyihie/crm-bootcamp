@@ -24,23 +24,7 @@
   box-shadow:0 0 1vw #9ecaed;
 }
 
-.loginForm button{
-    
-background-color: #FFC30F;
-border:none;
-width: 6.5vw;
-height: 4.5vh;
-font-size: 1em;
 
-/* margin-top: 1vh; */
-border-radius: 0.5vh;
-cursor: pointer;
-transition: 0.3s
-}
-
-.loginForm button:hover{
-background-color: white;
-}
 
 .inputs{
   display: flex;

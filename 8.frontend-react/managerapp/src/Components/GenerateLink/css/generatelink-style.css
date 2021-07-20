@@ -5,6 +5,7 @@
 .generateContainer{
 position: absolute;
     width: 85vw;
+    margin-left: 15vw;
     margin-top: 4vh;
     display: flex;
 

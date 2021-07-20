@@ -14,6 +14,7 @@ class Model_games extends Model
         $games = $this->getDB()
             ->query("SELECT * FROM  games")
             ->fetch_all(MYSQLI_ASSOC);
+          
             if($games==[]){
                 
                 throw new Exception($this->getDB()->error);
@@ -67,7 +68,7 @@ class Model_games extends Model
 
     public function removeGame($id){
         $userInsert = $this->getDB()
-        ->query("DELETE FROM games WHERE id='$id'");
+        ->query("DELETE FROM games WHERE id=$id");
         if($userInsert==false)
         {
            

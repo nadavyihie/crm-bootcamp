@@ -9,7 +9,6 @@ const validateInput = (inputType, inputValue) => {
   var gameNameRegex=/^([a-z0-9]{2,}\s{0,1}){1,}$/i;
   var ratingRegex=/^[0-9](.[1-9])?$|^10$/;
   var genreRegex=/^([a-z]{2,}\s{0,1}){1,}$/i;
-  var imgURLRegex=/^(\S){1,}[.]jpg$/i;
   let result = true;
   let errStr = "";
 
@@ -57,10 +56,7 @@ const validateInput = (inputType, inputValue) => {
               result = priceRegex.test(inputValue);
               if (!result) return "Invalid price";
               return "";
-              case "imgURL":
-                result = imgURLRegex.test(inputValue);
-                if (!result) return "Must be .jpg file";
-                return "";
+            
   }
 };
 

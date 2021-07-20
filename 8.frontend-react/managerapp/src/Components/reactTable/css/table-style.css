@@ -33,6 +33,7 @@ table {
   }
 	
   tr {
+	
 	border-top: 1px solid #C1C3D1;
 	border-bottom: 1px solid #C1C3D1;
 	color:#666B85;
@@ -77,7 +78,7 @@ table {
 	text-align:left;
 	vertical-align:middle;
 	font-weight:300;
-	font-size:18px;
+	font-size:0.9em;
 	text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
 	border-right: 1px solid #C1C3D1;
   }

@@ -1,0 +1,19 @@
+.purpleButton{
+    color: white;
+    background-color: #5C39FF;
+    border-radius: 1vh;
+
+    border:none;
+    width: 6.5vw;
+    height: 4.5vh;
+    font-size: 1em;
+    margin:2vh;
+ 
+    cursor: pointer;
+    transition: 0.3s
+    }
+    
+    .purpleButton:hover{
+    background-color: #775cee;
+   
+    }

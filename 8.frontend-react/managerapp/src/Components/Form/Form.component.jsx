@@ -1,6 +1,7 @@
 import React, { useReducer, useState } from "react";
 
 import "./css/loginForm-style.css"
+import "../../css/button-style.css"
 import validateInput from "./scripts/validateInput";
 function Form(props) {
   
@@ -14,7 +15,7 @@ function Form(props) {
   const [rating,setRating]=useState("");
   const [genre,setGenre]=useState("");
   const [price,setPrice]=useState("");
-  const [imgURL,setimgURL]=useState("");
+
   // const handleFocus=(event)=>{
   //   if(props.defaultInputs){
   //     if(    event.target.value=="")
@@ -64,9 +65,7 @@ function Form(props) {
                         case 'price':
                           setPrice(errMsg);
                           break;
-                          case 'imgURL':
-                          setimgURL(errMsg);
-                          break;
+                      
     }
   };
 
@@ -77,7 +76,7 @@ function Form(props) {
   
    for(const element of e.target.elements)
    {
-     if(element.nodeName=='INPUT')
+     if(element.nodeName=='INPUT'&&element.name!='imgURL')
 
       if(element.value=="")
         return 0;
@@ -114,8 +113,7 @@ const errCheck=(inputName)=>{
                       return rating;
                       case 'price':
                         return price;
-                        case 'imgURL':
-                          return imgURL;
+                   
                 
   }
 }
@@ -148,7 +146,7 @@ const errCheck=(inputName)=>{
     />
     </div>
   ))}
-      <button>{props.buttonText}</button>
+      <button className="purpleButton" >{props.buttonText}</button>
     </form>
 
 

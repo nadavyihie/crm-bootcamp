@@ -203,7 +203,7 @@ const remove=()=>{
           </div>}
           
       </Modal>
-      <div className="clientsTable">
+      <div >
         <Table columns={columns} data={userdata} />
       </div>
       

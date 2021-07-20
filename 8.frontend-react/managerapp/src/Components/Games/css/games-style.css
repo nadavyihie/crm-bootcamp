@@ -1,8 +1,4 @@
-.gameImg{
-width: 7vw;
-background-size:cover;
-height: 18vh;
-}
+
 
 Button{
       
@@ -22,3 +18,62 @@ Button{
     background-color: rgb(214, 147, 39);
    
     }
+
+    .gamesContainer{
+        width:80vw;
+       margin-left: 20vw;
+         display: flex;
+        flex-wrap: wrap;
+        
+    }
+
+
+    .gameDiv{
+        background-color: black;
+        display: flex;
+        
+        background-size:cover;
+        width:10vw;
+        height: 25vh;
+        margin-right:4vw;
+        margin-top:4vh;
+        cursor: pointer;
+        transition: 0.2s;
+       align-items: center;
+       justify-content: center;
+    }
+
+    .gameImg{
+        width:10vw;
+        height: 25vh;
+        position: absolute;
+}
+
+
+    .actionIcon{
+        margin-right: 0.5vw;
+z-index: 1
+;
+        display: none;
+    color: white; 
+    }
+    .actionIcon:hover{
+        transform: scale(1.4);
+    }
+    .removeIcon:hover{
+       
+    }
+.gameDiv:hover{
+    transform: scale(1.2);
+}
+
+
+
+
+.gameDiv:focus>.gameImg{ opacity: 0.3;}
+.gameDiv:focus .actionIcon {display: block;}
+.gameDiv:not(:hover) .actionIcon{display: none;}
+
+.gameDiv:not(:hover)>.gameImg{ opacity: 1;}
+
+
