@@ -123,5 +123,28 @@ class Model_rentals extends Model
         return true;
        
     }
+
+
+    public function getPopularCities($accountID){
+
+        $cities = $this->getDB()
+        ->query("  SELECT SUBSTRING_INDEX(clients.address, ',', -1) as City,
+        count(clients.id) as Number_of_rentals,
+        sum(rentals_games.price) as total_Profit
+       FROM clients
+       inner join rentals_games on clients.id=rentals_games.clientID
+       WHERE clients.accountID=$accountID
+       group by City
+       order by  Number_of_rentals desc
+       LIMIT 5;")->fetch_all(MYSQLI_ASSOC);
+    if($cities==[]){
+      
+        throw new Exception($this->getDB()->error);
+    }
+    return $cities;
+
+
+      
+    }
 }
 ?>

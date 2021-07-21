@@ -1,0 +1,10 @@
+.dashboardsContainer{
+    display: flex;
+     margin-left: 20vw;
+      flex-wrap: wrap;
+}
+
+.graphDiv{
+    width: 30vw;
+    margin:8vh;
+}

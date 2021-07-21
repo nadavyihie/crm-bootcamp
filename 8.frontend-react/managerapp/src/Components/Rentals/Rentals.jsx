@@ -4,6 +4,7 @@ import { RiEraserFill } from 'react-icons/ri';
 import Table from '../reactTable/Table';
 import Loading from '../Loading/Loading';
 import './css/rentals-style.css'
+import '../../css/searchbox-style.css';
 import { FcSearch } from "react-icons/fc";
 import { useParams } from 'react-router-dom';
 function Rentals(props) {
@@ -127,7 +128,7 @@ function Rentals(props) {
 
         <div style={{display:'flex',marginLeft:'17vw'}}>
             <div style={{display:'flex',flexDirection:'column',height:"100vh",borderRight:'1px solid grey'}}>
-     <input onChange={handleFilterData} className="searchClient" type='text' placeholder='Search a client'/>
+     <input onChange={handleFilterData} className="searchBox" type='text' placeholder='Search a client'/>
       {filteredClientsData.map(client=>(<div onClick={()=>{handleSelectedClient(client.id)}} className="client">{client.fullName}</div>))}
       </div>
     {showRentals?

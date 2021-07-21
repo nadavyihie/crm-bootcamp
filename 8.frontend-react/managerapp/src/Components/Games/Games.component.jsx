@@ -9,7 +9,7 @@ import Modal from "react-modal";
 import Form from "../Form/Form.component";
 import "./css/games-style.css";
 import "../../css/button-style.css"
-
+import '../../css/searchbox-style.css';
 
 
 function Games(props) {
@@ -115,7 +115,9 @@ function Games(props) {
   };
 
 
-  
+  const handleFilterGames=()=>{
+
+  }
   useEffect(() => {
     readGames();
   }, []);
@@ -207,7 +209,7 @@ function Games(props) {
   return (
     // { <Crud addFormInput={addFormInput}  confirmAdd={addGame} confirmUpdate={modifyGame} crudType='game' columnArr={columnArr} fetchData={readGames} confirmRemove={removeGame}/> }
     <div className="gamesContainer">
-     
+      <input onChange={handleFilterGames} className="searchBox" type='text' placeholder='Search a game'/>
       
       {gamesViewArr}
       

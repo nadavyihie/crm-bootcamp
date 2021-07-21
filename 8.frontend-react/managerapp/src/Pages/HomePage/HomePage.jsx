@@ -9,6 +9,7 @@ import {FaUserAlt} from "react-icons/fa";
 import {IoGameController} from "react-icons/io5"
 import {ImUsers} from "react-icons/im"
 import {MdArrowDropDown,MdArrowDropUp} from 'react-icons/md'
+import Dashboard from '../../Components/Dashboard/Dashboard';
 import {
     BrowserRouter as Router,
     Switch,
@@ -48,7 +49,7 @@ function HomePage(props) {
     <Link className={chosenOption=='Generate link'?"topNavItemChosen":"topNavItem"} to="/generatelink" onClick={()=>{highlightOption("Generate link")}}>Generate link</Link>
   </div>:null}
 
-          
+       
           
         </div>
 
@@ -58,7 +59,12 @@ function HomePage(props) {
       
       </div>
     
-  
+      {chosenOption=='home'?
+          
+          <Dashboard userDetails={props.userDetails}/>
+           
+           
+           :null}
         </div>
     );
 }

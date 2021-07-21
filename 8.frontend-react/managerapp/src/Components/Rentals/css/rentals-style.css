@@ -3,25 +3,6 @@
 
 }
 
-.searchClient{
-    background-image: url('search.png');
-    background-position:right;
-   /* background-size: cover; */
-   background-size:3vh;
-    background-repeat: no-repeat;
-  font-size: 0.8em;
-  height: 3vh;
-  width: 13vw;
-margin:1vw;
-  border:0.2vw solid #dadada;
-    border-radius:0.6vw;
-}
-
-.searchClient:focus {
-  outline:none;
-  border-color:#9ecaed;
-  box-shadow:0 0 1vw #9ecaed;
-}
 
 
 .applyButton{

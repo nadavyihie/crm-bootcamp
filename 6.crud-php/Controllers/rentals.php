@@ -34,6 +34,18 @@ class Rentals extends controller
         return $this->response;
     }
 
+
+    public function readPopularCities()
+    {
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $cities = $this->model->getPopularCities($id);
+        $this->response["cities"] = $cities;
+        return $this->response;
+    }
+
+    
     public function readClientRentalsHistory()
     {
         $inputJSON = file_get_contents('php://input');
