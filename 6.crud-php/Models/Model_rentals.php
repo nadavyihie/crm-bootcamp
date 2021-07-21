@@ -129,8 +129,7 @@ class Model_rentals extends Model
 
         $cities = $this->getDB()
         ->query("  SELECT SUBSTRING_INDEX(clients.address, ',', -1) as City,
-        count(clients.id) as Number_of_rentals,
-        sum(rentals_games.price) as total_Profit
+        count(clients.id) as Number_of_rentals
        FROM clients
        inner join rentals_games on clients.id=rentals_games.clientID
        WHERE clients.accountID=$accountID
@@ -146,5 +145,21 @@ class Model_rentals extends Model
 
       
     }
+
+   public function getProfitableMonths($id){
+
+    $months = $this->getDB()
+    ->query("SELECT month(rentals_games.creation_time) as Month, sum(rentals_games.price) Profit
+    from rentals_games
+    inner join clients on clients.id=rentals_games.clientID
+    where clients.accountID=$id
+    group by month;")->fetch_all(MYSQLI_ASSOC);
+if($months==[]){
+  
+    throw new Exception($this->getDB()->error);
+}
+return $months;
+
+   }
 }
 ?>

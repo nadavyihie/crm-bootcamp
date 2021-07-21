@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import Loading from "../Loading/Loading";
 import './css/dashboard-style.css'
 function Dashboard(props) {
@@ -11,8 +11,11 @@ function Dashboard(props) {
   );
   const [loading, setLoading] = useState(true);
   const [cities, setCities] = useState([]);
+  const [months, setMonths] = useState([]);
+
   useEffect(() => {
     fetchCitiesDashboard();
+    fetchMonthsDashboard();
     setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -24,7 +27,6 @@ function Dashboard(props) {
         id: accountID,
       })
       .then((res) => {
-        console.log(res.data.cities);
         setCities(res.data.cities);
       })
       .catch((err) => {
@@ -32,35 +34,98 @@ function Dashboard(props) {
       });
   };
 
-
+  const fetchMonthsDashboard = () => {
+    axios
+      .post("http://localhost:991/rentals/readProfitableMonths/", {
+        id: accountID,
+      })
+      .then((res) => {
+        setMonths(res.data.months);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
 const citiesData = {
     labels: cities.map((city) => city.City),
     datasets: [
     
+    
       {
-        label: 'Profits(dollars)',
-        data: cities.map((city) => city.total_Profit),
-        backgroundColor:   'rgba(255, 99, 132, 0.2)',
-        borderColor: 
-            'rgba(255, 99, 132, 1)',
-            borderWidth: 1,
-        yAxisID: '2',
-      },
-      {
-        label: 'Rentals number',
+        label: 'Rentals per city',
         data: cities.map((city) => city.Number_of_rentals),
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor:   'rgba(54, 162, 235, 1)',
         borderWidth:1,
-        yAxisID: '1',
       },
 
     ],
   };
 
+  const monthsArr=[0,0,0,0,0,0,0,0,0,0,0,0];
+  for(const month of months){
+    monthsArr[month.Month-1]=month.Profit;
+  }
+  console.log(monthsArr);
+  const monthsData = {
+    labels: ['jan', 'feb', 'mar', 'apr', 'may', 'june','july','aug','sep','oct','nov','dec'],
 
+    datasets: [
+      {
+        label: 'incomes per month',
+        data: monthsArr,
+        fill: false,
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgba(255, 99, 132, 0.2)',
+        
+      },
+    ],
+  };
+  
+const monthsOptions = {
+  scales: {
+    x: {
+      
+      title: {
+        color: 'black',
+        display: true,
+        text: 'Month'
+      },
 
+    
+       },
+       y: {
+        title: {
+          color: 'black',
+          display: true,
+          text: 'Incomes'
+        }
+         }
+    },
+}
+
+const citiesOptions = {
+  scales: {
+    x: {
+      
+      title: {
+        color: 'black',
+        display: true,
+        text: 'City'
+      },
+
+    
+       },
+       y: {
+        title: {
+          color: 'black',
+          display: true,
+          text: 'Rentals number'
+        }
+         }
+    },
+}
 
   if (loading) {
     return <Loading />;
@@ -69,10 +134,15 @@ const citiesData = {
     <div className='dashboardsContainer'>
 
        <div className='graphDiv'>
-           <span >The most profitable cities
+           <span >5 cities with most rentals
  </span>
-        <Bar data={citiesData} />
+        <Bar data={citiesData} options={citiesOptions} />
       </div>
+      <div className='graphDiv'>
+           <span >Monthly revenues
+ </span>
+      <Line data={monthsData} options={monthsOptions}  />
+</div>
 
     </div>
   );

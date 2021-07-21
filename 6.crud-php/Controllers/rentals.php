@@ -33,6 +33,16 @@ class Rentals extends controller
         $this->response["rentals"] = $rentals;
         return $this->response;
     }
+    
+    public function readProfitableMonths(){
+       
+                $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $months = $this->model->getProfitableMonths($id);
+        $this->response["months"] = $months;
+        return $this->response;
+    }
 
 
     public function readPopularCities()
