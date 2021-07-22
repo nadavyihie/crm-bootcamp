@@ -149,7 +149,7 @@ class Model_rentals extends Model
    public function getProfitableMonths($id){
 
     $months = $this->getDB()
-    ->query("SELECT month(rentals_games.creation_time) as Month, sum(rentals_games.price) Profit
+    ->query("SELECT month(rentals_games.creation_time) as Month, sum(rentals_games.price) Profit,count(rentals_games.id) as rentals_number
     from rentals_games
     inner join clients on clients.id=rentals_games.clientID
     where clients.accountID=$id
@@ -159,6 +159,78 @@ if($months==[]){
     throw new Exception($this->getDB()->error);
 }
 return $months;
+
+   }
+
+   public function getGenreData($id){
+
+    $genres = $this->getDB()
+    ->query("SELECT games.genre, count(games.id) as rentals_number
+    from games
+    inner join rentals_games on rentals_games.gameID=games.id
+    inner join clients on clients.id=rentals_games.clientID
+    where clients.accountID=$id
+    group by games.genre;")->fetch_all(MYSQLI_ASSOC);
+if($genres==[]){
+  
+    throw new Exception($this->getDB()->error);
+}
+return $genres;
+
+   }
+  
+   public function getTotalEarning($id){
+  
+
+    $earning = $this->getDB()
+    ->query("  select sum(price) as total_earning
+    from rentals_games
+    inner join clients on clients.id=rentals_games.clientID
+    where  clients.accountID='$id';")->fetch_all(MYSQLI_ASSOC);
+if($earning==[]){
+  
+    throw new Exception($this->getDB()->error);
+}
+return $earning;
+
+
+   }
+
+
+
+   public function getClientsNumber($id){
+  
+
+    $clients_number = $this->getDB()
+    ->query("select count(clients.id) as clients_number
+    from clients
+    where  clients.accountID='$id';
+    ")->fetch_all(MYSQLI_ASSOC);
+if($clients_number==[]){
+  
+    throw new Exception($this->getDB()->error);
+}
+return $clients_number;
+
+
+   }
+
+
+
+   public function getTotalRentals($id){
+  
+
+    $earning = $this->getDB()
+    ->query(" select count(rentals_games.id) as total_rentals
+    from rentals_games
+    inner join clients on clients.id=rentals_games.clientID
+    where  clients.accountID='$id';")->fetch_all(MYSQLI_ASSOC);
+if($earning==[]){
+  
+    throw new Exception($this->getDB()->error);
+}
+return $earning;
+
 
    }
 }

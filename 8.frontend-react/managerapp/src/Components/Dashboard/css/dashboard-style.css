@@ -1,10 +1,87 @@
 .dashboardsContainer{
     display: flex;
-     margin-left: 20vw;
+    justify-content: center;
+     margin-left: 15vw;
       flex-wrap: wrap;
 }
 
+.pieDiv{
+    background-color: rgba(228, 228, 228, 0.4);
+    /* border:1px solid rgb(201, 200, 200); */
+border-radius: 1vw;
+    width: 20vw;
+    margin:2vh;
+    padding: 2vh;
+    text-align: center;
+    box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;}
+
 .graphDiv{
-    width: 30vw;
-    margin:8vh;
+
+    background-color: rgba(228, 228, 228, 0.4);
+    /* border:1px solid rgb(201, 200, 200); */
+border-radius: 1vw;
+   width: 25vw;
+   
+    margin:2vh;
+    padding: 2vh;
+    height: fit-content;
+    text-align: center;
+    box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+}
+
+.widgetTitle{
+    margin-bottom: 2vh;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.totalDiv{
+    padding: 2vh;
+
+    background-color: rgba(228, 228, 228, 0.4);
+    /* border:1px solid rgb(201, 200, 200); */
+    border-radius: 1vw;
+    margin:4vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 55vw;
+    height: 10vw;
+    box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+}
+
+.dataDiv{
+    
+    font-size: 2em;
+    display:flex;
+    margin-bottom: 1vh;
+}
+
+/* .icon{
+    margin-left: 4vw;
+} */
+.totalItem{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.earnsImg{
+ 
+    background-image: url('earning.jpg');
+    background-size:cover;
+    background-position: center;
+  width: 1.5vw;
+ height: 4vh;
+ margin-right: 0.5vw;
+}
+
+.rentalsImg{
+ 
+    background-image: url('ps4icon.jpg');
+    background-size:cover;
+    background-position: center;
+  width: 1.5vw;
+ height: 4vh;
+ margin-right: 0.5vw;
 }

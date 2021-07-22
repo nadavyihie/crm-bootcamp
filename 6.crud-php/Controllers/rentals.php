@@ -44,6 +44,47 @@ class Rentals extends controller
         return $this->response;
     }
 
+     
+    public function readGenreData(){
+       
+        $inputJSON = file_get_contents('php://input');
+$input = json_decode($inputJSON, TRUE);
+$id=$input['id'];
+$months = $this->model->getGenreData($id);
+$this->response["genres"] = $months;
+return $this->response;
+}
+
+  
+public function readClientsNumber(){
+       
+    $inputJSON = file_get_contents('php://input');
+$input = json_decode($inputJSON, TRUE);
+$id=$input['id'];
+$clientsNumber = $this->model->getClientsNumber($id);
+$this->response["clientsNumber"] = $clientsNumber;
+return $this->response;
+}
+     
+public function readTotalEarning(){
+       
+    $inputJSON = file_get_contents('php://input');
+$input = json_decode($inputJSON, TRUE);
+$id=$input['id'];
+$earning = $this->model->getTotalEarning($id);
+$this->response["earning"] = $earning;
+return $this->response;
+}
+
+public function readTotalRentals(){
+       
+    $inputJSON = file_get_contents('php://input');
+$input = json_decode($inputJSON, TRUE);
+$id=$input['id'];
+$rentals = $this->model->getTotalRentals($id);
+$this->response["rentals"] = $rentals;
+return $this->response;
+}
 
     public function readPopularCities()
     {
