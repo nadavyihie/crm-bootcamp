@@ -2,11 +2,8 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const router = express.Router();
-const md5=require('md5');
-const jwt = require('jsonwebtoken');
-var Mailgun = require('mailgun-js');
-const e = require('express');
-// const User = require('../../models/User');
+
+
 const UserServices=require("../../services/userServices");
 var con = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -31,8 +28,7 @@ const jwtVerify=(token,tokenSec)=>{
   }
 }
 router.post('/resetpassword',function(req,res){
-  console.log(req.body.password)
-  console.log(req.body.email)
+
   const newEncPassword=(md5(req.body.password));
   var sql=`UPDATE accounts SET resetPassToken=NULL,userPassword='${newEncPassword}' where email='${req.body.email}'`;
   con.query(sql, function (err, result, fields) {
@@ -48,11 +44,11 @@ router.post('/resetpassword',function(req,res){
   });
   
 router.get('/validateLink',function(req,res){
-  console.log(req.headers.token);
+
   con.query(`SELECT * FROM accounts WHERE resetPassToken='${req.headers.token}'`, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){
-      console.log(result[0].email);
+
       return res.status(200).json({"message": "I'm Alive!"
       ,"email":result[0].email});
     }
@@ -63,7 +59,7 @@ router.get('/validateLink',function(req,res){
   });
   
   router.get('/registered',async function(req,res){
-    console.log(req.email);
+
     userDetails=  await UserServices.readAccountByEmail(req.email);
     if(userDetails!=null)
      res.status(200).json(userDetails);
@@ -72,11 +68,11 @@ router.get('/validateLink',function(req,res){
   })
   
   router.get('/readaccount',async function(req,res){
-    console.log(req.headers.id);
+
     userDetails=  await UserServices.read(req.headers.id);
     if(userDetails!=null)
     {
-      console.log(userDetails);
+
      res.status(200).json(userDetails);
     }
      else
@@ -88,7 +84,7 @@ router.get('/validateLink',function(req,res){
   });
 
   router.get('/fetchallusers',async function(req,res){
-    console.log(req.headers.managerid);
+
     allUsers=await UserServices.readAll(req.headers.managerid);
    
     if(allUsers!=0){
@@ -100,15 +96,9 @@ router.get('/validateLink',function(req,res){
   });
 
   router.get('/test', async (req,res)=>{
-    // console.log(req.headers.name)
+
     allUsers=await UserServices.readAll(req.headers.name)
-    // console.log(allUsers);
-      // if(userDetails==null){
-      //     res.status(401);
-      // }
-   
-      // res.status(200);
-    
+ 
     })
 
   router.post('/signup',(req,res)=>{
@@ -132,7 +122,7 @@ router.get('/validateLink',function(req,res){
        
           fullName=req.body.inputs.fullName;
           password=req.body.inputs.password;
-          // console.log(email,fullName,password,companyName,managerID)
+
         }
         catch(err){
           
@@ -141,21 +131,21 @@ router.get('/validateLink',function(req,res){
 
       }
       else{
-        console.log(req.body)
+
       email=req.body.email;
       password=req.body.password;
       fullName=req.body.fullName;
       companyName=req.body.companyName;
       managerID=req.body.managerID;
       }
-      // console.log(email,password,fullName,companyName,managerID)
+
       
       const encPassword=(md5(password));
       let emailExists=false;
       con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
       if (err) throw err;
       if(result!=0){
-        console.log(result[0]);
+    
         res.status(400).json();
         }
       else{
@@ -176,24 +166,24 @@ router.get('/validateLink',function(req,res){
 
   router.post('/signupRegularUser',(req,res)=>{
     const {userName,fullName,phoneNumber,password,token}=req.body;
-    // console.log(token);
+
     const verified=jwtVerify(req.body.token, process.env.MAIL_URL_KEY);
     const email=verified.email;
     const managerName=verified.managerName;
     const companyName=verified.companyName;
-    // console.log(verified);
+
   
     const encPassword=(md5(password));
     let userNameExists=false;
     con.query(`SELECT * FROM accounts WHERE userName='${managerName}'`, function (err, result, fields) {
     if (err) throw err;
       const managerID=result[0].id;
-      console.log(managerID);
+   
 
       var sql = `INSERT INTO accounts (userName,fullName,companyName,phoneNumber,email,userPassword,managerID) VALUES ('${userName}','${fullName}','${companyName}','${phoneNumber}','${email}','${encPassword}','${managerID}')`;
       con.query(sql, function (err, result) {
         if (err) throw err;
-        console.log("1 record inserted");
+
   
       });
     
@@ -206,10 +196,10 @@ router.get('/validateLink',function(req,res){
   
   router.post('/signin',(req,res)=>{
   
-    // console.log(req.body)
+
     const {email,password}=req.body;
     const encPassword=(md5(password));
-    console.log(password,encPassword);
+
     let token=null;
     let loginCorrect=false;
     con.query(`SELECT * FROM accounts WHERE email='${email}' AND userPassword='${encPassword}'`, function (err, result, fields) {
@@ -220,10 +210,10 @@ router.get('/validateLink',function(req,res){
       const accessToken = jwt.sign({email:email}, process.env.JWT_KEY);
       token=accessToken;
       res.status(200).json(token);
-      // console.log(token);
+
     }
     else{
-      console.log("login faild");
+ 
       res.status(400).json();
     }
     
@@ -270,7 +260,7 @@ router.get('/validateLink',function(req,res){
     let emailExists=false;
     con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
     if (err) throw err;
-    console.log(result);
+
     
     if(result!=0){
       const email=result[0].email;
@@ -283,8 +273,7 @@ router.get('/validateLink',function(req,res){
           res.status(400).json();
         }
       });
-      console.log(linkToken);
-      console.log(email);
+  
       
       
           //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
