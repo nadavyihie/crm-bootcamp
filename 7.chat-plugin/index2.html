@@ -9,13 +9,14 @@
       #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
       #input:focus { outline: none; }
       #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-
+      #istyping{width: 100%;height:10vh;background-color: #333;color: white;}
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
     </style>
   </head>
   <body>
+    <div id=istyping></div>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
@@ -26,14 +27,16 @@
 
     <script>// set-up a connection between the client and the server
         var socket = io.connect();   
-//         // let's assume that the client page, once rendered, knows what room it wants to join
-        var room = "abc123";
-        
-        socket.emit('join_room', room);
+        var room="";
 
         var messages = document.getElementById('messages');
   var form = document.getElementById('form');
   var input = document.getElementById('input');
+  var istyping = document.getElementById('istyping');
+
+  input.addEventListener('onkeydown',()=>{
+  socket.emit('typing',room);
+})
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -42,12 +45,20 @@
       input.value = '';
     }
   });
-
+  socket.emit('joinClientToRoom');
+          socket.on('sendRoomToParticipants',(clientRoom)=>{
+            room=clientRoom;
+          })
   socket.on('message', function(msg) {
     var item = document.createElement('li');
     item.textContent = msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+  });
+
+
+  socket.on('isTyping', function() {
+    istyping.innerHTML="Typing..."
   });
 //         socket.on('message', function(data) {
 //            console.log('Incoming messming message:', data);

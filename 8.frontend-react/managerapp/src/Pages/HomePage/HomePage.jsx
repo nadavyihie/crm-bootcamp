@@ -48,6 +48,7 @@ function HomePage(props) {
     <Link className={chosenOption=='Client rentals'?"topNavItemChosen":"topNavItem"} to="/rentals" onClick={()=>{highlightOption("Client rentals")}}> Client rentals</Link>
     <Link className={chosenOption=='Generate link'?"topNavItemChosen":"topNavItem"} to="/generatelink" onClick={()=>{highlightOption("Generate link")}}>Generate link</Link>
   </div>:null}
+  {<Link className={chosenOption=='chats'?"topNavItemChosen":"topNavItem"} to="/chats" onClick={()=>{highlightOption("chats")}}><IoGameController className='icon'/>Chats</Link>}
 
        
           

@@ -9,13 +9,14 @@
       #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
       #input:focus { outline: none; }
       #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-
+      #istyping{width: 100%;height:10vh;background-color: #333;color: white;}
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
     </style>
   </head>
   <body>
+    <div id=istyping></div>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
@@ -27,11 +28,22 @@
     <script>
         var socket = io.connect();   
         var room ="";
+        socket.emit("crmListening");
+        socket.on('sendRoomToParticipants',(client_room)=>{
+    
+    room=client_room;
+    socket.emit('joinCrmToRoom',room);
+  })
         
         var messages = document.getElementById('messages');
   var form = document.getElementById('form');
   var input = document.getElementById('input');
+  var istyping = document.getElementById('istyping');
 
+
+input.addEventListener('onkeydown',()=>{
+  socket.emit('typing',room);
+})
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     if (input.value) {
@@ -39,11 +51,7 @@
       input.value = '';
     }
   });
-  socket.on('new_client',function(client_room){
-      console.log(client_room);
-    room=client_room;
-    socket.emit('join_crm_to_room',room);
-  })
+
 
 
   socket.on('message', function(msg) {
@@ -52,6 +60,12 @@
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
+
+  socket.on('isTyping', function() {
+    istyping.innerHTML="Typing..."
+  });
+
+  
 
       </script>
 

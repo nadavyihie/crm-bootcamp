@@ -8,6 +8,7 @@ import Form from "../../Components/Form/Form.component";
 import Table from "../../Components/reactTable/Table"
 function ClientPortal(props) {
   const [option, setOption] = useState("");
+  const [showChat, setShowChat] = useState(false);
   const [rentalsData, setRentalsData] = useState([]);
   const [controller, setController] = useState("login");
   const [submitMsg, setSubmitMsg] = useState(["", ""]);
@@ -157,6 +158,7 @@ function ClientPortal(props) {
         <Table  styleName="clientRentalTable" columns={rentalColumns} data={rentalsData} />
       </div>:null}
         </div>
+        <div className='chat'>  <iframe width='100%' height='100%' src='http://localhost:9000/client-side'></iframe></div>
       </div>
     );
   }

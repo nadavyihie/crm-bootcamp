@@ -1,4 +1,0 @@
-(function($){$.fn.ZeroSpamDavidWalsh=function(){if(typeof ZeroSpamDavidWalsh.key=="undefined"){return this}
-if(!this.length){return this}
-this.attr("data-zerospam-davidwalsh","protected");if($('[name="zerospam_david_walsh_key"]',this).length){$('[name="zerospam_david_walsh_key"]',this).val(ZeroSpamDavidWalsh.key)}else{$('<input type="hidden" name="zerospam_david_walsh_key" value="'+ZeroSpamDavidWalsh.key+'" />').appendTo(this)}};$(function(){var selectors='#commentform, #registerform, .wpforms-form, .wpcf7-form';if(typeof ZeroSpamDavidWalsh.selectors!="undefined"&&ZeroSpamDavidWalsh.selectors){selectors+=','+ZeroSpamDavidWalsh.selectors}
-jQuery(selectors).ZeroSpamDavidWalsh()})})(jQuery)

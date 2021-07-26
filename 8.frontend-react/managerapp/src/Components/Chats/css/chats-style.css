@@ -1,0 +1,36 @@
+.chatsContainer{
+    display: flex;
+flex-direction: column;
+    margin-left: 17vw;
+}
+
+
+.chatDiv{
+    width: 40vw;
+
+    height: 50vh;
+}
+.chatsListContainer{
+
+    margin :2vh;
+
+    display: flex;
+  }
+  .chatsListContainer div{
+    color: rgb(52, 52, 52);
+    width: 10vw;
+    height: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  border-radius: 0.8vw;
+    margin-right: 0.5vw;
+    background-color: #eaeaea;
+    cursor: pointer;
+  }
+
+  .chatsListContainer div:focus{
+    background-color: #464EDB;
+    color: white;
+
+  }
