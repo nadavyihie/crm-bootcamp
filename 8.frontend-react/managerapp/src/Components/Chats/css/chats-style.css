@@ -1,14 +1,14 @@
 .chatsContainer{
     display: flex;
-flex-direction: column;
+flex-wrap: wrap;
     margin-left: 17vw;
 }
 
 
 .chatDiv{
-    width: 40vw;
-
-    height: 50vh;
+    width: 20vw;
+margin: 2vh;
+    height: 30vh;
 }
 .chatsListContainer{
 
