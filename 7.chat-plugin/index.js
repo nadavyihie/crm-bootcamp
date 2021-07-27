@@ -1,15 +1,27 @@
 var app = require('express')();
+const cors = require('cors');
+app.use(cors());
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var  tempCrmSocket="";
+// var io = require('socket.io')(http)
+ var io = require("socket.io")(http, {
+    cors: {
 
+      origin: ["http://localhost:3000"," http://localhost:9000"],
+    },
+  });
+    
+
+    
+
+var  tempCrmSocket="";
+var crmSocket="";
 var roomCount=1;
-app.get(`/crm-side`, function(req, res) {
+// app.get(`/crm-side`, function(req, res) {
  
    
-   res.sendfile(`index.html`);
+//    res.sendfile(`index.html`);
    
-});
+// });
 
 app.get('/client-side', function(req, res) {
    
@@ -23,19 +35,17 @@ app.get('/client-side', function(req, res) {
 
     socket.on('crmListening',()=>{
         console.log('crm is listening')
-        tempCrmSocket=socket;
+        crmSocket=socket;
     })
 
     socket.on('joinClientToRoom',()=>{
-        if(tempCrmSocket!=null){
         const tempRoom=`room-${roomCount}`;
         console.log("Join client to: ",tempRoom);
         socket.join(tempRoom);
-        tempCrmSocket.join(tempRoom);
+        crmSocket.join(tempRoom);
         io.to(tempRoom).emit('sendRoomToParticipants',tempRoom)
-        tempCrmSocket=null;
         roomCount++;
-        }
+        
        
     })
 
@@ -56,7 +66,7 @@ app.get('/client-side', function(req, res) {
     })
     socket.on('message',({room,message})=>{
         console.log(`room: ${room}, message: ${message}`);
-        socket.to(room).emit("message",message);
+        socket.to(room).emit("message",message,room);
     })
     
 

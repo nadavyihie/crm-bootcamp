@@ -1,47 +1,133 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
-    <style>
-      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+<style>
 
-      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-      #input:focus { outline: none; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-      #istyping{width: 100%;height:10vh;background-color: #333;color: white;}
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
-    </style>
+
+body {
+  display: flex;
+  margin: 0;
+ 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+#chatContainer{
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+
+  height: 100vh;
+}
+#roomsList{
+
+  background-color: aquamarine;
+  height: 100vh;
+  width: 50vw;
+}
+#form {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.25rem;
+ 
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  height: 3rem;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px);
+}
+#input {
+  border: none;
+  padding: 0 1rem;
+  flex-grow: 1;
+  border-radius: 2rem;
+  margin: 0.25rem;
+}
+#input:focus {
+  outline: none;
+}
+#form > button {
+  background: #333;
+  border: none;
+  padding: 0 1rem;
+  margin: 0.25rem;
+  border-radius: 3px;
+  outline: none;
+  color: #fff;
+}
+#titleMsg {
+  padding: 2vh;
+  width: 100%;
+  height: 10vh;
+  background-color: #333;
+  font-size: 80%;
+  color: red;
+}
+#messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#messages > li {
+  padding: 0.5rem 1rem;
+}
+#messages > li:nth-child(odd) {
+  background: #efefef;
+}
+
+
+
+</style>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="crm-style.css">
   </head>
+
+
+
+
+
+
+  
   <body>
-    <div id=istyping></div>
+    <div id=roomsList></div>
+  <div id=chatContainer>
+    <div id=titleMsg></div>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
-
+  </div>
 
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+        // var istyping=getElementById('istyping');
+        // istyping.innerHTML='Waiting for user...';
         var socket = io.connect();   
+        var rooms=[]
         var room ="";
         socket.emit("crmListening");
+      
         socket.on('sendRoomToParticipants',(client_room)=>{
     
     room=client_room;
     socket.emit('joinCrmToRoom',room);
+    rooms.push(room);
+    var item = document.createElement('li');
+    item.textContent = msg;
+    roomsList.appendChild(item);
+    titleMsg.innerHTML = "Client connected";
+    titleMsg.style.color = "Green";
   })
         
         var messages = document.getElementById('messages');
   var form = document.getElementById('form');
   var input = document.getElementById('input');
-  var istyping = document.getElementById('istyping');
 
+  var titleMsg = document.getElementById('titleMsg');
+  titleMsg.innerHTML = "Waiting for a client...";
 
-input.addEventListener('onkeydown',()=>{
+input.addEventListener('onkeyup',()=>{
   socket.emit('typing',room);
 })
   form.addEventListener('submit', function(e) {
