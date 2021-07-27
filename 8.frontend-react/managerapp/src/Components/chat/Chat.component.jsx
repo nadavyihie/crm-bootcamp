@@ -7,11 +7,13 @@ function Chat(props) {
   const [roomsTitle, setRoomsTitle] = useState([]);
   const [currentRoom, setCurrentRoom] = useState([]);
   const [roomsMsg, setRoomsMsg] = useState({});
-
+  const [userName, setUserName] = useState("");
   useEffect(() => {
     socket.emit("crmListening");
 
-    socket.on("sendRoomToParticipants", (client_room) => {
+
+    socket.on("sendRoomToParticipants", (client_room, userName) => {
+      
       socket.emit("joinCrmToRoom", client_room);
       setRoomsTitle((roomsTitle) => [
         ...roomsTitle,
@@ -20,30 +22,29 @@ function Chat(props) {
           onClick={() => {
             setCurrentRoom(client_room);
             setShowChat(true);
-            var messages = document.getElementById("messages");
-            if(messages!=null){
-                messages.innerHTML=""
-            }
-            
-            if (roomsMsg[client_room].messages.length != 0) {
-            
-              for (var element in roomsMsg[client_room].messages) {
+            setUserName(userName);
 
+            var messages = document.getElementById("messages");
+            if (messages != null) {
+              messages.innerHTML = "";
+            }
+
+            if (roomsMsg[client_room].messages.length != 0) {
+              for (var element in roomsMsg[client_room].messages) {
                 var item = document.createElement("li");
-                item.textContent = roomsMsg[client_room].messages[element].message;
+                item.textContent =
+                  roomsMsg[client_room].messages[element].message;
                 item.className =
-                roomsMsg[client_room].messages[element].type == "client"
+                  roomsMsg[client_room].messages[element].type == "client"
                     ? "clientMsg"
                     : "myMsg";
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
               }
             }
-          
-       
           }}
         >
-          {client_room}
+          {userName}
         </div>,
       ]);
 
@@ -51,13 +52,26 @@ function Chat(props) {
       roomMsg[client_room] = { messages: [] };
       setRoomsMsg(roomMsg);
     });
-
+    socket.on("isTyping",(room)=>{
+      var tempCurrentRoom = "";
+      setCurrentRoom((current) => {
+        tempCurrentRoom = current;
+      });
+      setCurrentRoom(tempCurrentRoom);
+      if(tempCurrentRoom==room){
+      let typing=document.querySelector('.typing')
+      typing.innerHTML="is typing..."
+      setTimeout(() => {
+        typing.innerHTML=""
+      }, 1500);
+    }
+    })
     socket.on("message", function (msg, room) {
       var tempCurrentRoom = "";
       setCurrentRoom((current) => {
         tempCurrentRoom = current;
       });
-
+      setCurrentRoom(tempCurrentRoom);
       var roomMsg = roomsMsg;
       roomMsg[room].messages.push({ message: msg, type: "client" });
       setRoomsMsg(roomMsg);
@@ -77,10 +91,9 @@ function Chat(props) {
     e.preventDefault();
 
     if (e.target.input.value) {
-    
       var roomMsg = roomsMsg;
-      console.log(currentRoom)
-      roomMsg[currentRoom]['messages'].push({
+      console.log(currentRoom);
+      roomMsg[currentRoom]["messages"].push({
         message: e.target.input.value,
         type: "crm",
       });
@@ -88,8 +101,10 @@ function Chat(props) {
 
       var messages = document.getElementById("messages");
       var item = document.createElement("li");
+      var tempDiv = document.createElement("div");
       item.textContent = e.target.input.value;
       item.className = "myMsg";
+
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
 
@@ -106,7 +121,11 @@ function Chat(props) {
       <div className="rentalsMenu">{roomsTitle}</div>
       {showChat ? (
         <div className="chatBox">
-          <div id="titleMsg"></div>
+          <div id="titleMsg">
+            <div className="username">{userName}</div>
+            <div className='typing'></div>
+          </div>
+
           <ul id="messages"></ul>
           <form id="form" onSubmit={sendMessage}>
             <input id="input" autocomplete="off" />

@@ -17,6 +17,7 @@ function ClientPortal(props) {
   const [loading, setLoading] = useState(true);
   const [clientDetails, setClientDetails] = useState([]);
   useEffect(() => {
+
     axios
       .get("http://localhost:8005/users/readaccount", {
         headers: {
@@ -33,6 +34,7 @@ function ClientPortal(props) {
       .catch(function (error) {
         console.log(error);
       });
+  
   }, []);
 
   const fetchRentals = () => {
@@ -72,6 +74,8 @@ function ClientPortal(props) {
           "#F8D7DA",
         ]);
       });
+
+
   };
 
   const inputs = [
@@ -158,7 +162,7 @@ function ClientPortal(props) {
         <Table  styleName="clientRentalTable" columns={rentalColumns} data={rentalsData} />
       </div>:null}
         </div>
-        <div className='chat'>  <iframe width='100%' height='100%' src='http://localhost:9000/client-side'></iframe></div>
+        <div className='chat'>  <iframe src={`http://localhost:9000/client-side?username=${clientDetails[0].fullName}`} id="chatIframe" width='100%' height='100%' ></iframe></div>
       </div>
     );
   }

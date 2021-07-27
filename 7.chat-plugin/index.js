@@ -38,12 +38,12 @@ app.get('/client-side', function(req, res) {
         crmSocket=socket;
     })
 
-    socket.on('joinClientToRoom',()=>{
+    socket.on('joinClientToRoom',(userName)=>{
         const tempRoom=`room-${roomCount}`;
         console.log("Join client to: ",tempRoom);
         socket.join(tempRoom);
         crmSocket.join(tempRoom);
-        io.to(tempRoom).emit('sendRoomToParticipants',tempRoom)
+        io.to(tempRoom).emit('sendRoomToParticipants',tempRoom,userName)
         roomCount++;
         
        
@@ -52,7 +52,7 @@ app.get('/client-side', function(req, res) {
     socket.on('typing',(room)=>{
       console.log('typinggggg')
        
-        socket.to(room).emit('isTyping');
+        socket.to(room).emit('isTyping',room);
         })
        
     

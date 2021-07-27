@@ -35,7 +35,7 @@
   var titleMsg = document.getElementById('titleMsg');
 
 
-  input.addEventListener('onkeydown',()=>{
+  input.addEventListener('keyup',()=>{
   socket.emit('typing',room);
 })
 
@@ -46,7 +46,10 @@
       input.value = '';
     }
   });
-  socket.emit('joinClientToRoom');
+  const urlParams = new URLSearchParams(window.location.search);
+const myParam = urlParams.get('username');
+console.log(myParam);
+  socket.emit('joinClientToRoom',myParam);
           socket.on('sendRoomToParticipants',(clientRoom)=>{
             room=clientRoom;
             titleMsg.innerHTML='Connected to crm';
