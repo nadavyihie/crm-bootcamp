@@ -9,7 +9,6 @@ flex-direction: column;
     background-image: url('chat-background.jpg');
     background-size:cover;
     width: 40vw;
-    /* height:60vh; */
 }
 
 .rentalsMenu {
@@ -89,7 +88,7 @@ margin-bottom: 1vh;
   height: 50vh;
   padding: 0;
 }
-#messages > li {
+#messages > div {
     margin-bottom: 1vh;
   padding: 0.5rem 1rem;
 }

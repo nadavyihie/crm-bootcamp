@@ -3,24 +3,88 @@
   <head>
     <title>Socket.IO chat</title>
     <style>
-      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      body {
+       
+ margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .chatBox{
+        background-image: url("css/chat-background.jpg");  
+}
 
       #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
       #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
       #input:focus { outline: none; }
       #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-      #titleMsg{padding:1vh;width: 100%;height:4vh;background-color: #333;color: white;}
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
+      #titleMsg {
+display: flex;
+flex-direction: column;
+
+margin-bottom: 1vh;
+  width: 100%;
+  height: 15vh;
+  background-color: #333;
+  color: white;
+}
+.username{
+  font-size: 80%;
+  margin: 1vh;
+}
+#messages {
+
+overflow: auto;
+list-style-type: none;
+margin: 0;
+
+padding: 0;
+}
+#messages > div {
+  margin-bottom: 1vh;
+padding: 0.5rem 1rem;
+}
+#typing{
+  color: #fff;
+  font-size: 70%;
+  margin-left: 1vh;
+}
+.myMsg{
+  margin-left: auto; 
+  margin-right: 1vw;
+    width: fit-content;
+    background-color: #D9FFBB;
+    border-radius: 2vh;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.crmMsg{
+    
+    margin-left: 1vw;
+    width: fit-content;
+    background-color: #f5f5f5;
+    border-radius: 2vh;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+/* #messages > li:nth-child(odd) {
+background: #efefef;
+} */
+
     </style>
   </head>
   <body>
-    <div id=titleMsg></div>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <div className="chatBox">
+      <div id="titleMsg">
+       
+        <div className="username">Store</div>
+       <div id=typing></div>
+      </div>
+
+      <div id="messages">
+          </div>
+  
+      </div>
+      <form id="form">
+        <input id="input" autocomplete="off" />
+        <button >Send</button>
+      </form>
+    </div>
 
 
     <script src="/socket.io/socket.io.js"></script>
@@ -32,7 +96,6 @@
         var messages = document.getElementById('messages');
   var form = document.getElementById('form');
   var input = document.getElementById('input');
-  var titleMsg = document.getElementById('titleMsg');
 
 
   input.addEventListener('keyup',()=>{
@@ -42,8 +105,14 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     if (input.value) {
+      var item = document.createElement('div');
+    item.textContent = input.value;
+    item.className='myMsg'
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
       socket.emit('message',{room:room, message:input.value});
       input.value = '';
+
     }
   });
   const urlParams = new URLSearchParams(window.location.search);
@@ -53,19 +122,23 @@ console.log(userName);
   socket.emit('joinClientToRoom',userName,phoneNumber);
           socket.on('sendRoomToParticipants',(clientRoom)=>{
             room=clientRoom;
-            titleMsg.innerHTML='Connected to crm';
-            titleMsg.style.color = "Green";
+       
           })
   socket.on('message', function(msg,room) {
-    var item = document.createElement('li');
+    var item = document.createElement('div');
     item.textContent = msg;
+    item.className='crmMsg'
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
 
 
   socket.on('isTyping', function() {
-    titleMsg.innerHTML="Typing..."
+   let typing=document.getElementById("typing")
+   typing.innerHTML="is typing..."
+    setTimeout(() => {
+      typing.innerHTML=""
+    }, 1000);
   });
 
       </script>
