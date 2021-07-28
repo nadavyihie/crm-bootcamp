@@ -162,7 +162,7 @@ function ClientPortal(props) {
         <Table  styleName="clientRentalTable" columns={rentalColumns} data={rentalsData} />
       </div>:null}
         </div>
-        <div className='chat'>  <iframe src={`http://localhost:9000/client-side?username=${clientDetails[0].fullName}`} id="chatIframe" width='100%' height='100%' ></iframe></div>
+        <div className='chat'>  <iframe src={`http://localhost:9000/client-side?username=${clientDetails[0].fullName}&phoneNumber=${clientDetails[0].phoneNumber}`} id="chatIframe" width='100%' height='100%' ></iframe></div>
       </div>
     );
   }

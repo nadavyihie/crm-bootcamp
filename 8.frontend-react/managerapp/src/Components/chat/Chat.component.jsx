@@ -15,6 +15,39 @@ function Chat(props) {
     socket.on("sendRoomToParticipants", (client_room, userName) => {
       
       socket.emit("joinCrmToRoom", client_room);
+            axios
+        .get(`http://localhost:9090/rooms/getbyname?name=${client_room}`)
+        .then((res) => {
+          var roomMsg = roomsMsg;
+          if (res.data == null) {
+          axios
+        .get(`http://localhost:9090/rooms/getbyname?name=${client_room}`)
+        .then((res) => {
+          var roomMsg = roomsMsg;
+          if (res.data == null) {
+            axios
+              .post(`http://localhost:9090/rooms`, {
+                name: client_room,
+                messages: [],
+              })
+              .then((res) => {})
+              .catch((err) => {
+                console.log(err);
+              });
+              roomMsg[client_room] = { messages: [] };
+              setRoomsMsg(roomMsg);
+
+          } else {
+            roomMsg[client_room] = { messages: res.data['messages']};
+            console.log(roomMsg[client_room])
+            setRoomsMsg(roomMsg);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+
       setRoomsTitle((roomsTitle) => [
         ...roomsTitle,
         <div
@@ -73,7 +106,8 @@ function Chat(props) {
       });
       setCurrentRoom(tempCurrentRoom);
       var roomMsg = roomsMsg;
-      roomMsg[room].messages.push({ message: msg, type: "client" });
+      var dateNow=new Date();
+      roomMsg[room].messages.push({ message: msg, type: "client" ,time:`${dateNow.getDate()}.${dateNow.getMonth()}.${dateNow.getFullYear()} ${dateNow.getHours}:${dateNow.getMinutes}`});
       setRoomsMsg(roomMsg);
 
       if (room == tempCurrentRoom) {
@@ -92,10 +126,10 @@ function Chat(props) {
 
     if (e.target.input.value) {
       var roomMsg = roomsMsg;
-      console.log(currentRoom);
+      const dateNow=new Date();
       roomMsg[currentRoom]["messages"].push({
         message: e.target.input.value,
-        type: "crm",
+        type: "crm",time:`${dateNow.getDate()}.${dateNow.getMonth()}.${dateNow.getFullYear()} ${dateNow.getHours}:${dateNow.getMinutes}`
       });
       setRoomsMsg(roomMsg);
 

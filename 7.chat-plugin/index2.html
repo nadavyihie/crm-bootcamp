@@ -47,9 +47,10 @@
     }
   });
   const urlParams = new URLSearchParams(window.location.search);
-const myParam = urlParams.get('username');
-console.log(myParam);
-  socket.emit('joinClientToRoom',myParam);
+const userName = urlParams.get('username');
+const phoneNumber = urlParams.get('phoneNumber');
+console.log(userName);
+  socket.emit('joinClientToRoom',userName,phoneNumber);
           socket.on('sendRoomToParticipants',(clientRoom)=>{
             room=clientRoom;
             titleMsg.innerHTML='Connected to crm';

@@ -38,13 +38,13 @@ app.get('/client-side', function(req, res) {
         crmSocket=socket;
     })
 
-    socket.on('joinClientToRoom',(userName)=>{
-        const tempRoom=`room-${roomCount}`;
+    socket.on('joinClientToRoom',(userName,phoneNumber)=>{
+        const tempRoom=phoneNumber;
         console.log("Join client to: ",tempRoom);
         socket.join(tempRoom);
         crmSocket.join(tempRoom);
         io.to(tempRoom).emit('sendRoomToParticipants',tempRoom,userName)
-        roomCount++;
+  
         
        
     })
