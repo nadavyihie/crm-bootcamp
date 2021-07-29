@@ -8,9 +8,10 @@ function Chat(props) {
   const [roomsTitle, setRoomsTitle] = useState([]);
   const [currentRoom, setCurrentRoom] = useState([]);
   const [roomsMsg, setRoomsMsg] = useState({});
+  const [roomsMsgHistory, setRoomsMsgHistory] = useState({});
   const [userName, setUserName] = useState("");
-const [isTyping,setIsTyping]=useState(false);
-const [msgList,setMsgList]=useState([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [msgList, setMsgList] = useState([]);
   useEffect(() => {
     socket.emit("crmListening");
 
@@ -25,6 +26,7 @@ const [msgList,setMsgList]=useState([]);
             axios
               .post(`http://localhost:9090/rooms`, {
                 name: client_room,
+                userName: userName,
                 messages: [],
               })
               .then((res) => {})
@@ -34,8 +36,8 @@ const [msgList,setMsgList]=useState([]);
             roomMsg[client_room] = { messages: [] };
             setRoomsMsg(roomMsg);
           } else {
-            roomMsg[client_room] = { messages: res.data["messages"] };
-            console.log(roomMsg[client_room]);
+            roomsMsgHistory[client_room] = { messages: res.data["messages"] };
+
             setRoomsMsg(roomMsg);
           }
         })
@@ -43,20 +45,22 @@ const [msgList,setMsgList]=useState([]);
           console.log(err);
         });
 
-      setRoomsTitle((roomsTitle) => [
-        ...roomsTitle,
-        <div
-          tabindex="1"
-          onClick={() => {
-            setCurrentRoom(client_room);
-            setShowChat(true);
-            setUserName(userName);
-          }}
-        >
-          {userName}
-        </div>,
-      ]);
+      let tempRoomsTitle = roomsTitle;
+      let existRoom = false;
+      for (let roomTitle of tempRoomsTitle) {
+        if (roomTitle.room == client_room) existRoom = true;
+      }
+      if (!existRoom) {
+        tempRoomsTitle.push({ userName: userName, room: client_room });
 
+        setRoomsTitle([]);
+
+        setTimeout(() => {
+          setRoomsTitle(tempRoomsTitle);
+        }, 10);
+      }
+
+      console.log(roomsTitle);
       var roomMsg = roomsMsg;
       roomMsg[client_room] = { messages: [] };
       setRoomsMsg(roomMsg);
@@ -70,7 +74,7 @@ const [msgList,setMsgList]=useState([]);
       if (tempCurrentRoom == room) {
         setIsTyping(true);
         setTimeout(() => {
-       setIsTyping(false);
+          setIsTyping(false);
         }, 1500);
       }
     });
@@ -82,71 +86,106 @@ const [msgList,setMsgList]=useState([]);
       setCurrentRoom(tempCurrentRoom);
       var roomMsg = roomsMsg;
       var dateNow = new Date();
-      roomMsg[room].messages.push({
+      let tempMsg = {
         message: msg,
         type: "client",
-        time: `${dateNow.getDate()}.${dateNow.getMonth()}.${dateNow.getFullYear()} ${
-          dateNow.getHours
-        }:${dateNow.getMinutes}`,
-      });
+        time: `${dateNow.getDate()}.${dateNow.getMonth()+1}.${dateNow.getFullYear()} ${dateNow.getHours()}:${dateNow.getMinutes()}`,
+      };
+      roomMsg[room].messages.push(tempMsg);
       setRoomsMsg(roomMsg);
+      axios
+        .put(`http://localhost:9090/rooms/${room}`, tempMsg)
+        .then(() => {})
+        .catch((err) => {
+          console.log(err);
+        });
     });
+
+
   }, []);
 
   const sendMessage = (e) => {
     e.preventDefault();
 
     if (e.target.input.value) {
-    
       socket.emit("message", {
         room: currentRoom,
         message: e.target.input.value,
       });
       let roomMsg = roomsMsg;
       const dateNow = new Date();
-      roomMsg[currentRoom]["messages"].push({
+      const tempMsg = {
         message: e.target.input.value,
         type: "crm",
-        time: `${dateNow.getDate()}.${dateNow.getMonth()}.${dateNow.getFullYear()} ${
-          dateNow.getHours
-        }:${dateNow.getMinutes}`,
-      });
-      setRoomsMsg([]);
+        time: `${dateNow.getDate()}.${dateNow.getMonth()+1}.${dateNow.getFullYear()} ${dateNow.getHours()}:${dateNow.getMinutes()}`,
+      };
+      roomMsg[currentRoom]["messages"].push(tempMsg);
+      setRoomsMsg({});
       setTimeout(() => {
         setRoomsMsg(roomMsg);
       }, 10);
       e.target.input.value = "";
+      axios
+        .put(`http://localhost:9090/rooms/${currentRoom}`, tempMsg)
+        .then(() => {})
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
-  const sendTyping=()=>{
-    socket.emit('typing',currentRoom);  }
+  const sendTyping = () => {
+    socket.emit("typing", currentRoom);
+  };
 
   return (
     <div className="chatsContainer">
-      <div className="rentalsMenu">{roomsTitle}</div>
+      <div className="rentalsMenu">
+        {roomsTitle.map((roomTitle) => (
+          <div
+            tabindex="1"
+            onClick={() => {
+              setCurrentRoom(roomTitle.room);
+              setShowChat(true);
+              setUserName(roomTitle.userName);
+            }}
+          >
+            {roomTitle.userName}
+          </div>
+        ))}
+      </div>
       {showChat ? (
         <div className="chatBox">
           <div id="titleMsg">
+            <div style={{width:'1vw',height:'2vh',backgroundColor:'green',borderRadius:'50%',marginLeft:'1vw',position:'absolute',marginTop:'1.5vh'}}></div>
             <div className="username">{userName}</div>
-            <div className="typing">{isTyping?'is typing...':null}</div>
+            <div className="typing">{isTyping ? "is typing..." : null}</div>
           </div>
 
           <div id="messages">
+            {roomsMsgHistory[currentRoom]?.messages.map((msg) => (
+              <div
+                style={{ opacity: 0.6 }}
+                className={msg.type == "client" ? "clientMsg" : "myMsg"}
+              >
+                {msg.message}
+                <div className="dateMsg"> {msg.time}</div>
+              </div>
+            ))}
+
             {roomsMsg[currentRoom]?.messages.map((msg) => (
               <div className={msg.type == "client" ? "clientMsg" : "myMsg"}>
                 {msg.message}
+                <div className="dateMsg"> {msg.time.split(" ")[1]}</div>
               </div>
             ))}
           </div>
           <form id="form" onSubmit={sendMessage}>
-            <input id="input" autocomplete="off" onKeyUp={sendTyping}/>
-            <button >Send</button>
+            <input id="input" autocomplete="off" onKeyUp={sendTyping} />
+            <button>Send</button>
           </form>
         </div>
-
       ) : null}
-      
     </div>
   );
 }

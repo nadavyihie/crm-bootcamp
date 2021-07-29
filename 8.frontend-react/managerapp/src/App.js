@@ -23,6 +23,7 @@ import GenerateLink from "./Components/GenerateLink/GenerateLink";
 import Rentals from "./Components/Rentals/Rentals";
 import { DialogContent } from "@material-ui/core";
 import Chats from "./Components/Chats/Chats.component";
+import Chat from "./Components/chat/Chat.component";
 
 
 
@@ -125,8 +126,11 @@ function App() {
           {tokenExists ?<Games userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>        
           <Route exact path="/chats">
-          {tokenExists ?<Chats userDetails={userDetails}/>:<Redirect to='/login'/>}
+          {tokenExists ?<Chat userDetails={userDetails}/>:<Redirect to='/login'/>}
           </Route>    
+          <Route exact path="/chatsHistory">
+          {tokenExists ?<Chats userDetails={userDetails}/>:<Redirect to='/login'/>}
+          </Route>  
         </Switch>
     
     </Router>

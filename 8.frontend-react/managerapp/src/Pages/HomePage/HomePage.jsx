@@ -21,6 +21,7 @@ import {
 function HomePage(props) {
   const [chosenOption,setChosenOption]=useState("home");
   const [showClientMenu,setShowClientMenu]=useState(false);
+  const [showChatMenu,setShowChatMenu]=useState(false);
     const logOut = () => {
         localStorage.removeItem("token");
         window.location.href='/';
@@ -48,7 +49,13 @@ function HomePage(props) {
     <Link className={chosenOption=='Client rentals'?"topNavItemChosen":"topNavItem"} to="/rentals" onClick={()=>{highlightOption("Client rentals")}}> Client rentals</Link>
     <Link className={chosenOption=='Generate link'?"topNavItemChosen":"topNavItem"} to="/generatelink" onClick={()=>{highlightOption("Generate link")}}>Generate link</Link>
   </div>:null}
-  {<Link className={chosenOption=='chats'?"topNavItemChosen":"topNavItem"} to="/chats" onClick={()=>{highlightOption("chats")}}><IoGameController className='icon'/>Chats</Link>}
+
+  <div onClick={()=>{setShowChatMenu(showChatMenu?false:true)}} className="topNavItem"><ImUsers className='icon'/>Chats {!showChatMenu?<MdArrowDropDown/>:<MdArrowDropUp/>}</div>
+  {showChatMenu?
+  <div className='dropdown-content'>
+    <Link className={chosenOption=='Chat online'?"topNavItemChosen":"topNavItem"} to="/chats" onClick={()=>{highlightOption("Chat online")}}> Chat online</Link>
+    <Link className={chosenOption=='Chats history'?"topNavItemChosen":"topNavItem"} to="/chatsHistory" onClick={()=>{highlightOption("Chats history")}}>Chats history</Link>
+  </div>:null}
 
        
           
