@@ -27,20 +27,16 @@ const jwtVerify=(token,tokenSec)=>{
     return 401;
   }
 }
-router.post('/resetpassword',function(req,res){
+router.post('/resetpassword', async function(req,res){
 
-  const newEncPassword=(md5(req.body.password));
-  var sql=`UPDATE accounts SET resetPassToken=NULL,userPassword='${newEncPassword}' where email='${req.body.email}'`;
-  con.query(sql, function (err, result, fields) {
-    if (err) throw err;
-    if(result!=0){
-      
-      res.status(200).json({"message":"Your password has been successfully reset"});
-    }
-    else{
-      res.status(401).json({"message" : "Can not reset password right now, try again later."});
-    }
-  });
+  try{
+    const result=await UserServices.resetPassword(req.body.password,req.body.email)
+    res.status(200).json();
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json();
+  }
   });
   
 router.get('/validateLink',function(req,res){

@@ -32,6 +32,8 @@ app.get('/client-side', function(req, res) {
  io.on('connection', (socket) => {
     console.log('a user connected');
 
+    socket.on
+
 
     socket.on('crmListening',()=>{
         console.log('crm is listening')

@@ -11,7 +11,6 @@ import "./css/games-style.css";
 import "../../css/button-style.css"
 import '../../css/searchbox-style.css';
 
-
 function Games(props) {
 
 
@@ -119,6 +118,10 @@ function Games(props) {
 
   }
   useEffect(() => {
+    window.addEventListener('click',event=>{
+      console.log(event)
+    })
+  
     readGames();
   }, []);
 
@@ -202,6 +205,7 @@ function Games(props) {
     setOpen(true);
     setInputValueStr(game);
   };
+
 
   if (loading) {
     return <Loading />;
