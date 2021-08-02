@@ -118,9 +118,7 @@ function Games(props) {
 
   }
   useEffect(() => {
-    window.addEventListener('click',event=>{
-      console.log(event)
-    })
+
   
     readGames();
   }, []);

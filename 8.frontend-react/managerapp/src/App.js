@@ -25,7 +25,7 @@ import { DialogContent } from "@material-ui/core";
 import Chats from "./Components/Chats/Chats.component";
 import Chat from "./Components/chat/Chat.component";
 
-import { initEventListener } from "./event-handler/eventListenerPlugin";
+import { bindPluginEvents } from "./event-handler/eventListenerPlugin";
 
 function App() {
 
@@ -50,7 +50,7 @@ function App() {
           // console.log(response.status);
        
           setUserDetails(response.data);
-          initEventListener(response.data[0].managerid==-1?response.data[0].id:response.data[0].managerid, window);
+          bindPluginEvents(window);
           setTokenExists(true);
           setLoading(false);
       })
