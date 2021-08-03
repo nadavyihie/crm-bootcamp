@@ -1,56 +1,53 @@
 import axios from "axios";
+const serverURL = "http://localhost:9500/events/";
+let pageWindow = [];
+let accountID="";
+let eventsArr = [];
+const bindPluginEvents = async (pageWin,accID) => {
 
-let pageWindow=[];
-
-let eventsArr = []
-const bindPluginEvents = async (pageWin) => {
-    pageWindow=pageWin
+  pageWindow = pageWin;
+  accountID=accID;
   try {
-    
     addEvents();
-
+    setInterval(() => {
+      //  saveEvent();
+      eventsArr = [];
+    }, 10000);
   } catch (err) {
     console.log(err);
   }
 };
 
 const addEvents = () => {
+  //load window time
   pageWindow.addEventListener("click", (event) => {
-    eventsArr.push({type:'click',event:{time:new Date(),className:event.target.className,textContent:event.target.innerText,URL:event.target.baseURI}});
-    console.dir(eventsArr)
+    let url=(event.target.baseURI).split('3000/');
+    let page=url[1];
+
+    eventsArr.push({
+      "type": "click",
+      "accountID":accountID,
+      "event": {
+        "time": new Date(),
+        "className": event.target.className,
+        "textConten": event.target.innerText,
+        "page": page?page:'home'
+      },
+    });
   });
 
-  pageWindow.addEventListener('beforeunload',(event)=>{
-    // saveEvents();
-  })
+  
+};
+const saveEvent = () => {
+  
+  axios
+    .post(serverURL + "addEvent", eventsArr)
+    .then((res) => {
+      console.log("Events array successfully saved");
+    })
+    .catch((err) => {
+      console.log("Cannot save the events array right now");
+    });
 };
 
-// const saveEvents = () => {
-//   axios
-//     .put(`http://localhost:9090/eventHandler/${accountID}`, {
-//       accountID: accountID,
-//     })
-//     .then((res) => {})
-//     .catch((err) => {
-//       throw err;
-//     });
-// };
-
-// const loadEvents = async () => {
-//   axios
-//     .get(
-//       `http://localhost:9090/eventHandler/getbyaccountid?accountID=${accountID}`
-//     )
-//     .then((res) => {
-//       if (res.data == null) {
-//         //  createEventsArr(accountID);
-//       } else {
-//         eventsArr = res.data.eventsArr;
-//       }
-//     })
-//     .catch((err) => {
-//       throw err;
-//     });
-// };
-
-export { bindPluginEvents};
+export { bindPluginEvents };

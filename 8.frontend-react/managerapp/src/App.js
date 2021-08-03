@@ -50,7 +50,7 @@ function App() {
           // console.log(response.status);
        
           setUserDetails(response.data);
-          bindPluginEvents(window);
+          bindPluginEvents(window,response.data[0].managerID==-1?response.data[0].id:response.data[0].managerID);
           setTokenExists(true);
           setLoading(false);
       })

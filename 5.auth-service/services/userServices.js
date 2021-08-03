@@ -117,6 +117,7 @@ const readAccountByEmail = async (email) => {
     if (details != 0) {
       // userDetails= User(details[0].id,details[0].email,details[0].password,details[0].fullName,details[0].companyName,details[0].managerID);
       userDetails = details;
+      console.log(userDetails)
     }
     // return userDetails;
   } catch (err) {
