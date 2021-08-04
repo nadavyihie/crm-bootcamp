@@ -9,7 +9,7 @@ function ResetPassword(props) {
     const {token}=useParams();
   
     const [email,setEmail]=useState("");
-    const [validToken,setValidToken]=useState(false);
+    const [validToken,setValidToken]=useState(true);
     const [loading,setLoading]=useState(true);
     const [submitMsg,setSubmitMsg]=useState(["",""]); 
 
@@ -24,9 +24,9 @@ function ResetPassword(props) {
         .then(function (response) {
             
           
-        
+            console.log(response.data.email)
             setEmail(response.data.email);
-            setValidToken(true);
+  
             
         })
         .catch(function (error) {

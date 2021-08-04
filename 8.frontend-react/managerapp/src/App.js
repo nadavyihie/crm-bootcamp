@@ -81,9 +81,7 @@ function App() {
       
     <Switch>
   
-      <Route exact path='/resetpassword/:token'>
-              <ResetPassword/> 
-            </Route>
+
             <Route exact path="/signup/:token">
               
            <SignIn signAction="invited" />
@@ -97,6 +95,10 @@ function App() {
           
           <Route exact path="/forgotpassword">
           {tokenExists?<Redirect to='/'/>: <ForgotPassword />}
+    
+          </Route>
+          <Route exact path="/resetpassword/:token">
+          <ResetPassword />
     
           </Route>
 

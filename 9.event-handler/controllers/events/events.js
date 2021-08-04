@@ -1,34 +1,20 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
-const eventServices=require('../../services/eventsServices')
 var redis = require("redis");
 var publisher = redis.createClient();
-
+var subscriber = redis.createClient();
 
 
 
 
 
   router.post('/addEvent', async (req,res)=>{
-
-    publisher.publish("notification", function(){
-      process.exit(0);
-
-    })
-
-
-   const eventsArr=req.body;
-   try{
-     await eventServices.addEvent(eventsArr)
-    res.status(200).json({message:"Document created successfully"})
-   }
-   catch(err){
-     res.status(500).json();
-
-   }
+    const eventsArr=req.body
+    publisher.publish("addEventsArr", JSON.stringify(eventsArr), function(){
+     res.status(200).json({"Message":"Events array has been sent!"});
   })
-
+  })
   router.get('/',(req,res)=>{
 
     client.search({

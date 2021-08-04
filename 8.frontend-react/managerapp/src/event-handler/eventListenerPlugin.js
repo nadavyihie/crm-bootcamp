@@ -10,7 +10,8 @@ const bindPluginEvents = async (pageWin,accID) => {
   try {
     addEvents();
     setInterval(() => {
-      //  saveEvent();
+      if(eventsArr.length>0)
+        saveEvent();
       eventsArr = [];
     }, 10000);
   } catch (err) {

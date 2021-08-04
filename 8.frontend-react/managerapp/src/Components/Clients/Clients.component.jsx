@@ -9,7 +9,8 @@ const  fetchClients =  async() => {
   try {
       const res=  await axios.post("http://localhost:991/clients/readAccountClients/",{id:props.userDetails[0].id});
   //   console.log(res)
-      return res;
+
+  return res;
    } catch (err) {
       throw err;
    }

@@ -4,7 +4,7 @@ const app = express();
 const mysql = require('mysql');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-
+var Mailgun = require('mailgun-js');
 const UserServices=require("../../services/userServices");
 var con = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -41,13 +41,11 @@ router.post('/resetpassword', async function(req,res){
   });
   
 router.get('/validateLink',function(req,res){
-
   con.query(`SELECT * FROM accounts WHERE resetPassToken='${req.headers.token}'`, function (err, result, fields) {
     if (err) throw err;
     if(result!=0){
-
-      return res.status(200).json({"message": "I'm Alive!"
-      ,"email":result[0].email});
+      console.log("blaaaaa")
+       res.status(200).json({"email":result[0].email});
     }
     else{
       res.status(401).json({"message" : "not authenticated!!!"});
@@ -274,7 +272,7 @@ router.get('/validateLink',function(req,res){
       
       
           //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
-          var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: "mail.workiz.dev"});
+          var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: process.env.MAIL_DOMAIN});
           var msgdata = {
           //Specify email data
             from: 'gamestation@gmail.com',
