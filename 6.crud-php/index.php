@@ -34,9 +34,9 @@ try
 
 } 
 catch(Exception $e) 
+
 {
-    header($_SERVER['SERVER_PROTOCOL'].$e->getMessage(), true, 500);
-    exit(json_encode([
-        "error"=>$e->getMessage()
-    ]));
+    http_response_code(500);
+exit;
+
 }

@@ -56,22 +56,28 @@ height: 18vh;
 }
 
 .smsStatusContainer{
-  width: 10vw;
+  width: 6vw;
+  margin-top: 1.4vh;
   background-color: green;
   display: flex;
   flex-direction: column;
 }
 .smsStatusItem{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid white;
   height: 15vh;
   
 }
 .smsStatusTitle{
 border: 1px solid white;
-height: 12vh;
+height: 6vh;
   margin-bottom: 0.8vh;
   margin-top: 0.6vh ;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 110%;
   font-weight: bold;
 }

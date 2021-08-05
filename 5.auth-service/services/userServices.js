@@ -8,6 +8,7 @@ var con = mysql.createConnection({
   database: "game_station",
 });
 
+
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");

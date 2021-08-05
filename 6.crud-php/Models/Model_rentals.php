@@ -52,14 +52,31 @@ class Model_rentals extends Model
             return $rentals;
     }
     
-    public function getClientRentalsHistory($id)
+
+public function getAllAccountRentals($id){
+    $rentals = $this->getDB()
+    ->query("SELECT clients.fullName as clientName,rentals_games.*,games.gameName,DATE(rentals_games.creation_time) as start_rental_date,DATE_ADD(date(creation_time), INTERVAL rental_months MONTH) as end_date
+    from games
+    inner join rentals_games on games.id=rentals_games.gameID 
+    inner join clients on clients.id=rentals_games.clientID 
+    WHERE clients.accountID=$id and DATE_ADD(date(creation_time), INTERVAL rental_months MONTH)>now();")
+    ->fetch_all(MYSQLI_ASSOC);
+        if($rentals==[]){
+            
+            throw new Exception($this->getDB()->error);
+        }
+        return $rentals;
+}
+
+
+    public function getRentalsHistory($id)
     {
         $rentals = $this->getDB()
-        ->query("SELECT rentals_games.*,games.gameName,DATE(rentals_games.creation_time) as start_rental_date,DATE_ADD(date(creation_time), INTERVAL rental_months MONTH) as end_date
+        ->query("SELECT clients.fullName as clientName ,rentals_games.*,games.gameName,DATE(rentals_games.creation_time) as start_rental_date,DATE_ADD(date(creation_time), INTERVAL rental_months MONTH) as end_date
         from games
         inner join rentals_games on games.id=rentals_games.gameID 
         inner join clients on clients.id=rentals_games.clientID 
-        WHERE clients.id=$id and DATE_ADD(date(creation_time), INTERVAL rental_months MONTH)<now();")
+        WHERE clients.accountID=$id and DATE_ADD(date(creation_time), INTERVAL rental_months MONTH)<now();")
         ->fetch_all(MYSQLI_ASSOC);
             if($rentals==[]){
                 
@@ -82,7 +99,7 @@ class Model_rentals extends Model
         return $rental;
     }
 
-    public function insertRental($clientID,$gameID,$rental_months){
+    public function insertRental($gameID,$clientID,$rental_months){
 
 
         $rentalInsert = $this->getDB()

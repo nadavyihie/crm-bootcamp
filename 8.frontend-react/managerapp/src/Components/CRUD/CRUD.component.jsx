@@ -200,7 +200,7 @@ const sendSMS=e=>{
           <div className="removeModal">
             <span>Are you sure you want to remove this {props.crudType}? </span>
             <button className="crudButton" onClick={remove}>
-              Ok
+         0     Ok
             </button>
             <button className="crudButton" onClick={handleClose}>
               Cancel
@@ -250,16 +250,24 @@ const sendSMS=e=>{
             }
           
       </Modal>
-      <div style={{display:'flex'}}>
+      <div >
         <Table columns={columns} data={userdata} />
-        <div className='smsStatusContainer'>
+       
 
 
-
-<div className="smsStatusTitle">SMS status</div>
-{smsStatusArr.map(elememt=>(<div className="smsStatusItem">{elememt.phoneNumber}</div>))}
-
+        {smsFunc?
+         <div className='smsStatusContainer'>
+       
+          <div className="smsStatusTitle">SMS status</div>
+        {smsStatusArr.map((element)=>(<div className="smsStatusItem">{element.status}</div>))}
+    
+        
         </div>
+        :null}
+
+
+
+     
 
 
 </div>

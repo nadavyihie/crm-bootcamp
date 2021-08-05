@@ -20,6 +20,7 @@
     }
 
     .rentalsMenu{
+
       margin :2vh;
       display: flex;
     }
@@ -27,6 +28,7 @@
       color: rgb(52, 52, 52);
       width: 10vw;
       height: 4vh;
+      margin-bottom: 2vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -37,7 +39,12 @@
     }
 
     .rentalsMenu div:focus{
-      background-color: #464EDB;
+      background-color: #464EDB; 
       color: white;
 
+    }
+
+    
+    .addRental{
+      float:right;
     }

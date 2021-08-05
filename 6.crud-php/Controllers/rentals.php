@@ -97,12 +97,12 @@ return $this->response;
     }
 
     
-    public function readClientRentalsHistory()
+    public function readRentalsHistory()
     {
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         $id=$input['id'];
-        $rentals = $this->model->getClientRentalsHistory($id);
+        $rentals = $this->model->getRentalsHistory($id);
         $this->response["rentals"] = $rentals;
         return $this->response;
     }
@@ -113,6 +113,17 @@ return $this->response;
         $this->response["rentals"] = $games;
         return $this->response;
     }
+
+    public function readAllRentals()
+    {
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $games = $this->model->getAllAccountRentals($id);
+        $this->response["rentals"] = $games;
+        return $this->response;
+    }
+
 
     public function read()
     {
@@ -127,13 +138,11 @@ return $this->response;
      public function create(){
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
-       
-        $gameName=$input['gameName'];
-        $genre=$input['genre'];
-        $rating=$input['rating'];
-        $price=$input['price'];
-        $imgURL=$input['imgURL'];
-        $gameCreate=$this->model->insertGame($gameName,$genre,$rating,$price, $imgURL);
+    
+        $clientID=$input['clientID'];
+        $rental_months=$input['rental_months'];
+        $gameID=$input['gameID'];
+        $gameCreate=$this->model->insertRental($gameID,$clientID,$rental_months);
         return $gameCreate;
      }
      public function getimage(){
