@@ -10,6 +10,7 @@ import "../../css/searchbox-style.css";
 import { FcSearch } from "react-icons/fc";
 import { useParams } from "react-router-dom";
 function Rentals(props) {
+  const [rentalAdded,setRentalAdded]=useState(false)
   const [open, setOpen] = useState(false);
   const [showRentals, setShowRentals] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -46,7 +47,12 @@ function Rentals(props) {
         break;
       }
     }
-    axios.post("http://localhost:991/rentals/insertRental/",{gameID:gameID,clientID:clientID,months:months})
+    axios.post("http://localhost:991/rentals/create/",{gameID:gameID,clientID:clientID,months:months}).then((res)=>{
+      setRentalAdded=true;
+    })
+    .catch(err=>{
+      setRentalAdded=false;
+    })
   };
   const handleClose = () => {
     setOpen(false);
