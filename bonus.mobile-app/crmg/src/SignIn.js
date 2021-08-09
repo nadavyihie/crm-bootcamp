@@ -3,7 +3,7 @@ import axios from 'axios';
 import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {goHome} from './navigation';
-import {USER_KEY} from './config';
+import {USER_KEY,ACCOUNT_ID} from './config';
 
 export default class SignIn extends React.Component {
   state = {
@@ -22,7 +22,9 @@ export default class SignIn extends React.Component {
         email: email,
         password: password,
       });
-      const user = await AsyncStorage.setItem(USER_KEY, res.data);
+      const user = await AsyncStorage.setItem(USER_KEY, res.data.token);
+      const accouID=res.data.accountID.toString();
+      const accountID=await AsyncStorage.setItem(ACCOUNT_ID,accouID)
       console.log('user successfully signed in!', user);
       goHome();
     } catch (err) {
@@ -50,7 +52,7 @@ export default class SignIn extends React.Component {
           onChangeText={val => this.onChangeText('password', val)}
         />
         <View style={styles.button}>
-            {!this.state.loginCorrect?<Text>Incorrect user name or password</Text>:null}
+            {!this.state.loginCorrect?<Text style={styles.errorMsg}>Incorrect user name or password</Text>:null}
         <Button  title="Sign In" onPress={this.signIn} />
         </View>
       </View>
@@ -60,15 +62,13 @@ export default class SignIn extends React.Component {
 
 const styles = StyleSheet.create({
     errorMsg:{
-    width: 350,
-    fontSize: 18,
-    fontWeight: '500',
-    height: 55,
-
+       color:'red',
+        marginTop:20,
+        marginBottom:10
     },
     button:{
       
-        marginTop:60
+        marginTop:20
         
     },
     input: {

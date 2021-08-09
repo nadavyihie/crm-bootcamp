@@ -32,9 +32,12 @@ export const goHome = () => Navigation.setRoot({
         {
           component: {
             name: 'Home',
+    
           }
         }
     ],
     }
   }
 })
+
+

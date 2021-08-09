@@ -204,7 +204,8 @@ router.get('/validateLink',function(req,res){
      
       const accessToken = jwt.sign({email:email}, process.env.JWT_KEY);
       token=accessToken;
-      res.status(200).json(token);
+      const accountID=result[0].managerID==-1?result[0].id:result[0].managerID;
+      res.status(200).json({token:token,accountID:accountID});
 
     }
     else{
