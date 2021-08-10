@@ -68,7 +68,21 @@ public function getAllAccountRentals($id){
         return $rentals;
 }
 
-
+public function getLimitedAccountRentals($id,$offset){
+    $rentals = $this->getDB()
+    ->query("SELECT clients.fullName as clientName,rentals_games.*,games.gameName,DATE(rentals_games.creation_time) as start_rental_date,DATE_ADD(date(creation_time), INTERVAL rental_months MONTH) as end_date
+    from games
+    inner join rentals_games on games.id=rentals_games.gameID 
+    inner join clients on clients.id=rentals_games.clientID 
+    WHERE clients.accountID=$id and DATE_ADD(date(creation_time), INTERVAL rental_months MONTH)>now()
+    limit 5 OFFSET $offset ;")
+    ->fetch_all(MYSQLI_ASSOC);
+        if($rentals==[]){
+            
+            throw new Exception($this->getDB()->error);
+        }
+        return $rentals;
+}
     public function getRentalsHistory($id)
     {
         $rentals = $this->getDB()
@@ -105,7 +119,7 @@ public function getAllAccountRentals($id){
         $rentalInsert = $this->getDB()
         ->query("INSERT INTO rentals_games (clientID,gameID,rental_months,price)
          VALUES ($clientID,$gameID,$rental_months,
-         (SELECT $rental_months*games.price WHERE games.id=$gameID));");
+         (SELECT $rental_months*price from games WHERE games.id=$gameID));");
         if($rentalInsert==false)
         {
            
@@ -117,14 +131,15 @@ public function getAllAccountRentals($id){
        
     }
 
-    public function updateRental($id,$gameID,$clientID,$rentalMonths){
+    public function updateRental($id,$rentalMonths){
         $userInsert = $this->getDB()
-        ->query("UPDATE rentals_games SET rental_months = $rentalMonths WHERE id=$id and clientID=$clientID and gameID=$gameID");
+        ->query("UPDATE rentals_games SET rental_months = $rentalMonths ,price=(SELECT $rentalMonths*price from games WHERE games.id=rentals_games.gameID) WHERE id=$id");
         if($userInsert==false)
         {
            
             throw new Exception($this->getDB()->error);
         }
+   
         return true;
        
     }

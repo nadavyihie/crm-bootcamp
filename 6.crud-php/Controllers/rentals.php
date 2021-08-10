@@ -124,6 +124,16 @@ return $this->response;
         return $this->response;
     }
 
+    public function readLimitedRentals()
+    {
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $offset=$input['offset'];
+        $games = $this->model->getLimitedAccountRentals($id,$offset);
+        $this->response["rentals"] = $games;
+        return $this->response;
+    }
 
     public function read()
     {
@@ -183,12 +193,9 @@ return $this->response;
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         $id=$input['id'];
-        $gameName=$input['gameName'];
-        $genre=$input['genre'];
-        $rating=$input['rating'];
-        $price=$input['price'];
-        $imgURL=$input['imgURL'];
-        $gameUpdate=$this->model->updateGame($id,$gameName,$genre,$rating,$price, $imgURL);
+        $rental_months=$input['rental_months'];
+   
+        $gameUpdate=$this->model->updateRental($id,$rental_months);
         return $gameUpdate;
      }
 }

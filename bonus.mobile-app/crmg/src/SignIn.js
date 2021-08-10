@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     height: 55,
-    backgroundColor: '#42A5F5',
+    backgroundColor: '#464edb',
     margin: 10,
     color: 'white',
     padding: 8,

@@ -63,7 +63,7 @@ function SignIn(props) {
     .then(function (response) {
       if(response.status==200){
         setSubmitMsg(["login succeess","#D4EDDA"]);
-        localStorage.setItem("token", response.data);
+        localStorage.setItem("token", response.data.token);
         window.location.href="/";
       }
     })

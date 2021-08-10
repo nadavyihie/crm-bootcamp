@@ -8,5 +8,4 @@ export function registerScreens() {
   );
   Navigation.registerComponent('SignIn', () => require('./SignIn').default);
 
-  Navigation.registerComponent('Screen2', () => require('./Screen2').default);
-}
+  }

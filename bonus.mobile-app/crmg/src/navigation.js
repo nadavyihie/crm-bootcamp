@@ -13,7 +13,7 @@ export const goToAuth = () => Navigation.setRoot({
               bottomTab: {
                 fontSize: 12,
                 text: 'Sign In',
-                icon: require('./signin.png')
+            
               }
             }
           },
@@ -32,6 +32,7 @@ export const goHome = () => Navigation.setRoot({
         {
           component: {
             name: 'Home',
+          
     
           }
         }
