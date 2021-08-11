@@ -48,6 +48,9 @@ function SignIn(props) {
     .then(function (response) {
       if(response.status==200){
         setSubmitMsg(["Registration successful","#D4EDDA"]);
+        setTimeout(() => {
+          window.location='/';
+        }, 1500);
       }
     })
     .catch(function (error) {

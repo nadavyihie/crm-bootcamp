@@ -30,7 +30,7 @@ function Users(props) {
           .then(function (response) {
            
             setUsersData(response.data);
-            console.log(usersData)
+            // console.log(response.data)
             
             // console.log(response.data.allUsers)
           
@@ -174,7 +174,7 @@ function Users(props) {
       }
     return (
     <div style={{marginLeft:'25vw'}}>
-      <div className="serverMsg" style={{ backgroundColor: submitMsg[1] }}>{submitMsg[0]}</div>
+      <div className="inviteMsg" style={{ backgroundColor: submitMsg[1] }}>{submitMsg[0]}</div>
 
       <button className="usersButton inviteButton" onClick={()=>{handleOpen('invite')}}>Invite user</button>
       <Modal
@@ -212,7 +212,8 @@ function Users(props) {
                  <button className="usersButton" onClick={handleClose}>close</button>
 
       </Modal>
-                     <Table  columns={columns} data={usersData} />
+      {usersData? <Table  columns={columns} data={usersData} />:null}
+                    
            
 
     </div>

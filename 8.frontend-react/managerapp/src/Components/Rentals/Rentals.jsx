@@ -109,14 +109,15 @@ function Rentals(props) {
         setRentals(res.data.rentals);
         setRentalOption("current");
         console.log(res.data);
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
+      
       })
       .catch((err) => {
         setNorentals(true);
         console.log(err);
       });
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
   };
   const handleFilterData = (e) => {
     setFilteredClientsData(

@@ -95,7 +95,9 @@ function Chat(props) {
       setRoomsMsg(roomMsg);
       axios
         .put(`http://localhost:9090/rooms/${room}`, tempMsg)
-        .then(() => {})
+        .then(() => {
+          console.log("blaaaaaaaaaaaaaaa")
+        })
         .catch((err) => {
           console.log(err);
         });

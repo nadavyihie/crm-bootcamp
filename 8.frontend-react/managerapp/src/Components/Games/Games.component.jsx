@@ -50,6 +50,7 @@ function Games(props) {
       if(imgURL)
       await axios.post("http://localhost:991/games/saveimage/", formData);
       setSubmitMsg(["The game was successfully added","#D4EDDA"]);
+      readGames();
     } catch (err) {
       setSubmitMsg(["The game could not bee added at this moment. please try again later","#F8D7DA"]);
 
