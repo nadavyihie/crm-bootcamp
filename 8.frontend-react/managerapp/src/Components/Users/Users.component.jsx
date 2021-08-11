@@ -20,11 +20,12 @@ function Users(props) {
     useEffect(() => {
       
         console.log(props.userDetails[0].id);
-
-        axios
+      const id=props.userDetails[0].managerID==-1?props.userDetails[0].id:props.userDetails[0].managerID
+     
+      axios
           .get("http://localhost:8005/users/fetchallusers", {
             headers: {
-              "managerID": props.userDetails[0].id,
+              "managerID": id,
             },
           })
           .then(function (response) {
