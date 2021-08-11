@@ -24,6 +24,18 @@ class Rentals extends controller
         $this->response["rentals"] = $rentals;
         return $this->response;
     }
+
+    public function readClientRentalsForPortalHistory()
+    {
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        $id=$input['id'];
+        $rentals = $this->model->getAllClientRentalsForPortalHistory($id);
+        $this->response["rentals"] = $rentals;
+        return $this->response;
+    }
+
+
     public function readClientRentals()
     {
         $inputJSON = file_get_contents('php://input');

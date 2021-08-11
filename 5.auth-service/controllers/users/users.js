@@ -39,6 +39,19 @@ router.post('/resetpassword', async function(req,res){
     res.status(500).json();
   }
   });
+
+
+router.post('/removeAccount', async function(req,res){
+ console.log(req.body.id)
+  try{
+    const result=await UserServices.remove(req.body.id)
+    res.status(200).json();
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json();
+  }
+  });
   
 router.get('/validateLink',function(req,res){
   con.query(`SELECT * FROM accounts WHERE resetPassToken='${req.headers.token}'`, function (err, result, fields) {
@@ -87,7 +100,7 @@ router.get('/validateLink',function(req,res){
     
     }
       else
-    return res.status(401).json();
+    return res.status(500).json();
   });
 
   router.get('/test', async (req,res)=>{
@@ -221,7 +234,7 @@ router.get('/validateLink',function(req,res){
   router.post('/inviteuser',(req,res)=>{
 
     let linkToken = jwt.sign({managerid:req.body.managerid,companyName:req.body.companyName,email:req.body.email}, process.env.MAIL_URL_KEY);
-    var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: "mail.workiz.dev"});
+    var mailgun = new Mailgun({apiKey: process.env.MAIL_API_KEY, domain: process.env.MAIL_DOMAIN});
     var msgdata = {
     //Specify email data
       from: 'gamestation@gmail.com',
@@ -236,7 +249,7 @@ router.get('/validateLink',function(req,res){
         //If there is an error, render the error page
         if (err) {
           console.log(err); 
-          res.status(401).json({"message":"We could not send the email at this time, please try again later"});
+          res.status(500).json({"message":"We could not send the email at this time, please try again later"});
             
         }
         //Else we can greet    and leave

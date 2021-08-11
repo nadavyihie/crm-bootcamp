@@ -37,3 +37,11 @@
         align-items: center;
       }
       
+      .clientsMsg{
+      
+        height: fit-content;
+        width: 40vw;
+        padding: 3vh;
+        border-radius: 2vh;
+            
+}

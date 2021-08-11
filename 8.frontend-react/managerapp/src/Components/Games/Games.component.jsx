@@ -7,12 +7,15 @@ import { updateGame, fetchGames, createGame } from "./scripts/serverRequests";
 import Loading from "../Loading/Loading";
 import Modal from "react-modal";
 import Form from "../Form/Form.component";
+import PageUnavailable from "../PageUnavailable/PageUnavailable.component";
 import "./css/games-style.css";
 import "../../css/button-style.css"
 import '../../css/searchbox-style.css';
 
 function Games(props) {
-
+  const [pageUnavailable,setPageUnavailable]=useState(false)
+  const [submitMsg,setSubmitMsg]=useState(["",""]);
+  const [action,setAction]=useState("");
 
   const [inputValueStr,setInputValueStr]=useState([]);
   const [open,setOpen]=useState(false);
@@ -27,7 +30,6 @@ function Games(props) {
     const genre = e.target.elements.genre.value.trim();
     const rating = e.target.elements.rating.value.trim();
     const price = e.target.elements.price.value.trim();
-    // const imgURL = e.target.elements.imgURL.value.trim();
     const imgURL = e.target.elements.imgURL.files[0];
     const formData = new FormData();
     if(imgURL){
@@ -47,11 +49,17 @@ function Games(props) {
       await axios.post("http://localhost:991/games/create/", arr);
       if(imgURL)
       await axios.post("http://localhost:991/games/saveimage/", formData);
+      setSubmitMsg(["The game was successfully added","#D4EDDA"]);
     } catch (err) {
+      setSubmitMsg(["The game could not bee added at this moment. please try again later","#F8D7DA"]);
+
+
       throw err;
     }
+    setOpen(false);
   };
   const modifyGame =  (e) => {
+
     const gameName = e.target.elements.gameName.value.trim();
     const genre = e.target.elements.genre.value.trim();
     const rating = e.target.elements.rating.value.trim();
@@ -79,11 +87,14 @@ function Games(props) {
       axios.post("http://localhost:991/games/update/", arr).then(res=>{
         setOpen(false);
         readGames();
+        setSubmitMsg(["The game was successfully modified","#D4EDDA"]);
 
       }).catch(err=>{
+        setSubmitMsg(["The game could not bee modified at this moment. please try again later","#F8D7DA"]);
+
         console.log(err);
       })
-     
+     setOpen(false)
  
   };
 
@@ -92,21 +103,22 @@ function Games(props) {
       const res = await axios.post("http://localhost:991/games/remove/", {
         id: id,
       });
-
+      
      readGames();
+     setSubmitMsg(["The game was successfully removed","#D4EDDA"]);
     } catch (err) {
+      setSubmitMsg(["The game could not bee removed at this moment. please try again later","#F8D7DA"]);
+
       throw err;
     }
   };
 
   const readGames =  () => {
-    setLoading(true);
+    
     fetchGames().then(res=>{
       for (var element of res.data.games) element.price += "$";
       setGames(res.data.games);
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+    
     })
     .catch(err=>{
       console.log(err);
@@ -114,13 +126,17 @@ function Games(props) {
   };
 
 
-  const handleFilterGames=()=>{
 
-  }
   useEffect(() => {
-
-  
+try{
+  setTimeout(() => {
+    setLoading(false)
+  }, 700);
     readGames();
+}
+catch(err){
+  setPageUnavailable(true);
+}
   }, []);
 
   const columnArr = [
@@ -181,7 +197,11 @@ function Games(props) {
       <MdModeEdit className="actionIcon" onClick={()=>{handleModify(game)}}/>
     </div>
   ));
-
+  gamesViewArr.unshift( <div onClick={()=>{handleAdd()}}
+    
+    className="addGame"
+    
+  >+</div>)
 
   const customStyles = {
     content: {
@@ -200,16 +220,30 @@ function Games(props) {
   };
 
   const handleModify = (game) => {
+    setAction("modify")
+    game.price=game.price.replace('$','')
     setOpen(true);
     setInputValueStr(game);
   };
-
+  const handleAdd = () => {
+    setAction("add")
+    setOpen(true);
+   
+  };
 
   if (loading) {
     return <Loading />;
   }
+  if(pageUnavailable){
+    return(
+      <PageUnavailable/>        )
+  }
+
   return (
     // { <Crud addFormInput={addFormInput}  confirmAdd={addGame} confirmUpdate={modifyGame} crudType='game' columnArr={columnArr} fetchData={readGames} confirmRemove={removeGame}/> }
+    <div style={{marginLeft:'20vw'}}>
+      <div style={{height:'4vh'}}></div>
+       <div className="gameMsg" style={{ backgroundColor: submitMsg[1] }}>{submitMsg[0]}</div>
     <div className="gamesContainer">
       
       {gamesViewArr}
@@ -221,14 +255,32 @@ function Games(props) {
         contentLabel="Example Modal"
       >
  <div className="modifyModal">
-            <Form
-              formStyle="loginForm"
-              inputs={ addFormInput}
-              submitAction={modifyGame}
-              buttonText="Ok"
-              defaultInputs={true}
-              inputValueStr={inputValueStr}
-            />
+   {action=='modify'?
+   
+   
+   <Form
+   formStyle="loginForm"
+   inputs={ addFormInput}
+   submitAction={modifyGame}
+   buttonText="Ok"
+   defaultInputs={true}
+   inputValueStr={inputValueStr}
+ />
+   
+   
+   
+   :
+   <Form
+   formStyle="loginForm"
+   inputs={ addFormInput}
+   submitAction={addGame}
+   buttonText="Ok"
+   
+ />
+   
+   
+   }
+     
             <button className="purpleButton" onClick={()=>{setOpen(false)}}>
               Cancel
             </button>
@@ -237,6 +289,7 @@ function Games(props) {
       </Modal>
       
       
+      </div>
       </div>
   );
 }

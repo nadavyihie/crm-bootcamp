@@ -20,12 +20,13 @@ Button{
     }
 
     .gamesContainer{
-        width:80vw;
-       margin-left: 18vw;
+        /* width:80vw; */
+       /* margin-left: 18vw; */
          display: flex;
         flex-wrap: wrap;
+        /* margin-top: 5vh; */
         margin-bottom: 5vh;
-        
+
     }
 
 
@@ -43,6 +44,27 @@ Button{
        align-items: center;
        justify-content: center;
     }
+
+
+    .addGame{
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        background-color: white;
+        display: flex;
+        font-size: 3em;        
+        width:10vw;
+        height: 25vh;
+        margin-right:4vw;
+        margin-top:4vh;
+        cursor: pointer;
+        transition: 0.2s;
+       align-items: center;
+       justify-content: center;
+    }
+
+    .addGame:hover{
+        transform: scale(1.2);
+    }
+    
 
     .gameImg{
         width:10vw;
@@ -78,3 +100,10 @@ z-index: 1
 .gameDiv:not(:hover)>.gameImg{ opacity: 1;}
 
 
+.gameMsg{
+    
+    width:40vw;
+
+    padding: 3vh;
+    border-radius: 2vh;
+}

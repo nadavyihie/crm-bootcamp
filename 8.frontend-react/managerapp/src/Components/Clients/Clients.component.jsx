@@ -1,9 +1,9 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import Crud from "../CRUD/CRUD.component";
 import './css/clients-style.css'
 function Clients(props) {
-  
+  const [submitMsg,setSubmitMsg]=useState(["",""]);
 const  fetchClients =  async() => {
  
   try {
@@ -19,10 +19,15 @@ const  fetchClients =  async() => {
 const removeClient=async (id)=>{
   try{
       const res=await axios.post("http://localhost:991/clients/remove/",{id:id});
+      setSubmitMsg(["The client has been deleted","#D4EDDA"]);
+
       return res
   }
   catch(err){
+    setSubmitMsg(["The client could not bee deleted right now. try again later","#F8D7DA"]);
+
       throw err;
+      
   }
   
 }
@@ -33,11 +38,13 @@ const updateClient=async (e,id)=>{
     const address = e.target.elements.address.value.trim();
   const arr={id:id,email:email,fullName:fullName,phoneNumber:phoneNumber,address:address};
   try{
+    
       const res=await axios.post("http://localhost:991/clients/update/",arr);
+      setSubmitMsg(["The client details successfully updated","#D4EDDA"]);
       return res
   }
   catch(err){
-
+    setSubmitMsg(["The client  details could not bee updated right now. try again later","#F8D7DA"]);
       throw err;
   }
   
@@ -52,10 +59,12 @@ const addClient=async(e)=>{
   const arr={accountID:accountID,email:email,fullName:fullName,phoneNumber:phoneNumber,address:address};
   try{
       const res=await axios.post("http://localhost:991/clients/create/",arr);
-     
+      setSubmitMsg(["The client has been added","#D4EDDA"]);
+
       return res
   }
   catch(err){
+    setSubmitMsg(["The client could not bee added right now. try again later","#F8D7DA"]);
     throw err;
   }
   
@@ -90,10 +99,13 @@ const addClient=async(e)=>{
                   {inputType: "text", inputName: "address", inputString: "Address"}];
 
   return (
-    <div>
-   
+    <div style={{marginLeft:'25vw'}}>
+     <div style={{height:'4vh'}}></div>
+         <div className="clientsMsg" style={{ backgroundColor: submitMsg[1] }}>{submitMsg[0]}</div>
+
       <Crud addFormInput={addFormInput}  confirmAdd={addClient} confirmUpdate={updateClient} crudType='client' columnArr={columnArr} fetchData={fetchClients} confirmRemove={removeClient}/>
-    </div>
+      </div>
+  
   );
 }
 

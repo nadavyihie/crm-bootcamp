@@ -1,20 +1,26 @@
 import React, { useEffect, useState,useMemo } from "react";
 import Form from "../Form/Form.component";
+import PageUnavailable from "../PageUnavailable/PageUnavailable.component";
 import Loading from "../Loading/Loading";
 import Modal from 'react-modal';
 import axios from "axios";
 import Table from "../reactTable/Table.jsx"
 import "./css/users-style.css";
 import { useRadioGroup } from "@material-ui/core";
+import {RiDeleteBin5Fill} from 'react-icons/ri';
+import {MdModeEdit} from 'react-icons/md';
 function Users(props) {
     const[loading,setLoading]=useState(true);
+    const [pageUnavailable,setPageUnavailable]=useState(false)
     const [open, setOpen] = React.useState(false);
-    const [usersdata,setUsersData]=useState([]);
+    const [usersData,setUsersData]=useState([]);
+    const [submitMsg,setSubmitMsg]=useState(["",""]);
+    const [row, setRow] = useState("");
+    const [action,setAction]=useState("")
     useEffect(() => {
       
         console.log(props.userDetails[0].id);
-        // alert(props.userDetails.id);
-        // console.log(props.userDetails);
+
         axios
           .get("http://localhost:8005/users/fetchallusers", {
             headers: {
@@ -24,22 +30,23 @@ function Users(props) {
           .then(function (response) {
            
             setUsersData(response.data);
-            console.log(usersdata)
+            console.log(usersData)
             
             // console.log(response.data.allUsers)
           
           })
           .catch(function (error) {
+            setPageUnavailable(true)
             // console.log(error);
           });
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 700);
+        
       },[]);
       const columns = React.useMemo(
         () => [
-            {
-                Header: "ID",
-                accessor: "id", // accessor is the "key" in the data
-              },
+           
           {
             Header: "Email",
             accessor: "email", // accessor is the "key" in the data
@@ -48,7 +55,19 @@ function Users(props) {
             Header: "Full name",
             accessor: "fullName",
           },
-         
+          {
+            Header: "",
+            accessor: "id", 
+            Cell: ({ row }) => (
+              <div style={{alignItems:'center'}}>
+                <RiDeleteBin5Fill
+                  className="actionButton"
+                  onClick={() => handleRemove(row)}
+                />
+           
+              </div>
+            ), // accessor is the "key" in the data// accessor is the "key" in the data
+          },
 
         //   {
         //     Header: "managerID",
@@ -60,6 +79,7 @@ function Users(props) {
 
       const customStyles = {
         content: {
+          
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -71,8 +91,48 @@ function Users(props) {
           "align-items":"center"
         },
       };
+
+      const handleRemove = (row) => {
+        setAction("remove");
+        setRow(row);
+        setOpen(true);
     
-    const handleOpen = () => {
+      };
+      const removeFromTable=(id)=>{
+       const tempusersData= [...usersData];
+       let index=0
+       for( var i = 0; i < tempusersData.length; i++){ 
+    
+        if ( tempusersData[i].id === id) { 
+    
+         index=i;
+          break;
+          }
+    
+    }
+    tempusersData.splice(index,1)
+   
+
+
+    setUsersData(tempusersData)  
+    console.log(usersData)
+
+      }
+
+    const removeUser=async ()=>{
+      handleClose();
+      try{
+       const res=await axios.post("http://localhost:8005/users/removeAccount",{id:row.original.id})
+       setSubmitMsg(["The user has been deleted","#D4EDDA"]);
+       removeFromTable(row.original.id);
+      }
+      catch(err){
+        setSubmitMsg(["The user could not bee deleted at this moment. please try again later","#F8D7DA"]);
+
+      }
+    }
+    const handleOpen = (action) => {
+      setAction(action)
         setOpen(true);
       };
     
@@ -81,6 +141,7 @@ function Users(props) {
       };
 
       const sendInvitation = (e) => {
+        handleClose();
         const companyName=props.userDetails[0].companyName;
         const managerid=props.userDetails[0].id;
         const managerName=props.userDetails[0].fullName;
@@ -90,11 +151,14 @@ function Users(props) {
         axios
           .post("http://localhost:8005/users/inviteuser", { managerName,managerid,companyName, email })
           .then(function (response) {
-            alert("The email has been sent!");
+            setSubmitMsg(["The invitation mail has been sent!","#D4EDDA"]);
+
+  
           })
           .catch(function (error) {
-            alert(error.response.data.message);
+            setSubmitMsg(["We could not send the email right now,please try again later.","#F8D7DA"]);
           });
+
       };
       const inputs = 
       [ { inputType: "text", inputName: "email", inputString: "Email" }]
@@ -104,9 +168,15 @@ function Users(props) {
           <Loading />
              );
       }
+      if(pageUnavailable){
+        return(
+          <PageUnavailable/>        )
+      }
     return (
     <div style={{marginLeft:'25vw'}}>
-      <button className="usersButton" onClick={handleOpen}>Invite user</button>
+      <div className="serverMsg" style={{ backgroundColor: submitMsg[1] }}>{submitMsg[0]}</div>
+
+      <button className="usersButton inviteButton" onClick={()=>{handleOpen('invite')}}>Invite user</button>
       <Modal
         isOpen={open}
     
@@ -114,7 +184,10 @@ function Users(props) {
         style={customStyles}
         contentLabel="Example Modal"
       >
+       {action=='invite'?
        
+       
+       <div style={{display:"flex",flexDirection:'column',alignItems:'center'}}>
         <span>Enter emai address:</span>
         
         <Form
@@ -123,15 +196,29 @@ function Users(props) {
           submitAction={sendInvitation}
           buttonText="Invite"
         />
-          <button className="usersButton" onClick={handleClose}>close</button>
+          </div>
+        
+       :action=="remove"?
        
+       <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+            <span style={{marginBottom:'4vh'}}>Are you sure you want to remove this account? </span>
+            <button className="usersButton" onClick={removeUser}>
+              Ok
+            </button>
+            </div>
+       :null
        
+       }
+                 <button className="usersButton" onClick={handleClose}>close</button>
+
       </Modal>
+                     <Table  columns={columns} data={usersData} />
            
-            <Table styleName='table-fill' columns={columns} data={usersdata} />
-      
+
     </div>
   );
+
+  
 }
 
 export default Users;

@@ -76,7 +76,7 @@ function Crud(props) {
 
 
   const updateTable = () => {
-    setLoading(true);
+
     let object = "";
     let objectData="";
     props.fetchData().then(object=>{
@@ -86,17 +86,13 @@ function Crud(props) {
         }
 
         setUsersData(objectData);
-        const tempSmsStatusArr=objectData.map(element=>({phoneNumber:element.phoneNumber,status:false}))
-        setSmsStatusArr(tempSmsStatusArr);
-        console.log(tempSmsStatusArr);
+    
     })
     .catch(err=>{
         console.log(err);
     })
 
-    setTimeout(() => {
-      setLoading(false);
-  }, 1000);
+   ;
   };
 
   const handleOpen = () => {
@@ -108,13 +104,14 @@ function Crud(props) {
   };
 
 const remove=()=>{
-    setLoading(true);
+  
     props.confirmRemove(row.original.id).then(()=>{
         updateTable();
-        handleClose();
+      
     }).catch(err=>{
         console.log(err);
     })
+    handleClose();
 }
 
 const sendSMS=e=>{
@@ -134,35 +131,36 @@ const sendSMS=e=>{
 }
 
   const add= (e)=>{
-      setLoading(true);
+     ;
     props.confirmAdd(e).then(()=>{
         updateTable();
-        handleClose();
+      
     }).catch(err=>{
         console.log(err);
     })
+    handleClose();
   }
 
 
   const update=(e)=>{
      
-    setLoading(true);
       props.confirmUpdate(e,row.original.id).then(()=>{
         updateTable();
-        handleClose();
+      
 
       })
       .catch(err=>{
           console.log(err);
       });
+      handleClose();
      ;  }
 
   useEffect(() => {
   
     updateTable();
-  //   setTimeout(() => {
-  //     setLoading(false);
-  // }, 1500);
+    setTimeout(() => {
+      setLoading(false);
+  }, 700);
   }, []);
 
   const customStyles = {
@@ -186,7 +184,7 @@ const sendSMS=e=>{
     );
   }
   return (
-    <div style={{marginLeft:'25vw'}}>
+    <div >
             <button className="crudButton" onClick={handleAdd}>+Add a {props.crudType}</button>
             
             <button className="crudButton" onClick={handlSms}>SMS to all {props.crudType}s</button>
@@ -200,7 +198,7 @@ const sendSMS=e=>{
           <div className="removeModal">
             <span>Are you sure you want to remove this {props.crudType}? </span>
             <button className="crudButton" onClick={remove}>
-         0     Ok
+             Ok
             </button>
             <button className="crudButton" onClick={handleClose}>
               Cancel
@@ -255,16 +253,7 @@ const sendSMS=e=>{
        
 
 
-        {smsFunc?
-         <div className='smsStatusContainer'>
-       
-          <div className="smsStatusTitle">SMS status</div>
-        {smsStatusArr.map((element)=>(<div className="smsStatusItem">{element.status}</div>))}
-    
-        
-        </div>
-        :null}
-
+      
 
 
      

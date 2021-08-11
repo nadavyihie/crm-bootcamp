@@ -48,3 +48,14 @@
     .addRental{
       float:right;
     }
+
+    .rentalMsg{
+      margin: 2vh 2vh;
+      width:40vw;
+      position: absolute;
+      left: 15vw;
+      top: 0px;
+      height: fit-content;
+      padding: 3vh;
+      border-radius: 2vh;
+    }

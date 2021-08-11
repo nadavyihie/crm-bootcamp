@@ -14,7 +14,7 @@ app.use(bodyParser());
 
 
 app.post('/sendSMS', (req, res)=> {
- 
+    console.log(req.body.phoneNumbersArr)
     const phoneNumbersArr=req.body.phoneNumbersArr;
     const message=req.body.message
     const smsArr={

@@ -73,19 +73,15 @@ const resetPassword = async (newPassword, email) => {
  * @param  {} id
  * return true \ false
  */
-const remove = (id) => {
+const remove = async(id) => {
   let isRemove = false;
-  con.query(
-    `DELETE FROM accounts where id=${id}`,
-    function (err, result, fields) {
-      if (err) throw err;
-      if (result != 0) {
-        console.log("user removed!");
-        isRemove = true;
-      }
-    }
-  );
-  return isRemove;
+  const sql=`DELETE FROM accounts where id=${id}`;
+  try {
+    const result = await SubmitQuery(sql, con);
+    return result;
+  } catch (err) {
+    throw err;
+  }
 };
 
 /**

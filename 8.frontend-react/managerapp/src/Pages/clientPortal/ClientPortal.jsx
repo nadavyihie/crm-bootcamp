@@ -43,13 +43,31 @@ function ClientPortal(props) {
         id: clientDetails[0].id,
       })
       .then(function (response) {
-        setRentalsData(response.data.rentals)
+       
         for(var element of response.data.rentals)
         element.price+="$";
+        setRentalsData(response.data.rentals)
         setOption('myRentals')
       })
       .catch(function (error) {});
   };
+
+
+  const fetchRentalsHistory = () => {
+    axios
+      .post("http://localhost:991/rentals/readClientRentalsForPortalHistory/", {
+        id: clientDetails[0].id,
+      })
+      .then(function (response) {
+     
+        for(var element of response.data.rentals)
+        element.price+="$";
+        setRentalsData(response.data.rentals)
+        setOption('myRentals')
+      })
+      .catch(function (error) {});
+  };
+
 
   const fetchClientDetails = (e) => {
     const phoneNumber = e.target.elements.phoneNumber.value.trim();
@@ -87,18 +105,7 @@ function ClientPortal(props) {
   ];
 
   const rentalColumns = [
-    {
-      Header: "",
-      accessor: "imgURL",
-      Cell: ({ row }) => (
-        <div
-          className="gameImg"
-          style={{
-            backgroundImage: `url("http://localhost:991/images/${row.original.imgURL}")`,
-          }}
-        ></div>
-      ), // accessor is the "key" in the data
-    },
+   
     {
       Header: "Game name",
       accessor: "gameName",
@@ -126,7 +133,7 @@ function ClientPortal(props) {
   }
   if (controller == "login") {
     return (
-      <div class="preload">
+      <div >
         <div className="clientPortal">
           <div className="submitMsg" style={{ backgroundColor: submitMsg[1] }}>
             {submitMsg[0]}
@@ -151,16 +158,27 @@ function ClientPortal(props) {
         <div className="clientPortalHome">
           <div className="HomeClientTitle">{clientDetails[0].fullName}</div>
           <div class="sideBar">
-            <div class="sideBarItem">My details</div>
+            <div class="sideBarItem" onClick={()=>setOption("myDetails")}>My details</div>
             <div class="sideBarItem" onClick={fetchRentals}>
               My rentals
             </div>
-            <div class="sideBarItem">Rentals history</div>
-            <div class="sideBarItem">Suggestions</div>
+            <div class="sideBarItem" onClick={fetchRentalsHistory}>Rentals history</div>
+           
           </div>
+          <div style={{marginTop:'10vh'}}>
           {option=="myRentals"?  <div >
-        <Table  styleName="clientRentalTable" columns={rentalColumns} data={rentalsData} />
-      </div>:null}
+        <Table  columns={rentalColumns} data={rentalsData} />
+      </div>:
+      
+      option=='myDetails'?<div style={{backgroundColor:'#5B586C',padding:'2vw',borderRadius:'20px',opacity:'0.9'}}>
+      <div style={{color:'white',fontSize:'2em'}}>Full name:{clientDetails[0].fullName}</div>
+      <div style={{color:'white',fontSize:'2em'}}> Email:{clientDetails[0].email}</div>
+      <div style={{color:'white',fontSize:'2em'}}>Address:{clientDetails[0].address}</div>
+     </div>
+      :null
+      
+      }
+      </div>
         </div>
         <div className='chat'>  <iframe src={`http://localhost:9000/client-side?username=${clientDetails[0].fullName}&phoneNumber=${clientDetails[0].phoneNumber}`} id="chatIframe" width='100%' height='100%' ></iframe></div>
       </div>

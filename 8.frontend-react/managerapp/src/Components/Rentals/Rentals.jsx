@@ -10,6 +10,7 @@ import "../../css/searchbox-style.css";
 import { FcSearch } from "react-icons/fc";
 import { useParams } from "react-router-dom";
 function Rentals(props) {
+  const [pageUnavailable,setPageUnavailable]=useState(false)
   const [rentalAdded,setRentalAdded]=useState(false)
   const [open, setOpen] = useState(false);
   const [showRentals, setShowRentals] = useState(false);
@@ -21,6 +22,7 @@ function Rentals(props) {
   const [rentalOption, setRentalOption] = useState("current");
   const [filteredClientsData, setFilteredClientsData] = useState([]);
   const [rentalsHistory, setRentalsHistory] = useState(true);
+  const [submitMsg,setSubmitMsg]=useState(["",""]);
   const [noRentals, setNorentals] = useState(false);
   useEffect(() => {
     fetchRentals("current");
@@ -31,28 +33,33 @@ function Rentals(props) {
     const months = e.target.elements.months.value;
     const clientName = e.target.elements.client.value;
     const gameName = e.target.elements.game.value;
-
     let gameID = "";
     let clientID = "";
     for (const client of clients) {
       if (client.fullName == clientName) {
-        console.log(client.id);
+      
         clientID = client.id;
+  
         break;
       }
     }
     for (const game of games) {
-      if (game.name == gameName) {
+      
+      if (game.gameName == gameName) {
         gameID = game.id;
         break;
       }
     }
-    axios.post("http://localhost:991/rentals/create/",{gameID:gameID,clientID:clientID,months:months}).then((res)=>{
-      setRentalAdded=true;
+    console.log("cID:"+clientID+"gID:"+gameID+"m:"+months)
+    axios.post("http://localhost:991/rentals/create/",{"gameID":gameID,"clientID":clientID,"rental_months":months}).then((res)=>{
+      setSubmitMsg(["A new rental has been added","#D4EDDA"]);
+      fetchRentals("current");
     })
     .catch(err=>{
-      setRentalAdded=false;
+      setSubmitMsg(["The rental could not bee added at this moment. please try again later","#F8D7DA"]);
     })
+
+    handleClose();
   };
   const handleClose = () => {
     setOpen(false);
@@ -175,6 +182,10 @@ function Rentals(props) {
   }
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
+
+<div className="rentalMsg" style={{ backgroundColor: submitMsg[1] }}>{submitMsg[0]}</div>
+
+
       {/* <input onChange={handleFilterData} className="searchBox" type='text' placeholder='Search a client'/>
             <div style={{display:'flex',flexDirection:'column',alignItems:"center",marginTop:'5vh',position:'fixed',left:'0',marginLeft:'20vw'}}>
     <div style={{fontSize:'120%',fontWeight:"bold",marginBottom:'1.5vh'}}>Clients list:</div>
@@ -182,7 +193,7 @@ function Rentals(props) {
       </div>
     {showRentals? */}
 
-      <div style={{ marginTop: "5vh" }}>
+      <div style={{ marginTop: "10vh" }}>
         <button className="purpleButton addRental" onClick={handleAddRental}>
           Add rental
         </button>
@@ -191,6 +202,7 @@ function Rentals(props) {
           <div
             tabindex="2"
             onClick={() => {
+              setSubmitMsg("")
               fetchRentals("current");
             }}
           >
@@ -199,6 +211,7 @@ function Rentals(props) {
           <div
             tabindex="3"
             onClick={() => {
+              setSubmitMsg("")
               fetchRentals("history");
             }}
           >
