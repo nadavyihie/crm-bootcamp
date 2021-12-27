@@ -1,0 +1,83 @@
+
+
+    table {
+        margin: 2vh 0 0 2vh;
+      width: 60vw;
+      }
+  
+      th,td {
+        text-align: center;
+      }
+      .actionButton{
+        margin-right: 1vw;
+        cursor: pointer;
+      }
+      .crudButton{
+        
+        background-color: #FFC30F;
+        border:none;
+        width: fit-content;
+        height: 4.5vh;
+        font-size: 1em;
+        margin:2vh;
+        /* margin-top: 1vh; */
+        border-radius: 0.5vh;
+        cursor: pointer;
+        transition: 0.3s
+        }
+        
+        .crudButton:hover{
+        background-color: rgb(214, 147, 39);
+       
+        }
+  
+        .modifyModal{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        
+.gameImg{
+width: 8vw;
+background-size:cover;
+height: 18vh;
+}
+.actionsContainer{
+  display: flex;
+}
+
+.smsStatus{
+  color: green;
+}
+.smsForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.smsStatusContainer{
+  width: 6vw;
+  margin-top: 1.4vh;
+  background-color: green;
+  display: flex;
+  flex-direction: column;
+}
+.smsStatusItem{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  height: 15vh;
+  
+}
+.smsStatusTitle{
+border: 1px solid white;
+height: 6vh;
+  margin-bottom: 0.8vh;
+  margin-top: 0.6vh ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 110%;
+  font-weight: bold;
+}

@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300&display=swap');
+
+
+/* body{
+    background-color: black;
+} */
+
+.preload{
+
+    background-color: black;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index:-1;
+}
+   
+
+    .joystick{
+        background: url('JOYSTICK.jpg') center ; 
+        background-size: cover;
+        width: 15vh;
+        height: 15vh;
+        
+     
+        animation: joystick 2s linear infinite;
+      
+    }
+    @keyframes joystick {
+
+        100% {transform: rotate(360deg);}
+    }
+
+    .clientPortalHome{
+        background: url('homepage.jpg') center ; 
+        background-size: cover;
+        min-width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: center; */
+        animation-name: portalHomeBackground;
+        animation-duration: 2s;
+    }
+    @keyframes portalHomeBackground{
+        0%  { opacity: 0;}
+        100%  { opacity: 1;}
+    }
+    
+
+.clientPortal{
+    
+    background: url('background.jpg') center ; 
+    background-size: cover;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+ 
+   
+    z-index: 0;
+    animation-name: portalBackground;
+    animation-duration: 2s;
+}
+@keyframes portalBackground{
+    0%  { opacity: 0;}
+    100%  { opacity: 1;}
+}
+
+.submitMsg{
+    margin: 15vh 2vh;
+width:65vw;
+position: absolute;
+left: 0px;
+top: 0px;
+height: fit-content;
+padding: 3vh;
+border-radius: 2vh;
+}
+
+.submitContainer{
+    display: flex;
+    border-radius: 0.7VW;
+    background: rgba(0, 0, 0, 0.7);
+    height: 25vh;
+    animation-name: submitContainer;
+    animation-duration: 6s;
+}
+
+@keyframes submitContainer{
+    0%  { opacity: 0 ;}
+    66% { opacity: 0;}
+    100%  { opacity: 1 ;}
+}
+
+.clientTitle{
+
+
+    position: fixed;
+    
+    font-family: 'Bebas Neue', cursive;
+font-family: 'Lato', sans-serif;
+    color: #163844;
+    
+        font-size: 3em;
+        /* margin-top: 5vh; */
+        text-transform: uppercase;
+    top:5vh;
+        animation-name: clientTitle;
+        animation-duration: 4s;
+        
+}
+.HomeClientTitle{
+    position: fixed;
+    font-family: 'Bebas Neue', cursive;
+    font-family: 'Lato', sans-serif;
+    color: white;
+    font-size: 3vw;
+    /* margin-top: 5vh; */
+    top: 5vh;
+    left: 1vw;
+}
+
+
+.sideBar{
+    position: absolute;
+    left: 0;
+    width: 1vw;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+
+    flex-direction: column;
+    background-color: #A34CAE;
+    top: 15vh;
+    border-top-right-radius: 1.5vw;
+    border-bottom-right-radius: 1.5vw;
+    transition: 0.5s;
+    
+}
+.sideBar >div{
+    display: none;
+ 
+}
+.sideBar:hover{
+    width: 14vw;
+    
+
+}
+.sideBar:hover>div{
+    display: block;
+    
+}
+
+
+.sideBarItem{
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.5em;
+    width: 100%;   
+     text-align: center;
+    color: white;
+    margin-bottom: 3vh;
+    cursor: pointer;
+    transition: 0.3s;
+   
+}
+.sideBarItem:hover{
+    font-size: 3em;
+}
+
+
+@keyframes clientTitle{
+    0%  {  top:-10vh;}
+    50%  {    top:-10vh;}
+    100% {  top :5vh;}
+}
+
+.submitTitle{
+    font-family: 'Bebas Neue', cursive;
+    font-family: 'Lato', sans-serif;
+        color:white;
+          text-shadow: 2px 2px 4px #000000;
+        font-size: 2em;
+      
+      
+    margin-bottom: 4vh;
+    animation-name: submitContainer;
+    animation-duration: 6s;
+}
+
+.gameImg{
+    width: 7vw;
+    background-size:cover;
+    height: 18vh;
+    }
+    
+.chat{
+   
+  
+    justify-content: space-between;
+    position: fixed;
+    background-color:white ;
+    right: 0;
+    bottom: 0;
+    height:30vh;
+    width: 20vw;
+    border-radius: 1vh;
+    transition: 0.5s;
+}
+

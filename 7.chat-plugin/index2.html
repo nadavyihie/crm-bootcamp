@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+       
+ margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .chatBox{
+        background-image: url("css/chat-background.jpg");  
+}
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+      #titleMsg {
+        top: 0;
+        position: sticky;
+display: flex;
+flex-direction: column;
+
+margin-bottom: 1vh;
+  width: 100%;
+  height: 15vh;
+  background-color: #333;
+  color: white;
+}
+.username{
+  font-size: 80%;
+  margin: 1vh;
+}
+#messages {
+
+overflow: auto;
+list-style-type: none;
+margin: 0;
+
+padding: 0;
+}
+
+.dateMsgCrm{
+  text-align: right;
+  margin-left: 1vh;
+  font-size: 70%;
+}
+
+.dateMsgMe{
+  text-align: left;
+  margin-left: 1vh;
+  font-size: 70%;
+}
+
+#messages > div {
+  margin-bottom: 1vh;
+padding: 0.5rem 1rem;
+}
+#typing{
+  color: #fff;
+  font-size: 70%;
+  margin-left: 1vh;
+}
+.myMsg{
+  margin-left: auto; 
+  margin-right: 1vw;
+    width: fit-content;
+    background-color: #D9FFBB;
+    border-radius: 2vh;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.crmMsg{
+    
+    margin-left: 1vw;
+    width: fit-content;
+    background-color: #f5f5f5;
+    border-radius: 2vh;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+/* #messages > li:nth-child(odd) {
+background: #efefef;
+} */
+
+    </style>
+  </head>
+  <body>
+    <div className="chatBox">
+      <div id="titleMsg">
+       
+        <div className="username">Store</div>
+       <div id=typing></div>
+      </div>
+
+      <div id="messages">
+          </div>
+  
+      </div>
+      <form id="form">
+        <input id="input" autocomplete="off" />
+        <button >Send</button>
+      </form>
+    </div>
+
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>// set-up a connection between the client and the server
+        var socket = io.connect();   
+        var room="";
+
+        var messages = document.getElementById('messages');
+  var form = document.getElementById('form');
+  var input = document.getElementById('input');
+
+
+  input.addEventListener('keyup',()=>{
+  socket.emit('typing',room);
+})
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (input.value) {
+      var item = document.createElement('div');
+    item.textContent = input.value;
+    item.className='myMsg'
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+      socket.emit('message',{room:room, message:input.value});
+      input.value = '';
+
+    }
+  });
+  const urlParams = new URLSearchParams(window.location.search);
+const userName = urlParams.get('username');
+const phoneNumber = urlParams.get('phoneNumber');
+console.log(userName);
+  socket.emit('joinClientToRoom',userName,phoneNumber);
+          socket.on('sendRoomToParticipants',(clientRoom)=>{
+            room=clientRoom;
+       
+
+
+
+            axios
+        .get(`http://localhost:9090/rooms/getbyname?name=${room}`)
+        .then((res) => {
+
+          if (res.data!=null){
+            for (element of res.data["messages"]){
+              var item = document.createElement('div');
+    item.textContent = element.message;
+    var item2 = document.createElement('div');
+    item2.textContent=element.time;
+    
+    item2.className=element.type=='client'?'dateMsgCrm':'dateMsgMe';
+    item.appendChild=item2
+    item.className=element.type=='client'?'myMsg':'crmMsg';
+    messages.appendChild(item);
+    messages.appendChild(item2);
+
+            }
+          }
+
+        })
+
+
+
+
+
+
+
+          })
+  socket.on('message', function(msg,room) {
+    var item = document.createElement('div');
+    item.textContent = msg;
+    item.className='crmMsg'
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+
+  socket.on('isTyping', function() {
+   let typing=document.getElementById("typing")
+   typing.innerHTML="is typing..."
+    setTimeout(() => {
+      typing.innerHTML=""
+    }, 1000);
+  });
+
+      </script>
+
+
+
+  </body>
+
+
+
+</html>

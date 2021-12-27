@@ -1,0 +1,41 @@
+.loginForm {
+
+  color: white;
+  width: 23vw;
+  margin: 4vh 4vw 0 4vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: space-evenly; */
+}
+
+.formInputs {
+  font-size: 1em;
+  height: 4vh;
+  width: 18vw;
+
+  border:0.2vw solid #dadada;
+    border-radius:0.6vw;
+}
+
+.formInputs:focus {
+  outline:none;
+  border-color:#9ecaed;
+  box-shadow:0 0 1vw #9ecaed;
+}
+
+
+
+.inputs{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  
+  margin-bottom: 3vh;
+}
+.errMsg{
+  
+  font-size: 70%;
+  color: red;
+}

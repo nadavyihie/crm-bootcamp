@@ -8,13 +8,14 @@ app.use(bodyParser.json());
 
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "gameStation"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
 
 con.connect(function(err) {
+  console.log(con);
   if (err) throw err;
   console.log("Connected!");
 

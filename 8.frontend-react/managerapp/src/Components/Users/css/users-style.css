@@ -1,0 +1,43 @@
+.usersButton{
+    color: white;
+    background-color: #5C39FF;
+    border-radius: 1vh;
+
+    border:none;
+    width: 6.5vw;
+    height: 4.5vh;
+    font-size: 1em;
+    margin:2vh;
+ 
+    cursor: pointer;
+    transition: 0.3s
+    }
+    
+    .usersButton:hover{
+    background-color: #775cee;
+   
+    }
+
+    .modal{
+        
+position: absolute;
+
+          
+    }
+
+    .inviteButton{
+        margin-top: 15vh;
+    }
+
+    .inviteMsg{
+        
+            margin: 2vh 2vh;
+        width:40vw;
+        position: absolute;
+        left: 15vw;
+        top: 0px;
+        height: fit-content;
+        padding: 3vh;
+        border-radius: 2vh;
+                
+    }

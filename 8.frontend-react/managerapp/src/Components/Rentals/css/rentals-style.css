@@ -1,0 +1,61 @@
+.ChosenClient{
+    cursor: pointer;
+
+}
+
+
+
+.applyButton{
+      
+    background-color: #FFC30F;
+    border:none;
+    width: fit-content;
+    height: 2.5vh;
+    font-size: 0.7em;
+    margin-left: 0.2vw;
+    /* margin-top: 1vh; */
+    border-radius: 0.5vh;
+    cursor: pointer;
+    transition: 0.3s
+    }
+
+    .rentalsMenu{
+
+      margin :2vh;
+      display: flex;
+    }
+    .rentalsMenu div{
+      color: rgb(52, 52, 52);
+      width: 10vw;
+      height: 4vh;
+      margin-bottom: 2vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    border-radius: 0.8vw;
+      margin-right: 0.5vw;
+      background-color: #eaeaea;
+      cursor: pointer;
+    }
+
+    .rentalsMenu div:focus{
+      background-color: #464EDB; 
+      color: white;
+
+    }
+
+    
+    .addRental{
+      float:right;
+    }
+
+    .rentalMsg{
+      margin: 2vh 2vh;
+      width:40vw;
+      position: absolute;
+      left: 15vw;
+      top: 0px;
+      height: fit-content;
+      padding: 3vh;
+      border-radius: 2vh;
+    }
