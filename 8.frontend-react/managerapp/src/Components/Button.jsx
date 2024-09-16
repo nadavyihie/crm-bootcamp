@@ -1,8 +1,8 @@
 import React from 'react';
-
+import './css/button.css';
 function Button(props) {
     return (
-        <button type={props.buttonType}>{props.buttonText}</button>
+        <button className="button" type={props.buttonType} >{props.buttonText} </button>
     );
 }
 

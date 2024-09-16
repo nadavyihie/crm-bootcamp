@@ -1,115 +1,35 @@
-const e = require('cors');
-const cors = require('cors');
+require('dotenv').config();
 const express = require('express');
-const mysqlserver=require
-var Mailgun = require('mailgun-js');
-const md5=require('md5');
-const mysql = require('mysql');
 const app = express();
-const bodyParser = require('body-parser');
-app.use(express.json());
-app.use(cors());
-app.use(bodyParser.json());
-const jwt = require('jsonwebtoken');
-const JwtMiddleware=require('./checkJWTmiddleware');
-const { response } = require('express');
 
-const toksec="afj3487avn754ljh9udsg";
+// const md5=require('md5');
+/********************************* */
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "gameStation"
-});
+/**Init Controllers */
+const controller = require('./controllers/controllers');
 
-app.use(function (req, res, next) {
-  let tokenValidate=false;
-    // console.log(req.originalUrl);
-    if((req.originalUrl==="/signup" || req.originalUrl==="/signin") || req.originalUrl==="/forgotpassword")
-    {
-      next();
-    }
-    else{
-    try {
-      const verified = jwt.verify(req.headers.token, toksec);
-      req.fullName=verified.fullName;
-      // console.log(res.userEmail);
-      next();
-    }
-    catch(err) {
-     res.status(401).json({"message" : "not authenticated!!!"});
-   
-    }
-  }
-  
-});
+/**Init Middlewares */
+const middlewares = require('./middlewares/middlewares');
 
-app.get('/registered',function(req,res){
-  console.log(req.fullName);
-  return res.status(200).json({"message": "I'm Alive!"
-                              ,"fullName":req.fullName});
-})
+/*Init Services  */
 
-app.get('/', function(req, res) {
-  res.send('hello ');
-});
 
-app.post('/signup',(req,res)=>{
+async function main() {
+    app.listen(process.env.PORT, () => {
+        console.log('[main]', 'API is running on port', process.env.PORT)
+    })
 
-    const {fullName,companyName,phoneNumber,email,password}=req.body;
-    const encPassword=(md5(password));
-    let emailExists=false;
-    con.query(`SELECT * FROM accounts WHERE email='${email}'`, function (err, result, fields) {
-    if (err) throw err;
-    if(result!=0){
-      emailExists=true;
-    }
-    else{
-      
-      var sql = `INSERT INTO accounts (fullName, companyName,phoneNumber,email,userPassword) VALUES ('${fullName}', '${companyName}','${phoneNumber}','${email}','${encPassword}')`;
-      con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("1 record inserted");
-  
-      });
-    
-    
-    }
-    const data={emailExists}; 
-     res.send(data);
-  }
-)});
+     await middlewares(app); /*JWT, morgan, ... */
+     await controller(app); 
 
-app.post('/signin',(req,res)=>{
+    //  await loadAllServices(app); /*MongoDB, customService, Singleton, ... */
 
-  // console.log(req.body)
-  const {email,password}=req.body;
-  const encPassword=(md5(password));
-  
-  let token=null;
-  let loginCorrect=false;
-  con.query(`SELECT * FROM accounts WHERE email='${email}' AND userPassword='${encPassword}'`, function (err, result, fields) {
-  if (err) throw err;
-  if(result!=0){
-    const fullName=result[0].fullName;
-    loginCorrect=true;
-
-    const accessToken = jwt.sign({fullName:fullName ,email: email, }, toksec);
-    token=accessToken;
-    // console.log(token);
-  }
-  else{
-    console.log("login faild");
-  }
-
-  const data={loginCorrect,token}; 
-   res.send(data);
+    return "Server has been initialized successfully"
 }
-)});
+
+main()
+    .then(console.log)
+    .catch(console.error)
 
 
-app.listen("8005", () => {
-  console.log(`Server running at http://localhost:8005/`);
 
-});

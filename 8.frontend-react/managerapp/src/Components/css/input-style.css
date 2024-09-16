@@ -9,3 +9,9 @@
     align-items: center;
     margin-bottom: 3vh;
 }
+.inputstyle{
+    outline: none;
+    font-size: 1em;
+    height: 4vh;
+    width: 20vw;
+}

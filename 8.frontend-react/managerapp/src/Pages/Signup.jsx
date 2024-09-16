@@ -6,6 +6,7 @@ import Button from '../Components/Button';
 import ChoiceContainer from '../Components/ChoiceContainer';
 import Message from '../Components/message';
 import AuthForm from '../Components/AuthForm';
+
 function Signup(props) {
 
     const [isLogin, setIsLogin] = useState(true);
@@ -26,7 +27,17 @@ function Signup(props) {
     const changeMsgColor=(color)=>{
         setMsgColor(color)
     }
-
+    if(props.userType=='regular')
+    {
+        return(
+            <div className="signup">
+                  {registerMsg?<Message  msgContent={registerMsg} msgColor={messageColor}/>:null}
+                 <div className="mainContainer">
+            <AuthForm form action='register' userType={props.userType} msgColor={changeMsgColor} regMsg={showMsg}/>
+            </div>
+            </div>
+        );
+    }
     return (
 
            <div className="signup">

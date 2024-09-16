@@ -4,6 +4,8 @@ import axios from 'axios';
 import Signup from './Pages/Signup';
 import Login from './Pages/Login';
 import NotFound from './Pages/NotFound/NotFound.component';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 import { useEffect, useState } from 'react';
 
 import {
@@ -22,54 +24,76 @@ import {
   const [validToken,setValidToken]=useState(false);
   const token=localStorage.getItem("token");
  
-  useEffect(()=>{
+   useEffect(()=>{
       
       const token=localStorage.getItem("token");
       if(token){
-      axios.get('http://localhost:8005/registered', {
+      axios.get('http://localhost:8005/users/registered', {
         headers: {
-          'token': token
+          'token': token,
         }
       })
       .then(function (response) {
           
           // console.log(response.status);
-          console.log(response.data.fullName)
-          setUserName(response.data.fullName);
+       
+          setUserName(response.data.userName);
+        
           setValidToken(true);
-          
+          setLoading(false);
       })
       .catch(function (error) {
         setValidToken(false);
+        setLoading(false);
         
       });
+      // setLoading(false);
+    }
+    else{
+      setLoading(false);
     }
   
-      setLoading(false);
     
     },[])
 
     if (loading) {
-      return <div className="App">Loading...</div>;
+      return <div>Loading...</div>;
     }
+  
 
   return(
 
+    <Router>
+          <Switch>
+          <Route exact path="/:token">
+              <Signup userType="regular"/>
+            </Route>
+            <Route exact path='/'>
+        <div className="App">
+          { validToken?
+            <div>
+              <Login userName={userName}/>
+            </div>
+          
+          :
+            <div>
+              <Signup/>    
+            </div>}
+          </div>
+          </Route>
+          
+            <Route exact path='/forgotpassword'><ForgotPassword/></Route>
 
-    <div className="App">
-      { validToken?
-        <div>
-          <Login userName={userName}/>
-        </div>
-      
-      :
-      <div>
-        <Signup/>    
-      </div>}
+            <Route exact path='/resetpassword/:token'>
+              <ResetPassword/> 
+            </Route>
+
     
-    </div>
+          </Switch>
+        </Router>
+  
 
-
+    
   );
 }
 
